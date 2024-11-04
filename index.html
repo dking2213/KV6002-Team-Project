@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Company Name</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+            // Show the selected page
+            document.getElementById(pageId).style.display = 'flex';
+        }
+
+        window.onload = function() {
+            showPage('home');
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">Our Logo</div>
+            <button class="btn" onclick="showPage('about-us')">About Us</button>
+            <button class="btn" onclick="showPage('login-register')">Log In</button>
+            <button class="btn" onclick="showPage('login-register')">Register</button>
+            <button class="btn" onclick="showPage('account-details')">Account Details</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="ads">Advertisements (potentially)</div>
+                <input type="text" placeholder="Navigation Bar (Potentially with a search feature)" class="nav-bar">
+            </div>
+
+            <!-- Home Page (Default View) -->
+            <div id="home" class="page">
+                <div class="flyers">
+                    <div class="flyer" onclick="showPage('event-info')">Event 1</div>
+                    <div class="flyer" onclick="showPage('event-info')">Event 2</div>
+                    <div class="flyer" onclick="showPage('event-info')">Event 3</div>
+                    <div class="flyer" onclick="showPage('event-info')">Event 4</div>
+                </div>
+            </div>
+
+            <!-- Event Information Page -->
+            <div id="event-info" class="page" style="display: none;">
+                <div class="event-details">Event Information</div>
+                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
+                <button class="btn">Buy Tickets</button>
+            </div>
+
+            <!-- Account Details Page -->
+            <div id="account-details" class="page" style="display: none;">
+                <div class="profile">
+                    <div class="profile-pic">Profile Picture</div>
+                    <div class="account-info">
+                        <h2>Example Name</h2>
+                        <p>Email: example@example.com</p>
+                        <p>Member Since: February 2004</p>
+                    </div>
+                </div>
+                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
+            </div>
+
+            <!-- About Us Page -->
+            <div id="about-us" class="page" style="display: none;">
+                <div class="about-details">About Us Information</div>
+                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
+            </div>
+
+            <!-- Log In/Register Page (with input fields for username and password) -->
+            <div id="login-register" class="page" style="display: none;">
+                <div class="login-register-details">
+                    <h2>Log In or Register</h2>
+                    <form>
+                        <input type="text" placeholder="Username" class="input-field">
+                        <input type="password" placeholder="Password" class="input-field">
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
+                </div>
+                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
