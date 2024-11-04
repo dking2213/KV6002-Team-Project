@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f3f3;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #e0e0e0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.logo {
+    width: 100%;
+    height: 100px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px; /* Added margin below header */
+}
+
+.ads {
+    height: 100px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.flyers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center; /* Centers flyers in grid */
+}
+
+.flyer {
+    width: 120px; /* Set a fixed width for flyers */
+    height: 150px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.page {
+    display: none; /* Hide all pages by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#home {
+    display: flex; /* Show home page by default */
+}
+
+.event-details, .about-details, .login-register-details {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    width: 80%;
+}
+
+.back-btn {
+    margin-top: 20px;
+    background-color: #ccc;
+}
+
+/* Account Details Page Styling */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.account-info {
+    text-align: left;
+}
+
+/* Styling for login/register form */
+.login-register-details form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%; /* Centered and limited width */
+}
+
+.input-field {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
