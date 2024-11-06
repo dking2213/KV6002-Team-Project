@@ -6,6 +6,47 @@
     <title>Event Management Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <script>
+        // Import the functions you need from the SDKs you need
+
+        import { initializeApp } from "firebase/app";
+
+        import { getAnalytics } from "firebase/analytics";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+
+        // Your web app's Firebase configuration
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+        const firebaseConfig = {
+
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+
+        authDomain: "kv6002-team-project.firebaseapp.com",
+
+        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+
+        projectId: "kv6002-team-project",
+
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+
+        messagingSenderId: "1004655205327",
+
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+
+        measurementId: "G-T290LZMGGH"
+
+        };
+
+
+        // Initialize Firebase
+
+        const app = initializeApp(firebaseConfig);
+
+        const analytics = getAnalytics(app);
         function showPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
