@@ -3,94 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Company Name</title>
+    <title>Event Management Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <script>
         function showPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
             // Show the selected page
-            document.getElementById(pageId).style.display = 'flex';
-            
+            document.getElementById(pageId).style.display = 'block';
+
+            // Update active state in sidebar
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+
             // Show or hide the search bar based on the active page
-            const searchBar = document.getElementById('search-bar-container');
-            if (pageId === 'home') {
+            const searchBar = document.getElementById('search-bar');
+            if (pageId === 'upcoming-events' || pageId === 'past-events') {
                 searchBar.style.display = 'block';
             } else {
                 searchBar.style.display = 'none';
             }
         }
+
+        // Load the default page on startup
+        document.addEventListener("DOMContentLoaded", function() {
+            showPage('dashboard');
+        });
     </script>
 </head>
 <body>
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">Our Logo</div>
-            <button class="btn" onclick="showPage('about-us')">About Us</button>
-            <button class="btn" onclick="showPage('login-register')">Log In</button>
-            <button class="btn" onclick="showPage('login-register')">Register</button>
-            <button class="btn" onclick="showPage('account-details')">Account Details</button>
-        </div>
+        <aside class="sidebar">
+            <div class="logo">Event Logo</div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">Dashboard</button>
+                <button class="nav-item" data-page="upcoming-events" onclick="showPage('upcoming-events')">Upcoming Events</button>
+                <button class="nav-item" data-page="past-events" onclick="showPage('past-events')">Past Events</button>
+                <button class="nav-item" data-page="messages" onclick="showPage('messages')">Messages</button>
+                <button class="nav-item" data-page="profile" onclick="showPage('profile')">Profile</button>
+            </nav>
+            <div class="bottom-menu">
+                <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
+                <button class="nav-item" data-page="logout" onclick="showPage('logout')">Log Out</button>
+            </div>
+        </aside>
 
         <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <div class="ads">Advertisements (potentially)</div>
-                <div id="search-bar-container">
-                    <input type="text" placeholder="Navigation Bar (Potentially with a search feature)" class="nav-bar">
-                </div>
-            </div>
+        <main class="main-content">
+            <header class="header">
+                <h1>Dashboard</h1>
+                
+                <!-- Search Bar (Hidden by default) -->
+                <input type="text" placeholder="Search Events" id="search-bar" class="search-bar" style="display: none;">
 
-            <!-- Home Page (Default View) -->
-            <div id="home" class="page">
-                <div class="flyers">
-                    <div class="flyer" onclick="showPage('event-info')">Event 1</div>
-                    <div class="flyer" onclick="showPage('event-info')">Event 2</div>
-                    <div class="flyer" onclick="showPage('event-info')">Event 3</div>
-                    <div class="flyer" onclick="showPage('event-info')">Event 4</div>
-                </div>
-            </div>
-
-            <!-- Event Information Page -->
-            <div id="event-info" class="page" style="display: none;">
-                <div class="event-details">Event Information</div>
-                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
-                <button class="btn">Buy Tickets</button>
-            </div>
-
-            <!-- Account Details Page -->
-            <div id="account-details" class="page" style="display: none;">
-                <div class="profile">
-                    <div class="profile-pic">Profile Picture</div>
-                    <div class="account-info">
-                        <h2>Example Name</h2>
-                        <p>Email: example@example.com</p>
-                        <p>Member Since: February 2004</p>
+                <div class="profile-info">
+                    <div class="profile-text">
+                        <p class="profile-name">Alex Pereira</p>
+                        <p class="profile-email">alexpereira@ufc.com</p>
                     </div>
+                    <div class="profile-pic">AP</div>
                 </div>
-                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
-            </div>
+            </header>
 
-            <!-- About Us Page -->
-            <div id="about-us" class="page" style="display: none;">
-                <div class="about-details">About Us Information</div>
-                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
-            </div>
-
-            <!-- Log In/Register Page (with input fields for username and password) -->
-            <div id="login-register" class="page" style="display: none;">
-                <div class="login-register-details">
-                    <h2>Log In or Register</h2>
-                    <form>
-                        <input type="text" placeholder="Username" class="input-field">
-                        <input type="password" placeholder="Password" class="input-field">
-                        <button type="submit" class="btn">Submit</button>
-                    </form>
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page">
+                <h2>Dashboard</h2>
+                <div class="cards-container">
+                    <div class="card">Event Overview</div>
+                    <div class="card">Statistics</div>
+                    <div class="card">Recent Activity</div>
                 </div>
-                <button class="btn back-btn" onclick="showPage('home')">Back to Home</button>
-            </div>
-        </div>
+            </section>
+
+            <!-- Upcoming Events Page -->
+            <section id="upcoming-events" class="page" style="display: none;">
+                <h2>Upcoming Events</h2>
+                <div class="cards-container">
+                    <div class="card">Event 1</div>
+                    <div class="card">Event 2</div>
+                    <div class="card">Event 3</div>
+                </div>
+            </section>
+
+            <!-- Past Events Page -->
+            <section id="past-events" class="page" style="display: none;">
+                <h2>Past Events</h2>
+                <div class="cards-container">
+                    <div class="card">Event 4</div>
+                    <div class="card">Event 5</div>
+                </div>
+            </section>
+
+            <!-- Messages Page -->
+            <section id="messages" class="page" style="display: none;">
+                <h2>Messages</h2>
+                <div class="cards-container">
+                    <div class="card">Message 1</div>
+                    <div class="card">Message 2</div>
+                </div>
+            </section>
+
+            <!-- Profile Page -->
+            <section id="profile" class="page" style="display: none;">
+                <h2>Profile</h2>
+                <p>Name: Alex Pereira</p>
+                <p>Email: alexpereira@ufc.com</p>
+                <p>Member Since: January 2023</p>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="settings" class="page" style="display: none;">
+                <h2>Settings</h2>
+                <p>Configure your account settings here.</p>
+            </section>
+
+            <!-- Log Out Page -->
+            <section id="logout" class="page" style="display: none;">
+                <h2>Log Out</h2>
+                <p>You have successfully logged out.</p>
+            </section>
+        </main>
     </div>
 </body>
 </html>
