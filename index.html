@@ -11,11 +11,15 @@
             document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
             // Show the selected page
             document.getElementById(pageId).style.display = 'flex';
+            
+            // Show or hide the search bar based on the active page
+            const searchBar = document.getElementById('search-bar-container');
+            if (pageId === 'home') {
+                searchBar.style.display = 'block';
+            } else {
+                searchBar.style.display = 'none';
+            }
         }
-
-        window.onload = function() {
-            showPage('home');
-        };
     </script>
 </head>
 <body>
@@ -33,7 +37,9 @@
         <div class="main-content">
             <div class="header">
                 <div class="ads">Advertisements (potentially)</div>
-                <input type="text" placeholder="Navigation Bar (Potentially with a search feature)" class="nav-bar">
+                <div id="search-bar-container">
+                    <input type="text" placeholder="Navigation Bar (Potentially with a search feature)" class="nav-bar">
+                </div>
             </div>
 
             <!-- Home Page (Default View) -->
