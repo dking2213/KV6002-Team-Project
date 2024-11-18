@@ -3,23 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management Dashboard</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="register-form">
-            <h1>Register</h1>
-            <form action="index.html">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-                <button type="submit">Register</button>
+        <div class="signup-form">
+            <div class="logo">
+                <!-- Add your logo here -->
+                <div class="logo-circle"></div>
+            </div>
+            <h1>Welcome!</h1>
+            <p>create your account</p>
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="Full Name" required>
+                    <span class="icon">&#x2709;</span>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                    <span class="icon">&#x2709;</span>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                    <span class="icon">&#x1F512;</span>
+                    <span class="toggle-password">&#x1F441;</span>
+                </div>
+                <button type="submit" class="login-button">Login</button>
             </form>
-            <p>already have an account? login <a href="login.html">here</a></p>
+            <p class="signup-text">
+                Already have an account? <a href="login.html">Sign Up</a>
+            </p>
         </div>
     </div>
 </body>
