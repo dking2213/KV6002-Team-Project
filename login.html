@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management Dashboard</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="style.css">
-    </head>
+</head>
 <body>
     <div class="container">
         <div class="login-form">
-            <h1>Login</h1>
-            <form action="index.html">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
+            <div class="logo">
+                <!-- Add your logo here -->
+                <div class="logo-circle"></div>
+            </div>
+            <h1>Welcome back!</h1>
+            <p>Login to your account</p>
+            <form>
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                    <span class="icon">&#x2709;</span>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                    <span class="icon">&#x1F512;</span>
+                    <span class="toggle-password">&#x1F441;</span>
+                </div>
+                <a href="#" class="recover-password">Recover Password</a>
+                <button type="submit" class="login-button">Login</button>
             </form>
-            register <a href="register.html">here</a>
+            <p class="signup-text">
+                Don't have an account? <a href="register.html">Sign Up</a>
+            </p>
         </div>
     </div>
 </body>
 </html>
+
