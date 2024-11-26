@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "tb04",
     "public": "public",
     "ignore": [
       "firebase.json",
