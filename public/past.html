@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Past Events</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,9 +12,9 @@
     <aside class="sidebar">
       <div class="logo">Event Logo</div>
       <nav class="nav-menu">
-        <a class="nav-item active" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
         <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item" href="past.html">Past Events</a>
+        <a class="nav-item active" href="past.html">Past Events</a>
         <a class="nav-item" href="#">Messages</a>
         <a class="nav-item" href="profile.html">Profile</a>
       </nav>
@@ -27,7 +27,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="header">
-        <h1>Dashboard</h1>
+        <h1>Past Events</h1>
 
         <div class="profile-info">
           <div class="profile-text">
@@ -38,17 +38,15 @@
         </div>
       </header>
 
-      <!-- Dashboard Page -->
-      <section id="dashboard" class="page">
+      <!-- Upcoming Events Page -->
+      <section id="past-events" class="page">
         <div class="cards-container">
-          <div class="card">Event Overview</div>
-          <div class="card">Statistics</div>
-          <div class="card">Recent Activity</div>
+          <div class="card">Event 1</div>
+          <div class="card">Event 2</div>
+          <div class="card">Event 3</div>
         </div>
       </section>
 
-    </main>
-  </div>
 
   <!-- Include Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
@@ -109,6 +107,7 @@
         console.error("Error logging out:", error);
       }
     });
+
   </script>
 </body>
 </html>

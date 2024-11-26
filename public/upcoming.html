@@ -14,9 +14,9 @@
       <nav class="nav-menu">
         <a class="nav-item" href="dashboard.html">Dashboard</a>
         <a class="nav-item active" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item" href="#">Past Events</a>
+        <a class="nav-item" href="past.html">Past Events</a>
         <a class="nav-item" href="#">Messages</a>
-        <a class="nav-item" href="#">Profile</a>
+        <a class="nav-item" href="profile.html">Profile</a>
       </nav>
       <div class="bottom-menu">
         <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
@@ -27,7 +27,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="header">
-        <h1>Dashboard</h1>
+        <h1>Upcoming Events</h1>
 
         <div class="profile-info">
           <div class="profile-text">
@@ -40,7 +40,6 @@
 
       <!-- Upcoming Events Page -->
       <section id="upcoming-events" class="page">
-        <h2>Upcoming Events</h2>
         <div class="cards-container">
           <div class="card">Event 1</div>
           <div class="card">Event 2</div>
@@ -66,7 +65,7 @@
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
         measurementId: "G-T290LZMGGH"
     };
-    
+
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
