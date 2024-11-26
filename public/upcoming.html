@@ -30,21 +30,30 @@
         <h1>Upcoming Events</h1>
 
         <div class="profile-info">
+          <a href="profile.html" >
           <div class="profile-text">
             <p class="profile-name" id="profile-name">[Name Placeholder]</p>
             <p class="profile-email" id="profile-email">[Email Placeholder]</p>
           </div>
           <div class="profile-pic" id="profile-pic">[Initials]</div>
+        </a>
         </div>
       </header>
 
       <!-- Upcoming Events Page -->
       <section id="upcoming-events" class="page">
         <div class="cards-container">
-          <div class="card">Event 1</div>
-          <div class="card">Event 2</div>
-          <div class="card">Event 3</div>
+          <div class="card" onclick="showEventDetails('Event 1', 'This is a detailed description of Event 1.')">Event 1</div>
+          <div class="card" onclick="showEventDetails('Event 2', 'This is a detailed description of Event 2.')">Event 2</div>
+          <div class="card" onclick="showEventDetails('Event 3', 'This is a detailed description of Event 3.')">Event 3</div>
         </div>
+      </section>
+
+      <section id="event-details" class="page" style="display: none;">
+        <h2>Event Details</h2>
+        <p id="event-title">Event 1</p>
+        <p id="event-description">Event 1 Description</p>
+        <button onclick="goBackToEvents()">Back to Events</button>
       </section>
 
 
@@ -107,6 +116,26 @@
         console.error("Error logging out:", error);
       }
     });
+
+  // Show event details
+  function showEventDetails(title, description) {
+    // Update event details
+    document.getElementById('event-title').textContent = title;
+    document.getElementById('event-description').textContent = description;
+
+    // Hide the upcoming events page
+    document.getElementById('upcoming-events').style.display = 'none';
+
+    // Show the event details page
+    document.getElementById('event-details').style.display = 'block';
+  }
+
+  // Go back to the upcoming events page
+  function goBackToEvents() {
+    document.getElementById('event-details').style.display = 'none';
+    document.getElementById('upcoming-events').style.display = 'block';
+  }
+
 
   </script>
 </body>
