@@ -51,12 +51,13 @@
 
   <!-- Include Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 
   <script>
     // Firebase Configuration
     const firebaseConfig = {
-      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
         authDomain: "kv6002-team-project.firebaseapp.com",
         databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "kv6002-team-project",
@@ -65,7 +66,7 @@
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
         measurementId: "G-T290LZMGGH"
     };
-
+    
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
