@@ -1,170 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        // Import the functions you need from the SDKs you need
-
-        import { initializeApp } from "firebase/app";
-
-        import { getAnalytics } from "firebase/analytics";
-
-        // TODO: Add SDKs for Firebase products that you want to use
-
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-
-        // Your web app's Firebase configuration
-
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-        const firebaseConfig = {
-
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-
-        authDomain: "kv6002-team-project.firebaseapp.com",
-
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-
-        projectId: "kv6002-team-project",
-
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-
-        messagingSenderId: "1004655205327",
-
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-
-        measurementId: "G-T290LZMGGH"
-
-        };
-
-
-        // Initialize Firebase
-
-        const app = initializeApp(firebaseConfig);
-
-        const analytics = getAnalytics(app);
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-            // Show the selected page
-            document.getElementById(pageId).style.display = 'block';
-
-            // Update active state in sidebar
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-
-            // Show or hide the search bar based on the active page
-            const searchBar = document.getElementById('search-bar');
-            if (pageId === 'upcoming-events' || pageId === 'past-events') {
-                searchBar.style.display = 'block';
-            } else {
-                searchBar.style.display = 'none';
-            }
-        }
-
-        // Load the default page on startup
-        document.addEventListener("DOMContentLoaded", function() {
-            showPage('dashboard');
-        });
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Auth Test Site</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">Event Logo</div>
-            <nav class="nav-menu">
-                <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">Dashboard</button>
-                <button class="nav-item" data-page="upcoming-events" onclick="showPage('upcoming-events')">Upcoming Events</button>
-                <button class="nav-item" data-page="past-events" onclick="showPage('past-events')">Past Events</button>
-                <button class="nav-item" data-page="messages" onclick="showPage('messages')">Messages</button>
-                <button class="nav-item" data-page="profile" onclick="showPage('profile')">Profile</button>
-            </nav>
-            <div class="bottom-menu">
-                <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
-                <button class="nav-item" data-page="logout" onclick="showPage('logout')">Log Out</button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <h1>Dashboard</h1>
-                
-                <!-- Search Bar (Hidden by default) -->
-                <input type="text" placeholder="Search Events" id="search-bar" class="search-bar" style="display: none;">
-
-                <div class="profile-info">
-                    <div class="profile-text">
-                        <p class="profile-name">Alex Pereira</p>
-                        <p class="profile-email">alexpereira@ufc.com</p>
-                    </div>
-                    <div class="profile-pic">AP</div>
-                </div>
-            </header>
-
-            <!-- Dashboard Page -->
-            <section id="dashboard" class="page">
-                <h2>Dashboard</h2>
-                <div class="cards-container">
-                    <div class="card">Event Overview</div>
-                    <div class="card">Statistics</div>
-                    <div class="card">Recent Activity</div>
-                </div>
-            </section>
-
-            <!-- Upcoming Events Page -->
-            <section id="upcoming-events" class="page" style="display: none;">
-                <h2>Upcoming Events</h2>
-                <div class="cards-container">
-                    <div class="card">Event 1</div>
-                    <div class="card">Event 2</div>
-                    <div class="card">Event 3</div>
-                </div>
-            </section>
-
-            <!-- Past Events Page -->
-            <section id="past-events" class="page" style="display: none;">
-                <h2>Past Events</h2>
-                <div class="cards-container">
-                    <div class="card">Event 4</div>
-                    <div class="card">Event 5</div>
-                </div>
-            </section>
-
-            <!-- Messages Page -->
-            <section id="messages" class="page" style="display: none;">
-                <h2>Messages</h2>
-                <div class="cards-container">
-                    <div class="card">Message 1</div>
-                    <div class="card">Message 2</div>
-                </div>
-            </section>
-
-            <!-- Profile Page -->
-            <section id="profile" class="page" style="display: none;">
-                <h2>Profile</h2>
-                <p>Name: Alex Pereira</p>
-                <p>Email: alexpereira@ufc.com</p>
-                <p>Member Since: January 2023</p>
-            </section>
-
-            <!-- Settings Page -->
-            <section id="settings" class="page" style="display: none;">
-                <h2>Settings</h2>
-                <p>Configure your account settings here.</p>
-            </section>
-
-            <!-- Log Out Page -->
-            <section id="logout" class="page" style="display: none;">
-                <h2>Log Out</h2>
-                <p>You have successfully logged out.</p>
-            </section>
-        </main>
+  <div class="login-form">
+    <div class="logo">
+        <!-- Add your logo here -->
+        <div class="logo-circle"></div>
     </div>
+    <h1>Welcome back!</h1>
+    <p>Login to your account</p>
+    <form>
+        <div class="input-group">
+            <input type="email" placeholder="Email Address" id="email" required>
+            <span class="icon">&#x2709;</span>
+        </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" id="password" required>
+            <span class="icon">&#x1F512;</span>
+            <span class="toggle-password">&#x1F441;</span>
+        </div>
+        <a href="#" class="recover-password">Recover Password</a>
+        <button type="button" class="login-button" id="login">Login</button>
+    </form>
+    <p class="signup-text">
+        Don't have an account? <a href="register.html">Sign Up</a>
+    </p>
+      <p id="message"></p>
+    </div>
+
+  <p id="message"></p>
+
+  <!-- Include Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        authDomain: "kv6002-team-project.firebaseapp.com",
+        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "kv6002-team-project",
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+        messagingSenderId: "1004655205327",
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+        measurementId: "G-T290LZMGGH"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Authentication References
+    const messageEl = document.getElementById('message');
+
+    // Log In
+    document.getElementById('login').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        // Redirect to dashboard.html
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        // Handle errors
+        messageEl.textContent = `Error: ${error.message}`;
+      }
+    });
+
+  </script>
 </body>
 </html>

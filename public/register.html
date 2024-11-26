@@ -1,40 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup Page</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Auth Test Site</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="signup-form">
-            <div class="logo">
-                <!-- Add your logo here -->
-                <div class="logo-circle"></div>
-            </div>
-            <h1>Welcome!</h1>
-            <p>create your account</p>
-            <form>
-                <div class="input-group">
-                    <input type="text" placeholder="Full Name" required>
-                    <span class="icon">&#x2709;</span>
-                </div>
-                <div class="input-group">
-                    <input type="email" placeholder="Email Address" required>
-                    <span class="icon">&#x2709;</span>
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Password" required>
-                    <span class="icon">&#x1F512;</span>
-                    <span class="toggle-password">&#x1F441;</span>
-                </div>
-                <button type="submit" class="login-button">Login</button>
-            </form>
-            <p class="signup-text">
-                Already have an account? <a href="login.html">Sign Up</a>
-            </p>
-        </div>
+  <div class="signup-form">
+    <div class="logo">
+        <!-- Add your logo here -->
+        <div class="logo-circle"></div>
     </div>
+    <h1>Welcome!</h1>
+    <p>create your account</p>
+    <form>
+        <div class="input-group">
+            <input type="text" placeholder="Full Name" id="name" required>
+            <span class="icon">&#x2709;</span>
+        </div>
+        <div class="input-group">
+            <input type="email" placeholder="Email Address" id="email" required>
+            <span class="icon">&#x2709;</span>
+        </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" id="password" required>
+            <span class="icon">&#x1F512;</span>
+            <span class="toggle-password">&#x1F441;</span>
+        </div>
+        <button type="button" class="login-button" id="signUp">Sign Up</button>
+    </form>
+    <p class="signup-text">
+        Already have an account? <a href="index.html">Log In</a>
+    </p>
+      <p id="message"></p>
+    </div>
+
+  <p id="message"></p>
+
+  <!-- Include Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        authDomain: "kv6002-team-project.firebaseapp.com",
+        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "kv6002-team-project",
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+        messagingSenderId: "1004655205327",
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+        measurementId: "G-T290LZMGGH"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Authentication References
+    const messageEl = document.getElementById('message');
+
+    // Sign Up
+    document.getElementById('signUp').addEventListener('click', async () => {
+      const name = document.getElementById('name').value; // Get user's full name
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        // Create the user with email and password
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+
+        // Update user profile to store the full name
+        await userCredential.user.updateProfile({
+          displayName: name,
+        });
+
+        // Display success message
+        messageEl.textContent = `Sign up successful! Welcome, ${name}!`;
+        console.log("User created:", userCredential.user);
+      } catch (error) {
+        // Handle errors
+        messageEl.textContent = `Error: ${error.message}`;
+        console.error("Error signing up:", error);
+      }
+    });
+  </script>
 </body>
 </html>
+
