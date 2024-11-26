@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Upcoming Events</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
     <aside class="sidebar">
       <div class="logo">Event Logo</div>
       <nav class="nav-menu">
-        <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">Dashboard</button>
-          <a class="nav-item" href="upcoming.html">Log In</a>
+        <button class="nav-item" data-page="dashboard" onclick="showPage('dashboard')">Dashboard</button>
+        <button class="nav-item active" data-page="upcoming-events" onclick="showPage('upcoming-events')">Upcoming Events</button>
         <button class="nav-item" data-page="past-events" onclick="showPage('past-events')">Past Events</button>
         <button class="nav-item" data-page="messages" onclick="showPage('messages')">Messages</button>
         <button class="nav-item" data-page="profile" onclick="showPage('profile')">Profile</button>
@@ -38,24 +38,16 @@
         </div>
       </header>
 
-      <!-- Dashboard Page -->
-      <section id="dashboard" class="page">
-        <h2>Dashboard</h2>
+      <!-- Upcoming Events Page -->
+      <section id="upcoming-events" class="page">
+        <h2>Upcoming Events</h2>
         <div class="cards-container">
-          <div class="card">Event Overview</div>
-          <div class="card">Statistics</div>
-          <div class="card">Recent Activity</div>
+          <div class="card">Event 1</div>
+          <div class="card">Event 2</div>
+          <div class="card">Event 3</div>
         </div>
       </section>
 
-      <!-- Profile Page -->
-      <section id="profile" class="page" style="display: none;">
-        <h2>Profile</h2>
-        <p id="user-name">Name: [Name Placeholder]</p>
-        <p id="user-email">Email: [Email Placeholder]</p>
-      </section>
-    </main>
-  </div>
 
   <!-- Include Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
@@ -115,6 +107,7 @@
         console.error("Error logging out:", error);
       }
     });
+
   </script>
 </body>
 </html>

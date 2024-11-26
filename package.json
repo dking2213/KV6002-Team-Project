@@ -11,5 +11,8 @@
   "dependencies": {
     "firebase": "^11.0.2",
     "kv6002-team-project": "file:"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.27.0"
   }
 }
