@@ -56,6 +56,21 @@
         <button onclick="goBackToEvents()">Back to Events</button>
       </section>
 
+      <div class="map" id="map"></div>
+
+      <div id="booking-form" class="booking-form" style="display: none;">
+          <h2>Book a Stall</h2>
+          <label for="company-name">Company Name</label>
+          <input type="text" id="company-name" placeholder="Enter company name" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter email address" required>
+
+          <label for="address">Address</label>
+          <input type="text" id="address" placeholder="Enter company address" required>
+
+          <button id="submit-button">Book Stall</button>
+        </div>
 
   <!-- Include Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
@@ -118,25 +133,118 @@
     });
 
   // Show event details
-  function showEventDetails(title, description) {
-    // Update event details
-    document.getElementById('event-title').textContent = title;
-    document.getElementById('event-description').textContent = description;
+    function showEventDetails(title, description) {
+      // Update event details
+      document.getElementById('event-title').textContent = title;
+      document.getElementById('event-description').textContent = description;
 
-    // Hide the upcoming events page
-    document.getElementById('upcoming-events').style.display = 'none';
+      // Hide the upcoming events page
+      document.getElementById('upcoming-events').style.display = 'none';
 
-    // Show the event details page
-    document.getElementById('event-details').style.display = 'block';
+      // Show the event details page
+      document.getElementById('event-details').style.display = 'block';
+      //Show the stalls
+      renderStalls();
+    }
+
+    // Go back to the upcoming events page
+    function goBackToEvents() {
+      document.getElementById('event-details').style.display = 'none';
+      document.getElementById('upcoming-events').style.display = 'block';
+      map.innerHTML = '';
+      bookingForm.style.display = 'none';
+    }
+
+    const companyNames = [
+              "TechCorp", "Green Solutions", "BrightIdeas", "Future Systems", "Innovatech",
+              "EcoTech", "NextGen", "BlueSky Innovations", "CloudNet", "QuantumWorks",
+              "Solaris", "Alpha Dynamics", "Velocity Systems", "Synergy Inc", "NeoTech"
+          ];
+
+    function generateStalls() {
+      const stalls = [];
+      const availableNames = [...companyNames];
+
+      for (let i = 1; i <= 10; i++) {
+        const randomIndex = Math.floor(Math.random() * availableNames.length);
+        const isAvailable = Math.random() > 0.5;
+        const name = isAvailable ? availableNames.splice(randomIndex, 1)[0] : '';
+
+        stalls.push({ id: i, name, available });
+      }
+
+    return stalls;
+    }
+
+    function saveStalls(stalls) {
+      localStorage.setItem('stalls', JSON.stringify(stalls));
+    }
+
+  
+    function loadStalls() {
+      const savedStalls = localStorage.getItem('stalls');
+      if (savedStalls) {
+        return JSON.parse(savedStalls);
+      } else {
+        const newStalls = generateStalls();
+        saveStalls(newStalls);
+        return newStalls;
+      }
+    }
+
+    let stalls = loadStalls();
+    let selectedStall = null;
+
+    const map = document.getElementById('map');
+    const bookingForm = document.getElementById('booking-form');
+    const companyNameInput = document.getElementById('company-name');
+    const emailInput = document.getElementById('email');
+    const addressInput = document.getElementById('address');
+    const submitButton = document.getElementById('submit-button');
+
+    function renderStalls() {
+      map.innerHTML = '';
+      stalls.forEach(stall => {
+        const stallDiv = document.createElement('div');
+        stallDiv.className = `stall ${stall.available ? 'available' : 'unavailable'}`;
+        stallDiv.textContent = stall.available ? stall.name : 'available'; 
+        if (!stall.available) {
+            stallDiv.addEventListener('click', () => handleUnavailableStall(stall));
+        }
+        map.appendChild(stallDiv);
+      });
   }
 
-  // Go back to the upcoming events page
-  function goBackToEvents() {
-    document.getElementById('event-details').style.display = 'none';
-    document.getElementById('upcoming-events').style.display = 'block';
-  }
+    function handleUnavailableStall(stall) {
+      if (!stall.name && !stall.available) {
+        alert("This stall is currently unavailable for booking.");
+        return;
+      }
+      selectedStall = stall;
+      bookingForm.style.display = 'block';
+    }
 
+    submitButton.addEventListener('click', () => {
+      const companyName = companyNameInput.value.trim();
+      const email = emailInput.value.trim();
+      const address = addressInput.value.trim();
 
+    if (companyName && email && address) {
+      if (confirm(`Do you want to book ${selectedStall.name} for ${companyName}?`)) {
+        selectedStall.available = true;
+        selectedStall.name = companyName;
+        alert(`${companyName} has been booked successfully!`);
+        bookingForm.style.display = 'none';
+        companyNameInput.value = '';
+        emailInput.value = '';
+        addressInput.value = '';
+        saveStalls(stalls);
+        renderStalls();
+      }
+    } else {
+        alert('Please fill out all fields.');
+      }
+    });
   </script>
 </body>
 </html>
