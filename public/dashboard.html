@@ -7,48 +7,88 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Event Logo</div>
-      <nav class="nav-menu">
-        <a class="nav-item active" href="dashboard.html">Dashboard</a>
-        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item" href="past.html">Past Events</a>
-        <a class="nav-item" href="#">Messages</a>
-        <a class="nav-item" href="profile.html">Profile</a>
-      </nav>
-      <div class="bottom-menu">
-        <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
-        <button class="nav-item" id="logout">Log Out</button>
-      </div>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Company Name</div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active"> 
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item"> 
+                <span>Events</span>
+            </a>
+            <a href="#" class="nav-item"> 
+                <span>Messages</span>
+            </a>
+            <a href="#" class="nav-item"> 
+                <span>Profile</span>
+            </a>
+        </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <header class="header">
-        <h1>Dashboard</h1>
+      <main class="main-content">
+        <header class="banner">
+            <h1>Discover and experience extraordinary Events</h1>
+            <p>Enter the world of events. Discover the latest events or start creating your own!</p>
+            <button class="btn-primary">Discover Now</button>
+            <button class="btn-secondary">Watch Video</button>
+        </header>
 
-        <div class="profile-info">
-          <a href="profile.html" >
-          <div class="profile-text">
-            <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-            <p class="profile-email" id="profile-email">[Email Placeholder]</p>
-          </div>
-          <div class="profile-pic" id="profile-pic">[Initials]</div>
-        </a>
-        </div>
-      </header>
+        <section class="event-section">
+            <h2>Events Available</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+            </div>
+        </section>
 
-      <!-- Dashboard Page -->
-      <section id="dashboard" class="page">
-        <div class="cards-container">
-          <div class="card">Event Overview</div>
-          <div class="card">Statistics</div>
-          <div class="card">Recent Activity</div>
-        </div>
-      </section>
-
+        <section class="event-section">
+            <h2>Trending Events</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x150" alt="Event Flyer">
+                    <h3>Event Flyer</h3>
+                    <p>By Esthera Jackson</p>
+                    <p>Current Data</p>
+                    <button class="btn-primary">Register</button>
+                </div>
+            </div>
+        </section>
     </main>
   </div>
 
