@@ -1,92 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Auth Test Site</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="signup-form">
-    <div class="logo">
-        <!-- Add your logo here -->
-        <div class="logo-circle"></div>
-    </div>
-    <h1>Welcome!</h1>
-    <p>create your account</p>
-    <form>
-        <div class="input-group">
-            <input type="text" placeholder="Full Name" id="name" required>
-            <span class="icon">&#x2709;</span>
-        </div>
-        <div class="input-group">
-            <input type="email" placeholder="Email Address" id="email" required>
-            <span class="icon">&#x2709;</span>
-        </div>
-        <div class="input-group">
-            <input type="password" placeholder="Password" id="password" required>
-            <span class="icon">&#x1F512;</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Auth Test Site</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="signup-form">
+      <main>
+        <h1>Welcome!</h1>
+        <p>Create your account</p>
+        <div id="input-group" class="grid-item">
+          <form>
+            <p>YOUR NAME</p>
+            <input type="text" placeholder="Full Name" id="name" required />
+            <p>YOUR EMAIL</p>
+            <input
+              type="email"
+              placeholder="Email Address"
+              id="email"
+              required
+            />
+            <p>YOUR PASSWORD</p>
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              required
+            />
             <span class="toggle-password">&#x1F441;</span>
+            <button type="button" class="login-button" id="signUp">
+              Sign Up
+            </button>
+          </form>
         </div>
-        <button type="button" class="login-button" id="signUp">Sign Up</button>
-    </form>
-    <p class="signup-text">
-        Already have an account? <a href="index.html">Log In</a>
-    </p>
-      <p id="message"></p>
+      </main>
+      <aside>
+        <div id="login-image" class="grid-item">
+          <img src="images/alexandre-pellaes-6vajp0pscx0-unsplash-1-1.jpg" />
+        </div>
+      </aside>
+      <footer>
+        <p class="signup-text">
+          Already have an account? <a href="index.html">Log In</a>
+        </p>
+        <p id="message"></p>
+      </footer>
     </div>
 
-  <p id="message"></p>
+    <p id="message"></p>
 
-  <!-- Include Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
         apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
         authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "kv6002-team-project",
         storageBucket: "kv6002-team-project.firebasestorage.app",
         messagingSenderId: "1004655205327",
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH"
-    };
+        measurementId: "G-T290LZMGGH",
+      };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
 
-    // Authentication References
-    const messageEl = document.getElementById('message');
+      // Authentication References
+      const messageEl = document.getElementById("message");
 
-    // Sign Up
-    document.getElementById('signUp').addEventListener('click', async () => {
-      const name = document.getElementById('name').value; // Get user's full name
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      try {
-        // Create the user with email and password
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      // Sign Up
+      document.getElementById("signUp").addEventListener("click", async () => {
+        const name = document.getElementById("name").value; // Get user's full name
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        try {
+          // Create the user with email and password
+          const userCredential = await auth.createUserWithEmailAndPassword(
+            email,
+            password
+          );
 
-        // Update user profile to store the full name
-        await userCredential.user.updateProfile({
-          displayName: name,
-        });
+          // Update user profile to store the full name
+          await userCredential.user.updateProfile({
+            displayName: name,
+          });
 
-        // Display success message
-        messageEl.textContent = `Sign up successful! Welcome, ${name}!`;
-        console.log("User created:", userCredential.user);
-      } catch (error) {
-        // Handle errors
-        messageEl.textContent = `Error: ${error.message}`;
-        console.error("Error signing up:", error);
-      }
-    });
-  </script>
-</body>
+          // Store user details in Realtime Database
+          const userId = userCredential.user.uid; // Get the unique user ID
+          const userRef = db.ref("users/" + userId); // Reference to user's data
+          await userRef.set({
+            name: name,
+            email: email,
+            banner: "images/default-banner.jpg", // Optional default banner
+            pastEvents: [],
+            upcomingEvents: [],
+          });
+
+          // Display success message
+          messageEl.textContent = `Sign up successful! Welcome, ${name}!`;
+          console.log("User created:", userCredential.user);
+        } catch (error) {
+          // Handle errors
+          messageEl.textContent = `Error: ${error.message}`;
+          console.error("Error signing up:", error);
+        }
+      });
+    </script>
+  </body>
 </html>
-

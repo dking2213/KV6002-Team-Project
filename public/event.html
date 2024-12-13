@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Event Logo</div>
+        <nav class="nav-menu">
+          <a class="nav-item" href="dashboard.html">Dashboard</a>
+          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+          <a class="nav-item" href="past.html">Past Events</a>
+          <a class="nav-item" href="#">Messages</a>
+          <a class="nav-item" href="profile.html">Profile</a>
+        </nav>
+        <div class="bottom-menu">
+          <button class="nav-item" data-page="settings" onclick="showPage('settings')"> Settings </button>
+          <button class="nav-item" id="logout">Log Out</button>
+        </div>
+      </aside>
+
+      <!-- Event Details Section -->
+      <div class="event-details-container">
+        <img id="event-banner" class="event-banner" alt="Event Banner" />
+        <h1 id="event-name"></h1>
+        <p>
+          Organised by: </br>
+          <strong><a id="event-organiser" href="#">[Organiser Name]</a></strong>
+        </p>
+        </br>
+        <p id="event-description"></p>
+        <p id="event-date"></p>
+        <p id="event-time"></p>
+        <h3>Vendors:</h3>
+        <ul id="event-vendors"></ul>
+      </div>
+
+      <script>
+
+            // Log Out
+    document.getElementById('logout').addEventListener('click', async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "index.html"; // Redirect to login page
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
+    });
+    
+        const companyNames = [
+          "TechCorp",
+          "Green Solutions",
+          "BrightIdeas",
+          "Future Systems",
+          "Innovatech",
+          "EcoTech",
+          "NextGen",
+          "BlueSky Innovations",
+          "CloudNet",
+          "QuantumWorks",
+          "Solaris",
+          "Alpha Dynamics",
+          "Velocity Systems",
+          "Synergy Inc",
+          "NeoTech",
+        ];
+
+        function getQueryParams() {
+          const params = {};
+          const queryString = window.location.search.substring(1);
+          const paramPairs = queryString.split("&");
+          paramPairs.forEach((pair) => {
+            const [key, value] = pair.split("=");
+            params[key] = decodeURIComponent(value.replace(/\+/g, " "));
+          });
+          return params;
+        }
+
+        function formatDate(dateString) {
+          if (!dateString) return null; // Return null if dateString is empty
+          const date = new Date(dateString);
+          const day = date.getDate();
+          const month = date.toLocaleString('default', { month: 'long' });
+          const year = date.getFullYear();
+
+          // Add the appropriate suffix
+          const ordinalSuffix = (day) => {
+              if (day > 3 && day < 21) return 'th';
+              switch (day % 10) {
+                  case 1: return 'st';
+                  case 2: return 'nd';
+                  case 3: return 'rd';
+                  default: return 'th';
+              }
+          };
+
+        return `${day}${ordinalSuffix(day)} ${month} ${year}`;
+        }
+
+function formatTime(timeString) {
+    if (!timeString) return null; // Return null if timeString is empty
+    // Expecting a time string like "12:00,16:00" (start and end times separated by a comma)
+    const times = timeString.split(',');
+    if (times.length !== 2) return null; // make sure two times are provided
+
+    const format12Hour = (time) => {
+        const [hours, minutes] = time.split(':');
+        const hours12 = hours % 12 || 12; // Convert to 12-hour format
+        const period = hours >= 12 ? 'pm' : 'am';
+        return `${hours12}${minutes ? ':' + minutes : ''}${period}`;
+    };
+
+    return `${format12Hour(times[0])} - ${format12Hour(times[1])}`;
+}
+
+        function populateEventDetails() {
+          const params = getQueryParams();
+
+          // Populate event details
+          document.getElementById("event-banner").src =
+            params.banner || "placeholder-banner.jpg";
+          document.getElementById("event-name").textContent =
+            params.name || "Event Not Found";
+
+          const organiserLink = document.getElementById("event-organiser");
+          organiserLink.textContent = params.organiser || "Unknown";
+
+          // Mapping of organisers to their unique banners
+const organiserBanners = {
+  "Innovate Hub": "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
+  "Creative Minds": "images/Colorful Modern Infinity Technology Free Logo.png",
+  "Global Leaders": "images/Colorful Brain Digital World Technology Logo.png",
+};
+
+      // Get the unique banner for the organiser
+      const organiserBanner =
+        organiserBanners[params.organiser] || "images/default-organiser-banner.jpg";
+          organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
+            params.organiser
+          )}&logo=${encodeURIComponent(
+            "organiser-logo.jpg"
+          )}&banner=${encodeURIComponent(
+            organiserBanner
+          )}&description=${encodeURIComponent(
+            params.organiser + " is a leader in organising world-class events."
+          )}&pastEvents=${encodeURIComponent(
+            "Event A,Event B"
+          )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
+
+          document.getElementById("event-description").textContent =
+            params.description || "No description available.";
+
+          
+    // Format and display date
+    const formattedDate = formatDate(params.date);
+    document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
+
+    // Format and display time
+    const formattedTime = formatTime(params.time);
+    document.getElementById("event-time").textContent = `Time: ${formattedTime || "TBD"}`;
+
+          // Handle vendors
+          const eventId = params.name || "default-event"; // Unique identifier for the event
+          const vendorsList = document.getElementById("event-vendors");
+          vendorsList.innerHTML = ""; // Clear existing vendors
+
+          let selectedVendors = JSON.parse(
+            localStorage.getItem(`vendors-${eventId}`)
+          );
+
+          if (!selectedVendors) {
+            // Select random vendors if not already saved
+            const numberOfVendors = 3; // Set the number of vendors to display
+            const shuffledCompanies = [...companyNames].sort(
+              () => 0.5 - Math.random()
+            ); // Shuffle the array
+            selectedVendors = shuffledCompanies.slice(0, numberOfVendors);
+
+            // Save selected vendors to localStorage
+            localStorage.setItem(
+              `vendors-${eventId}`,
+              JSON.stringify(selectedVendors)
+            );
+          }
+
+          // Display vendors
+          selectedVendors.forEach((vendor) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = vendor;
+            listItem.onclick = () => {
+              window.location.href = `vendor.html?name=${encodeURIComponent(
+                vendor
+              )}&logo=${encodeURIComponent(
+                "vendor-logo.jpg"
+              )}&description=${encodeURIComponent(
+                vendor + " is a trusted partner for innovative solutions."
+              )}&pastEvents=${encodeURIComponent(
+                "Event A,Event B"
+              )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
+            };
+            vendorsList.appendChild(listItem);
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", populateEventDetails);
+      </script>
+    </div>
+  </body>
+</html>

@@ -30,47 +30,64 @@
         <h1>Upcoming Events</h1>
 
         <div class="profile-info">
-          <a href="profile.html" >
-          <div class="profile-text">
-            <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-            <p class="profile-email" id="profile-email">[Email Placeholder]</p>
-          </div>
-          <div class="profile-pic" id="profile-pic">[Initials]</div>
-        </a>
+          <a href="profile.html">
+            <div class="profile-text">
+              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+              <p class="profile-email" id="profile-email">[Email Placeholder]</p>
+            </div>
+            <div class="profile-pic" id="profile-pic">[Initials]</div>
+          </a>
         </div>
       </header>
 
-      <!-- Upcoming Events Page -->
-      <section id="upcoming-events" class="page">
-        <div class="cards-container">
-          <div class="card" onclick="showEventDetails('Event 1', 'This is a detailed description of Event 1.')">Event 1</div>
-          <div class="card" onclick="showEventDetails('Event 2', 'This is a detailed description of Event 2.')">Event 2</div>
-          <div class="card" onclick="showEventDetails('Event 3', 'This is a detailed description of Event 3.')">Event 3</div>
+      <!-- Upcoming Events Section -->
+      <div class="events-section">
+        <div class="events-container">
+          <!-- Event 1 -->
+          <a href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C" class="event-card">
+            <img src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg" alt="Event Banner" class="event-banner">
+            <div class="event-info">
+              <h3 class="event-name">Tech Conference 2024</h3>
+              <p class="event-organiser">Organised by: <strong>Innovate Hub</strong></p>
+            </div>
+          </a>
+
+          <!-- Event 2 -->
+          <a href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z" class="event-card">
+            <img src="images/pexels-photo-3695238.jpeg" alt="Event Banner" class="event-banner">
+            <div class="event-info">
+              <h3 class="event-name">InnovateX</h3>
+              <p class="event-organiser">Organised by: <strong>Creative Minds</strong></p>
+            </div>
+          </a>
+
+          <!-- Event 3 -->
+          <a href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3" class="event-card">
+            <img src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif" alt="Event Banner" class="event-banner">
+            <div class="event-info">
+              <h3 class="event-name">Digital Dynamics Expo</h3>
+              <p class="event-organiser">Organised by: <strong>Global Leaders</strong></p>
+            </div>
+          </a>
         </div>
-      </section>
+      </div>
 
-      <section id="event-details" class="page" style="display: none;">
-        <h2>Event Details</h2>
-        <p id="event-title">Event 1</p>
-        <p id="event-description">Event 1 Description</p>
-        <button onclick="goBackToEvents()">Back to Events</button>
-      </section>
+      <!-- Booking Form -->
+      <div id="booking-form" class="booking-form" style="display: none;">
+        <h2>Book a Stall</h2>
+        <label for="company-name">Company Name</label>
+        <input type="text" id="company-name" placeholder="Enter company name" required>
 
-      <div class="map" id="map"></div>
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter email address" required>
 
-      <div id="booking-form" class="booking-form" style="display: none;" > <!--  -->
-          <h2>Book a Stall</h2>
-          <label for="company-name">Company Name</label>
-          <input type="text" id="company-name" placeholder="Enter company name" required>
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Enter company address" required>
 
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter email address" required>
-
-          <label for="address">Address</label>
-          <input type="text" id="address" placeholder="Enter company address" required>
-
-          <button id="submit-button">Book Stall</button>
-        </div>
+        <button id="submit-button">Book Stall</button>
+      </div>
+    </main>
+  </div>
 
   <!-- Include Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
@@ -80,38 +97,34 @@
   <script>
     // Firebase Configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-        authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kv6002-team-project",
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-        messagingSenderId: "1004655205327",
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH"
+      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+      authDomain: "kv6002-team-project.firebaseapp.com",
+      databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "kv6002-team-project",
+      storageBucket: "kv6002-team-project.firebasestorage.app",
+      messagingSenderId: "1004655205327",
+      appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+      measurementId: "G-T290LZMGGH"
     };
 
-    // Initialize Firebase
+    // Initialise Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     // Update Profile Info
     auth.onAuthStateChanged((user) => {
       if (user) {
-        // Dynamically update profile information
         const profileNameEl = document.getElementById('profile-name');
         const profileEmailEl = document.getElementById('profile-email');
         const profilePicEl = document.getElementById('profile-pic');
-        const userNameEl = document.getElementById('user-name');
-        const userEmailEl = document.getElementById('user-email');
 
+        // Dynamically update profile information
         profileNameEl.textContent = user.displayName || "[Name not set]";
         profileEmailEl.textContent = user.email;
-        userNameEl.textContent = `Name: ${user.displayName || "[Name not set]"}`;
-        userEmailEl.textContent = `Email: ${user.email}`;
 
         // Set profile initials (e.g., "AP" for Alex Pereira)
         if (user.displayName) {
-          const initials = user.displayName.split(' ').map(word => word[0]).join('');
+          const initials = user.displayName.split(' ').map((word) => word.charAt(0)).join('').toUpperCase();
           profilePicEl.textContent = initials;
         } else {
           profilePicEl.textContent = "?";
@@ -122,8 +135,8 @@
       }
     });
 
-    // Log Out
-    document.getElementById('logout').addEventListener('click', async () => {
+        // Log Out
+        document.getElementById('logout').addEventListener('click', async () => {
       try {
         await auth.signOut();
         window.location.href = "index.html"; // Redirect to login page
@@ -132,37 +145,12 @@
       }
     });
 
-  // Show event details
-    function showEventDetails(title, description) {
-      // Update event details
-      document.getElementById('event-title').textContent = title;
-      document.getElementById('event-description').textContent = description;
-
-      // Hide the upcoming events page
-      document.getElementById('upcoming-events').style.display = 'none';
-
-      // Show the event details page
-      document.getElementById('event-details').style.display = 'block';
-      bookingForm.style.display = 'block';
-      
-      //Show the stalls
-      saveStalls(stalls);
-      renderStalls();
-    }
-
-    // Go back to the upcoming events page
-    function goBackToEvents() {
-      document.getElementById('event-details').style.display = 'none';
-      document.getElementById('upcoming-events').style.display = 'block';
-      map.innerHTML = '';
-     bookingForm.style.display = 'none';
-    }
-
+    // Stall Booking Functions
     const companyNames = [
-              "TechCorp", "Green Solutions", "BrightIdeas", "Future Systems", "Innovatech",
-              "EcoTech", "NextGen", "BlueSky Innovations", "CloudNet", "QuantumWorks",
-              "Solaris", "Alpha Dynamics", "Velocity Systems", "Synergy Inc", "NeoTech"
-          ];
+      "TechCorp", "Green Solutions", "BrightIdeas", "Future Systems", "Innovatech",
+      "EcoTech", "NextGen", "BlueSky Innovations", "CloudNet", "QuantumWorks",
+      "Solaris", "Alpha Dynamics", "Velocity Systems", "Synergy Inc", "NeoTech"
+    ];
 
     function generateStalls() {
       const stalls = [];
@@ -172,18 +160,15 @@
         const randomIndex = Math.floor(Math.random() * availableNames.length);
         const isAvailable = Math.random() > 0.5;
         const name = isAvailable ? availableNames.splice(randomIndex, 1)[0] : '';
-
-        stalls.push({ id: i, name, available });
+        stalls.push({ id: i, name, available: isAvailable });
       }
-
-    return stalls;
+      return stalls;
     }
 
     function saveStalls(stalls) {
       localStorage.setItem('stalls', JSON.stringify(stalls));
     }
 
-  
     function loadStalls() {
       const savedStalls = localStorage.getItem('stalls');
       if (savedStalls) {
@@ -210,19 +195,15 @@
       stalls.forEach(stall => {
         const stallDiv = document.createElement('div');
         stallDiv.className = `stall ${stall.available ? 'available' : 'unavailable'}`;
-        stallDiv.textContent = stall.available ? stall.name : 'available'; 
-        if (!stall.available) {
-            stallDiv.addEventListener('click', () => handleUnavailableStall(stall));
+        stallDiv.textContent = stall.available ? stall.name : 'Unavailable';
+        if (stall.available) {
+          stallDiv.addEventListener('click', () => handleAvailableStall(stall));
         }
         map.appendChild(stallDiv);
       });
-  }
+    }
 
-    function handleUnavailableStall(stall) {
-      if (!stall.name && !stall.available) {
-        alert("This stall is currently unavailable for booking.");
-        return;
-      }
+    function handleAvailableStall(stall) {
       selectedStall = stall;
       bookingForm.style.display = 'block';
     }
@@ -232,22 +213,23 @@
       const email = emailInput.value.trim();
       const address = addressInput.value.trim();
 
-    if (companyName && email && address) {
-      if (confirm(`Do you want to book ${selectedStall.name} for ${companyName}?`)) {
-        selectedStall.available = true;
-        selectedStall.name = companyName;
-        alert(`${companyName} has been booked successfully!`);
-        bookingForm.style.display = 'none';
-        companyNameInput.value = '';
-        emailInput.value = '';
-        addressInput.value = '';
-        saveStalls(stalls);
-        renderStalls();
-      }
-    } else {
+      if (companyName && email && address) {
+        if (confirm(`Do you want to book ${selectedStall.name} for ${companyName}?`)) {
+          selectedStall.available = false;
+          saveStalls(stalls);
+          alert(`${companyName} has successfully booked the stall!`);
+          renderStalls();
+          bookingForm.style.display = 'none';
+          companyNameInput.value = '';
+          emailInput.value = '';
+          addressInput.value = '';
+        }
+      } else {
         alert('Please fill out all fields.');
       }
     });
+
+    renderStalls();
   </script>
 </body>
 </html>

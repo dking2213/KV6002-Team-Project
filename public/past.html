@@ -1,140 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Past Events</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Event Logo</div>
-      <nav class="nav-menu">
-        <a class="nav-item" href="dashboard.html">Dashboard</a>
-        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item active" href="past.html">Past Events</a>
-        <a class="nav-item" href="#">Messages</a>
-        <a class="nav-item" href="profile.html">Profile</a>
-      </nav>
-      <div class="bottom-menu">
-        <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
-        <button class="nav-item" id="logout">Log Out</button>
-      </div>
-    </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Past Events</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Event Logo</div>
+        <nav class="nav-menu">
+          <a class="nav-item" href="dashboard.html">Dashboard</a>
+          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+          <a class="nav-item active" href="past.html">Past Events</a>
+          <a class="nav-item" href="#">Messages</a>
+          <a class="nav-item" href="profile.html">Profile</a>
+        </nav>
+        <div class="bottom-menu">
+          <button
+            class="nav-item"
+            data-page="settings"
+            onclick="showPage('settings')"
+          >
+            Settings
+          </button>
+          <button class="nav-item" id="logout">Log Out</button>
+        </div>
+      </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="header">
-        <h1>Past Events</h1>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+          <h1>Past Events</h1>
 
-        <div class="profile-info">
-            <a href="profile.html" >
-            <div class="profile-text">
-              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-              <p class="profile-email" id="profile-email">[Email Placeholder]</p>
-            </div>
-            <div class="profile-pic" id="profile-pic">[Initials]</div>
-          </a>
+          <div class="profile-info">
+            <a href="profile.html">
+              <div class="profile-text">
+                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                <p class="profile-email" id="profile-email">
+                  [Email Placeholder]
+                </p>
+              </div>
+              <div class="profile-pic" id="profile-pic">[Initials]</div>
+            </a>
           </div>
         </header>
 
-      <section id="past-events" class="page">
-        <div class="cards-container">
-          <div class="card" onclick="showEventDetails('Event 1', 'This is a detailed description of Event 1.')">Event 1</div>
-          <div class="card" onclick="showEventDetails('Event 2', 'This is a detailed description of Event 2.')">Event 2</div>
-          <div class="card" onclick="showEventDetails('Event 3', 'This is a detailed description of Event 3.')">Event 3</div>
+        <!-- Past Events Section -->
+        <div class="events-section">
+          <div class="events-container" id="past-events-container">
+            <!-- Events will be dynamically populated here -->
+          </div>
         </div>
-      </section>
+      </main>
+    </div>
 
-      <section id="event-details" class="page" style="display: none;">
-        <h2>Event Details</h2>
-        <p id="event-title">Event 1</p>
-        <p id="event-description">Event 1 Description</p>
-        <button onclick="goBackToEvents()">Back to Events</button>
-      </section>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 
-  <!-- Include Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
         apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
         authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "kv6002-team-project",
         storageBucket: "kv6002-team-project.firebasestorage.app",
         messagingSenderId: "1004655205327",
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH"
-    };
+        measurementId: "G-T290LZMGGH",
+      };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
 
-    // Update Profile Info
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // Dynamically update profile information
-        const profileNameEl = document.getElementById('profile-name');
-        const profileEmailEl = document.getElementById('profile-email');
-        const profilePicEl = document.getElementById('profile-pic');
-        const userNameEl = document.getElementById('user-name');
-        const userEmailEl = document.getElementById('user-email');
+      // Example Event Data
+      const events = [
+        {
+          name: "Tech Conference 2024",
+          organiser: "Innovate Hub",
+          banner: "images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg",
+          description: "An exciting conference on the future of technology.",
+          date: "2023-11-15",
+          time: "10:00 - 16:00",
+        },
+        {
+          name: "InnovateX",
+          organiser: "Creative Minds",
+          banner: "images/pexels-photo-3695238.jpeg",
+          description:
+            "Explore the best of art and design at this amazing expo.",
+          date: "2023-09-10",
+          time: "12:00 - 18:00",
+        },
+        {
+          name: "Digital Dynamics Expo",
+          organiser: "Global Leaders",
+          banner:
+            "images/stylish-hexagonal-line-pattern-background_1017-19742.avif",
+          description:
+            "Discuss the future of the industry with top executives.",
+          date: "2024-05-20",
+          time: "09:00 - 15:00",
+        },
+      ];
 
-        profileNameEl.textContent = user.displayName || "[Name not set]";
-        profileEmailEl.textContent = user.email;
-        userNameEl.textContent = `Name: ${user.displayName || "[Name not set]"}`;
-        userEmailEl.textContent = `Email: ${user.email}`;
+      // Utility Function to Check If a Date Has Passed
+      function hasDatePassed(eventDate) {
+        const currentDate = new Date();
+        const date = new Date(eventDate);
+        return date < currentDate;
+      }
 
-        // Set profile initials (e.g., "AP" for Alex Pereira)
-        if (user.displayName) {
-          const initials = user.displayName.split(' ').map(word => word[0]).join('');
-          profilePicEl.textContent = initials;
-        } else {
-          profilePicEl.textContent = "?";
+      // Filter and Render Past Events
+      function renderPastEvents() {
+        const pastEventsContainer = document.getElementById(
+          "past-events-container"
+        );
+        pastEventsContainer.innerHTML = ""; // Clear existing content
+
+        // Filter events based on the date
+        const pastEvents = events.filter((event) => hasDatePassed(event.date));
+
+        // Generate HTML for each past event
+        pastEvents.forEach((event) => {
+          const eventCard = document.createElement("a");
+          eventCard.className = "event-card";
+          eventCard.href = `event.html?name=${encodeURIComponent(
+            event.name
+          )}&organiser=${encodeURIComponent(
+            event.organiser
+          )}&banner=${encodeURIComponent(
+            event.banner
+          )}&description=${encodeURIComponent(
+            event.description
+          )}&date=${encodeURIComponent(event.date)}&time=${encodeURIComponent(
+            event.time
+          )}`;
+          eventCard.innerHTML = `
+          <img src="${event.banner}" alt="${event.name} Banner" class="event-banner">
+          <div class="event-info">
+            <h3 class="event-name">${event.name}</h3>
+            <p class="event-organiser">Organised by: ${event.organiser}</p>
+          </div>
+        `;
+          pastEventsContainer.appendChild(eventCard);
+        });
+
+        if (pastEvents.length === 0) {
+          pastEventsContainer.innerHTML = "<p>No past events available.</p>";
         }
-      } else {
-        // Redirect to login page if no user is logged in
-        window.location.href = "index.html";
       }
-    });
 
-    // Log Out
-    document.getElementById('logout').addEventListener('click', async () => {
-      try {
-        await auth.signOut();
-        window.location.href = "index.html"; // Redirect to login page
-      } catch (error) {
-        console.error("Error logging out:", error);
-      }
-    });
+      // Update Profile Info
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          const profileNameEl = document.getElementById("profile-name");
+          const profileEmailEl = document.getElementById("profile-email");
+          const profilePicEl = document.getElementById("profile-pic");
 
-  // Show event details
-  function showEventDetails(title, description) {
-    // Update event details
-    document.getElementById('event-title').textContent = title;
-    document.getElementById('event-description').textContent = description;
+          profileNameEl.textContent = user.displayName || "[Name not set]";
+          profileEmailEl.textContent = user.email;
 
-    // Hide the upcoming events page
-    document.getElementById('past-events').style.display = 'none';
+          if (user.displayName) {
+            const initials = user.displayName
+              .split(" ")
+              .map((word) => word.charAt(0))
+              .join("")
+              .toUpperCase();
+            profilePicEl.textContent = initials;
+          } else {
+            profilePicEl.textContent = "?";
+          }
+        } else {
+          window.location.href = "index.html";
+        }
+      });
 
-    // Show the event details page
-    document.getElementById('event-details').style.display = 'block';
-  }
+      // Log Out
+      document.getElementById("logout").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
+      });
 
-  // Go back to the upcoming events page
-  function goBackToEvents() {
-    document.getElementById('event-details').style.display = 'none';
-    document.getElementById('past-events').style.display = 'block';
-  }
-
-
-  </script>
-</body>
+      // Render Past Events on Page Load
+      renderPastEvents();
+    </script>
+  </body>
 </html>
