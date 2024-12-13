@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 body {
@@ -25,6 +25,7 @@ body {
   overflow: auto;
 }
 
+/* Sidebar */
 .sidebar {
   width: 20vw;
   min-width: 250px;
@@ -66,9 +67,10 @@ body {
 
 .nav-item:hover,
 .nav-item.active {
-  background-color: #3b82f6;
+  background-color: #8585ff;
 }
 
+/* Main Content */
 /* Main Content */
 .main-content {
   flex: 1;
