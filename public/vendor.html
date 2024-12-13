@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Details</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="logo">Event Logo</div>
+          <nav class="nav-menu">
+            <a class="nav-item" href="dashboard.html">Dashboard</a>
+            <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+            <a class="nav-item" href="past.html">Past Events</a>
+            <a class="nav-item" href="#">Messages</a>
+            <a class="nav-item" href="profile.html">Profile</a>
+          </nav>
+          <div class="bottom-menu">
+            <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
+            <button class="nav-item" id="logout">Log Out</button>
+          </div>
+        </aside>
+
+  <div class="details-container">
+    <img src="vendor-banner.jpg" alt="Vendor Banner" class="details-banner">
+    <h1 class="details-header" id="vendor-name">Vendor Name</h1>
+    <p class="details-text">Description of the vendor.</p>
+
+    <div class="vendor-list">
+        <h3>Past Events</h3>
+        <ul>
+            <li>Event 1</li>
+            <li>Event 2</li>
+        </ul>
+    </div>
+
+    <div class="vendor-list">
+        <h3>Upcoming Events</h3>
+        <ul>
+            <li>Event A</li>
+            <li>Event B</li>
+        </ul>
+    </div>
+</div>
+
+  <script>
+        // Log Out
+        document.getElementById('logout').addEventListener('click', async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "index.html"; // Redirect to login page
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
+    });
+
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      const paramPairs = queryString.split("&");
+      paramPairs.forEach(pair => {
+          const [key, value] = pair.split("=");
+          params[key] = decodeURIComponent(value.replace(/\+/g, " "));
+      });
+      return params;
+    }
+
+    function populateVendorDetails() {
+      const params = getQueryParams();
+
+      const vendorName = params.name || "Unknown Vendor";
+      const vendorLogo = params.logo || "placeholder-logo.jpg";
+      const vendorDescription = params.description || "No description available.";
+      const pastEvents = params.pastEvents ? params.pastEvents.split(",") : [];
+      const upcomingEvents = params.upcomingEvents ? params.upcomingEvents.split(",") : [];
+
+      // Populate vendor details
+      document.getElementById("vendor-name").textContent = vendorName;
+      document.getElementById("company-logo").src = vendorLogo;
+      document.getElementById("company-description").textContent = vendorDescription;
+
+      // Populate past events
+      const pastEventsContainer = document.getElementById("past-events");
+      pastEvents.forEach(event => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h3>${event}</h3>`;
+        card.onclick = () => window.location.href = `event.html?name=${encodeURIComponent(event)}`;
+        pastEventsContainer.appendChild(card);
+      });
+
+      // Populate upcoming events
+      const upcomingEventsContainer = document.getElementById("upcoming-events");
+      upcomingEvents.forEach(event => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h3>${event}</h3>`;
+        card.onclick = () => window.location.href = `event.html?name=${encodeURIComponent(event)}`;
+        upcomingEventsContainer.appendChild(card);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", populateVendorDetails);
+  </script>
+</body>
+</html>

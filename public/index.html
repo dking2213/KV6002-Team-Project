@@ -1,79 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Auth Test Site</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="login-form">
-    <div class="logo">
-        <!-- Add your logo here -->
-        <div class="logo-circle"></div>
-    </div>
-    <h1>Welcome back!</h1>
-    <p>Login to your account</p>
-    <form>
-        <div class="input-group">
-            <input type="email" placeholder="Email Address" id="email" required>
-            <span class="icon">&#x2709;</span>
-        </div>
-        <div class="input-group">
-            <input type="password" placeholder="Password" id="password" required>
-            <span class="icon">&#x1F512;</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Auth Test Site</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="login-form">
+      <main>
+        <h1>Welcome back!</h1>
+        <p>Login to your account</p>
+        <div id="input-group" class="grid-item">
+          <form>
+            <p>YOUR EMAIL</p>
+            <input
+              type="email"
+              placeholder="Email Address"
+              id="email"
+              required
+            />
+            <p>YOUR PASSWORD</p>
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              required
+            />
             <span class="toggle-password">&#x1F441;</span>
+            <a href="#" class="recover-password">Recover Password</a>
+            <button type="button" class="login-button" id="login">Login</button>
+          </form>
         </div>
-        <a href="#" class="recover-password">Recover Password</a>
-        <button type="button" class="login-button" id="login">Login</button>
-    </form>
-    <p class="signup-text">
-        Don't have an account? <a href="register.html">Sign Up</a>
-    </p>
-      <p id="message"></p>
+      </main>
+      <aside>
+        <div id="login-image" class="grid-item">
+          <img src="images/alexandre-pellaes-6vajp0pscx0-unsplash-1-1.jpg" />
+        </div>
+      </aside>
+      <footer>
+        <p class="signup-text">
+          Don't have an account? <a href="register.html">Sign Up</a>
+        </p>
+        <p id="message"></p>
+      </footer>
     </div>
 
-  <p id="message"></p>
+    <p id="message"></p>
 
-  <!-- Include Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
         apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
         authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "kv6002-team-project",
         storageBucket: "kv6002-team-project.firebasestorage.app",
         messagingSenderId: "1004655205327",
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH"
-    };
+        measurementId: "G-T290LZMGGH",
+      };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
 
-    // Authentication References
-    const messageEl = document.getElementById('message');
+      // Authentication References
+      const messageEl = document.getElementById("message");
 
-    // Log In
-    document.getElementById('login').addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-        // Redirect to dashboard.html
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        // Handle errors
-        messageEl.textContent = `Error: ${error.message}`;
-      }
-    });
-
-  </script>
-</body>
+      // Log In
+      document.getElementById("login").addEventListener("click", async () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          // Redirect to dashboard.html
+          window.location.href = "dashboard.html";
+        } catch (error) {
+          // Handle errors
+          messageEl.textContent = `Error: ${error.message}`;
+        }
+      });
+    </script>
+  </body>
 </html>

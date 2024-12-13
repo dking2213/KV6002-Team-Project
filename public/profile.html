@@ -1,106 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Event Logo</div>
-      <nav class="nav-menu">
-        <a class="nav-item" href="dashboard.html">Dashboard</a>
-        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item" href="past.html">Past Events</a>
-        <a class="nav-item" href="#">Messages</a>
-        <a class="nav-item active" href="profile.html">Profile</a>
-      </nav>
-      <div class="bottom-menu">
-        <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
-        <button class="nav-item" id="logout">Log Out</button>
-      </div>
-    </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Event Logo</div>
+        <nav class="nav-menu">
+          <a class="nav-item" href="dashboard.html">Dashboard</a>
+          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+          <a class="nav-item" href="past.html">Past Events</a>
+          <a class="nav-item" href="#">Messages</a>
+          <a class="nav-item active" href="profile.html">Profile</a>
+        </nav>
+        <div class="bottom-menu">
+          <button
+            class="nav-item"
+            data-page="settings"
+            onclick="showPage('settings')"
+          >
+            Settings
+          </button>
+          <button class="nav-item" id="logout">Log Out</button>
+        </div>
+      </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="header">
-        <h1>Profile</h1>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+          <h1>Profile</h1>
 
-        <div class="profile-info">
-            <a href="profile.html" >
-            <div class="profile-text">
-              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-              <p class="profile-email" id="profile-email">[Email Placeholder]</p>
-            </div>
-            <div class="profile-pic" id="profile-pic">[Initials]</div>
-          </a>
+          <div class="profile-info">
+            <a href="profile.html">
+              <div class="profile-text">
+                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                <p class="profile-email" id="profile-email">
+                  [Email Placeholder]
+                </p>
+              </div>
+              <div class="profile-pic" id="profile-pic">[Initials]</div>
+            </a>
           </div>
         </header>
 
+        <section id="profile-details" class="profile-section">
+          <div id="profile-banner-container">
+            <img id="profile-banner" src="" alt="banner" width="200" />
+          </div>
+          <img id="profile-pic-detail" src="images/profilePicExample.jpg" />
+          <p>
+            <strong><span id="profile-name-detail">[Name]</span></strong>
+          </p>
+          <div id="profile-bio-container">
+            <p>
+              <span id="profile-bio">[Bio]</span>
+            </p>
+          </div>
+          <div id="profile-information">
+            <p>
+              EMAIL:
+              <strong><span id="profile-email-detail">[Email]</span></strong>
+            </p>
+            <p>
+              <strong>Upcoming Events:</strong>
+              <span id="profile-events">[Events]</span>
+            </p>
+          </div>
+        </section>
 
-  <!-- Include Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+        <!-- Editable Profile Form -->
+        <section id="edit-profile" class="profile-section">
+          <button onclick="showForm()">Edit Profile</button>
+          <form id="profile-form" style="display: none;">
+          <h2>EDIT PROFILE</h2>
+            <label for="edit-name">Name:</label>
+            <input
+              type="text"
+              id="edit-name"
+              name="name"
+              placeholder="Your full name"
+              required
+            />
+            <label for="edit-bio">Bio:</label> </br>
+            <textarea
+              id="edit-bio"
+              name="bio"
+              placeholder="Write a short bio..."
+            ></textarea> </br></br>
+            <label for="edit-banner-file">Upload banner:</label>
+            <input type="file" id="edit-banner-file" accept="image/*" />
+            <label for="edit-events">Upcoming Events:</label>
+            <input
+              type="text"
+              id="edit-events"
+              name="events"
+              placeholder="e.g., Event 1, Event 2"
+            />
+            <button type="submit">Save Changes</button>
+          </form>
+        </section>
+      </main>
+    </div>
 
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
         apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
         authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "kv6002-team-project",
         storageBucket: "kv6002-team-project.firebasestorage.app",
         messagingSenderId: "1004655205327",
         appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH"
-    };
+        measurementId: "G-T290LZMGGH",
+      };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
 
-    // Update Profile Info
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // Dynamically update profile information
-        const profileNameEl = document.getElementById('profile-name');
-        const profileEmailEl = document.getElementById('profile-email');
-        const profilePicEl = document.getElementById('profile-pic');
-        const userNameEl = document.getElementById('user-name');
-        const userEmailEl = document.getElementById('user-email');
+      function showForm() {
+        document.getElementById('profile-form').style.display = 'block';
+    }
 
-        profileNameEl.textContent = user.displayName || "[Name not set]";
-        profileEmailEl.textContent = user.email;
-        userNameEl.textContent = `Name: ${user.displayName || "[Name not set]"}`;
-        userEmailEl.textContent = `Email: ${user.email}`;
+      // Get elements
+      const profileNameEl = document.getElementById("profile-name");
+      const profileEmailEl = document.getElementById("profile-email");
+      const profilePicEl = document.getElementById("profile-pic");
+      const profileBannerEl = document.getElementById("profile-banner");
+      const bannerFileInput = document.getElementById("edit-banner-file");
+      const profileEventsEl = document.getElementById("profile-events");
+      const profileNameDetailEl = document.getElementById(
+        "profile-name-detail"
+      );
+      const profileEmailDetailEl = document.getElementById(
+        "profile-email-detail"
+      );
+      const profileForm = document.getElementById("profile-form");
 
-        // Set profile initials (e.g., "AP" for Alex Pereira)
-        if (user.displayName) {
-          const initials = user.displayName.split(' ').map(word => word[0]).join('');
-          profilePicEl.textContent = initials;
+      // Update Profile Info
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // Dynamically update profile information
+          profileNameEl.textContent = user.displayName || "[Name not set]";
+          profileEmailEl.textContent = user.email;
+
+          // Set profile initials (e.g., "AP" for Alex Pereira)
+          if (user.displayName) {
+            const initials = user.displayName
+              .split(" ")
+              .map((word) => word.charAt(0))
+              .join("")
+              .toUpperCase();
+            profilePicEl.textContent = initials;
+          } else {
+            profilePicEl.textContent = "?";
+          }
+
+          const userId = user.uid;
+          const userRef = db.ref(`users/${userId}`);
+
+          userRef.once("value").then((snapshot) => {
+            const userData = snapshot.val();
+            const { name, email, banner, upcomingEvents, bio } = userData || {};
+
+            // Display user info on the profile page
+            profileNameEl.textContent = name || "[Name not set]";
+            profileEmailEl.textContent = email || "[Email not set]";
+            profileNameDetailEl.textContent = name || "[Name not set]";
+            profileEmailDetailEl.textContent = email || "[Email not set]";
+            profilePicEl.textContent = name
+              ? name.charAt(0).toUpperCase()
+              : "?";
+            profileBannerEl.src = banner || "images/default-profile-banner.jpg"; // Use default image if no banner
+            profileEventsEl.textContent = upcomingEvents
+              ? upcomingEvents.join(", ")
+              : "[No events]";
+              document.getElementById("profile-bio").textContent = bio || "[No bio]";
+
+            // Pre-fill the edit form with user data
+            document.getElementById("edit-name").value = name || "";
+            document.getElementById("edit-banner-file").value = banner || "";
+            document.getElementById("edit-events").value = upcomingEvents
+              ? upcomingEvents.join(", ")
+              : "";
+              document.getElementById("edit-bio").value = bio || "";
+          });
         } else {
-          profilePicEl.textContent = "?";
+          // Redirect to login page if no user is logged in
+          window.location.href = "index.html";
         }
-      } else {
-        // Redirect to login page if no user is logged in
-        window.location.href = "index.html";
-      }
-    });
+      });
 
-    // Log Out
-    document.getElementById('logout').addEventListener('click', async () => {
-      try {
-        await auth.signOut();
-        window.location.href = "index.html"; // Redirect to login page
-      } catch (error) {
-        console.error("Error logging out:", error);
-      }
-    });
+      // Handle form submission to update profile
+      profileForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-  </script>
-</body>
+        const name = document.getElementById("edit-name").value.trim();
+        const bio = document.getElementById("edit-bio").value.trim();
+        const bannerFile = bannerFileInput.files[0];
+        const events = document
+          .getElementById("edit-events")
+          .value.trim()
+          .split(",")
+          .map((event) => event.trim());
+
+        const user = auth.currentUser;
+
+        if (user) {
+          const userId = user.uid;
+          const userRef = db.ref(`users/${userId}`);
+
+          let bannerBase64 = null;
+
+          if (bannerFile) {
+            try {
+              //read file as base64 string
+              const reader = new FileReader();
+              reader.onload = async () => {
+                bannerBase64 = reader.result; // Get the base64 string
+
+                // Save data to Firebase
+                await userRef.update({
+                  name,
+                  bio,
+                  upcomingEvents: events,
+                  banner: bannerBase64, // Store base64 image in the database
+                });
+
+                // Update the user's profile display name in Firebase Auth
+                await user.updateProfile({
+                  displayName: name,
+                });
+
+                // Provide feedback to the user
+                alert("Profile updated successfully!");
+              };
+
+              reader.readAsDataURL(bannerFile); // Read the file
+            } catch (error) {
+              console.error("Error reading file:", error);
+              alert("Failed to upload banner image. Please try again.");
+              return;
+            }
+          } else {
+            // Save without a new banner/bio if none entered or selected
+            await userRef.update({
+              name,
+              upcomingEvents: events,
+            });
+
+            // Update the user's profile display name in Firebase Auth
+            await user.updateProfile({
+              displayName: name,
+            });
+
+            // Provide feedback to the user
+            alert("Profile updated successfully!");
+          }
+        }
+      });
+
+      // Log Out
+      document.getElementById("logout").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
+      });
+    </script>
+  </body>
 </html>
