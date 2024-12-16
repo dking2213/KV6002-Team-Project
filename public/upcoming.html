@@ -29,6 +29,10 @@
       <header class="header">
         <h1>Upcoming Events</h1>
 
+        <div class="search-bar">
+          <input type="text" id="search-bar" placeholder="Search Events..." oninput="searchEvents()" />
+        </div>
+
         <div class="profile-info">
           <a href="profile.html">
             <div class="profile-text">
@@ -44,7 +48,7 @@
       <div class="events-section">
         <div class="events-container">
           <!-- Event 1 -->
-          <a href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C" class="event-card">
+          <a href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C&tickets=241" class="event-card">
             <img src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg" alt="Event Banner" class="event-banner">
             <div class="event-info">
               <h3 class="event-name">Tech Conference 2024</h3>
@@ -53,7 +57,7 @@
           </a>
 
           <!-- Event 2 -->
-          <a href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z" class="event-card">
+          <a href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z&tickets=271" class="event-card">
             <img src="images/pexels-photo-3695238.jpeg" alt="Event Banner" class="event-banner">
             <div class="event-info">
               <h3 class="event-name">InnovateX</h3>
@@ -62,7 +66,7 @@
           </a>
 
           <!-- Event 3 -->
-          <a href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3" class="event-card">
+          <a href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3&tickets=174" class="event-card">
             <img src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif" alt="Event Banner" class="event-banner">
             <div class="event-info">
               <h3 class="event-name">Digital Dynamics Expo</h3>
@@ -72,20 +76,6 @@
         </div>
       </div>
 
-      <!-- Booking Form -->
-      <div id="booking-form" class="booking-form" style="display: none;">
-        <h2>Book a Stall</h2>
-        <label for="company-name">Company Name</label>
-        <input type="text" id="company-name" placeholder="Enter company name" required>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter email address" required>
-
-        <label for="address">Address</label>
-        <input type="text" id="address" placeholder="Enter company address" required>
-
-        <button id="submit-button">Book Stall</button>
-      </div>
     </main>
   </div>
 
@@ -145,91 +135,22 @@
       }
     });
 
-    // Stall Booking Functions
-    const companyNames = [
-      "TechCorp", "Green Solutions", "BrightIdeas", "Future Systems", "Innovatech",
-      "EcoTech", "NextGen", "BlueSky Innovations", "CloudNet", "QuantumWorks",
-      "Solaris", "Alpha Dynamics", "Velocity Systems", "Synergy Inc", "NeoTech"
-    ];
+    // Function to search and filter events
+    function searchEvents() {
+      const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+      const eventCards = document.querySelectorAll('.event-card');
 
-    function generateStalls() {
-      const stalls = [];
-      const availableNames = [...companyNames];
-
-      for (let i = 1; i <= 10; i++) {
-        const randomIndex = Math.floor(Math.random() * availableNames.length);
-        const isAvailable = Math.random() > 0.5;
-        const name = isAvailable ? availableNames.splice(randomIndex, 1)[0] : '';
-        stalls.push({ id: i, name, available: isAvailable });
-      }
-      return stalls;
-    }
-
-    function saveStalls(stalls) {
-      localStorage.setItem('stalls', JSON.stringify(stalls));
-    }
-
-    function loadStalls() {
-      const savedStalls = localStorage.getItem('stalls');
-      if (savedStalls) {
-        return JSON.parse(savedStalls);
+    eventCards.forEach(card => {
+      const eventName = card.getAttribute('event-name').toLowerCase();
+    
+      if (eventName.includes(searchQuery)) {
+        card.style.display = 'block';  // Show the event
       } else {
-        const newStalls = generateStalls();
-        saveStalls(newStalls);
-        return newStalls;
-      }
-    }
-
-    let stalls = loadStalls();
-    let selectedStall = null;
-
-    const map = document.getElementById('map');
-    const bookingForm = document.getElementById('booking-form');
-    const companyNameInput = document.getElementById('company-name');
-    const emailInput = document.getElementById('email');
-    const addressInput = document.getElementById('address');
-    const submitButton = document.getElementById('submit-button');
-
-    function renderStalls() {
-      map.innerHTML = '';
-      stalls.forEach(stall => {
-        const stallDiv = document.createElement('div');
-        stallDiv.className = `stall ${stall.available ? 'available' : 'unavailable'}`;
-        stallDiv.textContent = stall.available ? stall.name : 'Unavailable';
-        if (stall.available) {
-          stallDiv.addEventListener('click', () => handleAvailableStall(stall));
-        }
-        map.appendChild(stallDiv);
-      });
-    }
-
-    function handleAvailableStall(stall) {
-      selectedStall = stall;
-      bookingForm.style.display = 'block';
-    }
-
-    submitButton.addEventListener('click', () => {
-      const companyName = companyNameInput.value.trim();
-      const email = emailInput.value.trim();
-      const address = addressInput.value.trim();
-
-      if (companyName && email && address) {
-        if (confirm(`Do you want to book ${selectedStall.name} for ${companyName}?`)) {
-          selectedStall.available = false;
-          saveStalls(stalls);
-          alert(`${companyName} has successfully booked the stall!`);
-          renderStalls();
-          bookingForm.style.display = 'none';
-          companyNameInput.value = '';
-          emailInput.value = '';
-          addressInput.value = '';
-        }
-      } else {
-        alert('Please fill out all fields.');
+        card.style.display = 'none';  // Hide the event
       }
     });
+    }
 
-    renderStalls();
   </script>
 </body>
 </html>
