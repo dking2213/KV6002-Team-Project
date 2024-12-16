@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Event Logo</div>
+        <nav class="nav-menu">
+          <a class="nav-item" href="dashboard.html">Dashboard</a>
+          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+          <a class="nav-item" href="past.html">Past Events</a>
+          <a class="nav-item active"  href="messages.html">Messages</a>
+          <a class="nav-item" href="profile.html">Profile</a>
+        </nav>
+        <div class="bottom-menu">
+          <button
+            class="nav-item"
+            data-page="settings"
+            onclick="showPage('settings')"
+          >
+            Settings
+          </button>
+          <button class="nav-item" id="logout">Log Out</button>
+        </div>
+      </aside>
+
+
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+        <h1>Messages</h1>
+
+        <div class="profile-info">
+            <a href="profile.html">
+              <div class="profile-text">
+                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                <p class="profile-email" id="profile-email">
+                  [Email Placeholder]
+                </p>
+              </div>
+              <div class="profile-pic" id="profile-pic">[Initials]</div>
+            </a>
+          </div>
+        </header>
+        
+        <section id="messages" class="messages-section">
+            <div class="messages-container">
+              <div class="card" onclick="showMessageDetails('message 1', 'This is a detailed description of message 1.')">message 1</div>
+              <div class="card" onclick="showMessageDetails('message 2', 'This is a detailed description of message 2.')">message 2</div>
+              <div class="card" onclick="showMessageDetails('message 3', 'This is a detailed description of message 3.')">message 3</div>
+            </div>
+          </section>
+    
+          <section id="message-details" class="messages-section" style="display: none;">
+            <!-- <h2>Event Details</h2> -->
+            <p id="message-title">message 1</p>
+            <p id="message-description">message 1 Description</p>
+            <button onclick="goBackToMessages()">Back to messages</button>
+          </section>
+
+      </main>
+    </div>
+
+<!-- Include Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+    authDomain: "kv6002-team-project.firebaseapp.com",
+    databaseURL:
+      "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "kv6002-team-project",
+    storageBucket: "kv6002-team-project.firebasestorage.app",
+    messagingSenderId: "1004655205327",
+    appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+    measurementId: "G-T290LZMGGH",
+  };
+
+  // Initialise Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+      // Update Profile Info
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          const profileNameEl = document.getElementById("profile-name");
+          const profileEmailEl = document.getElementById("profile-email");
+          const profilePicEl = document.getElementById("profile-pic");
+
+          profileNameEl.textContent = user.displayName || "[Name not set]";
+          profileEmailEl.textContent = user.email;
+
+          if (user.displayName) {
+            const initials = user.displayName
+              .split(" ")
+              .map((word) => word.charAt(0))
+              .join("")
+              .toUpperCase();
+            profilePicEl.textContent = initials;
+          } else {
+            profilePicEl.textContent = "?";
+          }
+        } else {
+          window.location.href = "index.html";
+        }
+      });
+
+      // Log Out
+      document.getElementById("logout").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
+      });
+
+        // Show event details
+  function showMessageDetails(title, description) {
+    // Update event details
+    document.getElementById('message-title').textContent = title;
+    document.getElementById('message-description').textContent = description;
+
+    // Hide the upcoming events page
+    document.getElementById('messages').style.display = 'none';
+
+    // Show the event details page
+    document.getElementById('message-details').style.display = 'block';
+  }
+
+  // Go back to the upcoming events page
+  function goBackToMessages() {
+    document.getElementById('message-details').style.display = 'none';
+    document.getElementById('messages').style.display = 'block';
+  }
+
+
+    </script>
+  </body>
+</html>

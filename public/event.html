@@ -15,7 +15,7 @@
           <a class="nav-item" href="dashboard.html">Dashboard</a>
           <a class="nav-item" href="upcoming.html">Upcoming Events</a>
           <a class="nav-item" href="past.html">Past Events</a>
-          <a class="nav-item" href="#">Messages</a>
+          <a class="nav-item" href="messages.html">Messages</a>
           <a class="nav-item" href="profile.html">Profile</a>
         </nav>
         <div class="bottom-menu">
@@ -38,6 +38,47 @@
         <p id="event-time"></p>
         <h3>Vendors:</h3>
         <ul id="event-vendors"></ul>
+        <h3>Tickets Sold:</h3>
+        <p id="tickets-sold"></p>
+        
+        <!-- Map Section -->
+        <h3>Conference Layout</h3>
+        <div id="conference-layout" class="conference-layout">
+          <!-- Top Row -->
+          <div class="row">
+            <div class="table" id="table-1">Table 1</div>
+            <div class="table" id="table-2">Table 2</div>
+            <div class="table" id="table-3">Table 3</div>
+          </div>
+
+          <!-- Bottom Row -->
+          <div class="row">
+            <div class="table" id="table-4">Table 4</div>
+            <div class="table" id="table-5">Table 5</div>
+            <div class="table" id="table-6">Table 6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking form -->
+      <div id="bookingModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Book a Table</h2>
+            <span class="close" id="closeModal">&times;</span>
+          </div>
+          <form class="modal-form" id="bookingForm">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="contact">Contact Information</label>
+            <input type="text" id="contact" name="contact" required />
+
+            <input type="hidden" id="table-id" name="table-id" />
+
+            <button type="submit">Confirm Booking</button>
+          </form>
+        </div>
       </div>
 
       <script>
@@ -126,9 +167,11 @@ function formatTime(timeString) {
             params.banner || "placeholder-banner.jpg";
           document.getElementById("event-name").textContent =
             params.name || "Event Not Found";
-
-          const organiserLink = document.getElementById("event-organiser");
+          
+          
+            const organiserLink = document.getElementById("event-organiser");
           organiserLink.textContent = params.organiser || "Unknown";
+          
 
           // Mapping of organisers to their unique banners
 const organiserBanners = {
@@ -155,7 +198,9 @@ const organiserBanners = {
           document.getElementById("event-description").textContent =
             params.description || "No description available.";
 
-          
+          document.getElementById("tickets-sold").textContent =
+            params.tickets || "Unknown";
+
     // Format and display date
     const formattedDate = formatDate(params.date);
     document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
@@ -205,9 +250,74 @@ const organiserBanners = {
             };
             vendorsList.appendChild(listItem);
           });
+        
+
+        // Assign vendors to tables
+      const tables = document.querySelectorAll(".table");
+      selectedVendors.forEach((vendor, index) => {
+        if (tables[index]) {
+          tables[index].textContent = vendor;
+          tables[index].classList.add("vendor");
+        }
+      });
+    
+      // Set up table booking functionality
+      tables.forEach((table) => {
+        table.addEventListener("click", () => handleTableClick(table));
+      });
+    }
+
+            // Modal Elements
+            const modal = document.getElementById("bookingModal");
+        const closeModal = document.getElementById("closeModal");
+        const bookingForm = document.getElementById("bookingForm");
+
+        // Open Modal with Table Info
+        function handleTableClick(table) {
+          if (table.classList.contains("booked")) {
+            alert("This table is already booked.");
+            return;
+          }
+
+          document.getElementById("table-id").value = table.id;
+          modal.style.display = "flex";
         }
 
-        document.addEventListener("DOMContentLoaded", populateEventDetails);
+        // Close Modal
+        closeModal.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+
+        // Submit Booking Form
+        bookingForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const tableId = document.getElementById("table-id").value;
+          const name = document.getElementById("name").value;
+          const contact = document.getElementById("contact").value;
+
+          const table = document.getElementById(tableId);
+          table.classList.add("booked");
+          table.textContent = `Booked by ${name}`;
+
+          modal.style.display = "none";
+          alert(`Table ${tableId} has been successfully booked by ${name}.`);
+        });
+
+        // Add click event to all tables
+        document.querySelectorAll(".table").forEach((table) => {
+          table.addEventListener("click", () => handleTableClick(table));
+        });
+
+        // Close modal if clicked outside of content
+        window.addEventListener("click", (event) => {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+
+        
+      document.addEventListener("DOMContentLoaded", populateEventDetails);
       </script>
     </div>
   </body>
