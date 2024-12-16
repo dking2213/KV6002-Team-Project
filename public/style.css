@@ -71,7 +71,6 @@ body {
 }
 
 /* Main Content */
-/* Main Content */
 .main-content {
   flex: 1;
   padding: 2vh 2vw;
@@ -569,6 +568,23 @@ a:active {
 
 #edit-profile button {
   padding: 10px;
+}
+
+/* messages Section */
+.messages-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Container for message cards */
+.messages-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: space-between;
 }
 
 .conference-layout {
