@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Past Events</title>
+    <title>Bookmarked Events</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -14,7 +14,9 @@
         <nav class="nav-menu">
           <a class="nav-item" href="dashboard.html">Dashboard</a>
           <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item active" href="past.html">Past Events</a>
+          <a class="nav-item active" href="bookmarked.html"
+            >Bookmarked Events</a
+          >
           <a class="nav-item" href="messages.html">Messages</a>
           <a class="nav-item" href="profile.html">Profile</a>
         </nav>
@@ -33,7 +35,7 @@
       <!-- Main Content -->
       <main class="main-content">
         <header class="header">
-          <h1>Past Events</h1>
+          <h1>Your Bookmarked Events</h1>
 
           <div class="profile-info">
             <a href="profile.html">
@@ -48,9 +50,9 @@
           </div>
         </header>
 
-        <!-- Past Events Section -->
-        <div class="events-section">
-          <div class="events-container" id="past-events-container">
+        <!-- Bookmarked Events Section -->
+        <div class="bookmarked-section">
+          <div class="bookmarked-container" id="bookmarked-events-list">
             <!-- Events will be dynamically populated here -->
           </div>
         </div>
@@ -59,7 +61,9 @@
 
     <!-- Include Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
     <script>
       // Firebase Configuration
@@ -78,98 +82,64 @@
       // Initialise Firebase
       const app = firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
-
-      // Example Event Data
-      const events = [
-        {
-          name: "Tech Conference 2024",
-          organiser: "Innovate Hub",
-          banner: "images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg",
-          description: "An exciting conference on the future of technology.",
-          date: "2023-11-15",
-          time: "10:00 - 16:00",
-          ticketsSold: 120,
-        },
-        {
-          name: "InnovateX",
-          organiser: "Creative Minds",
-          banner: "images/pexels-photo-3695238.jpeg",
-          description:
-            "Explore the best of art and design at this amazing expo.",
-          date: "2023-09-10",
-          time: "12:00 - 18:00",
-          ticketsSold: 80,
-        },
-        {
-          name: "Digital Dynamics Expo",
-          organiser: "Global Leaders",
-          banner:
-            "images/stylish-hexagonal-line-pattern-background_1017-19742.avif",
-          description:
-            "Discuss the future of the industry with top executives.",
-          date: "2024-05-20",
-          time: "09:00 - 15:00",
-          ticketsSold: 200,
-        },
-      ];
-
-      // Utility Function to Check If a Date Has Passed
-      function hasDatePassed(eventDate) {
-        const currentDate = new Date();
-        const date = new Date(eventDate);
-        return date < currentDate;
-      }
-
-      // Filter and Render Past Events
-      function renderPastEvents() {
-        const pastEventsContainer = document.getElementById(
-          "past-events-container"
-        );
-        pastEventsContainer.innerHTML = ""; // Clear existing content
-
-        // Filter events based on the date
-        const pastEvents = events.filter((event) => hasDatePassed(event.date));
-
-        // Generate HTML for each past event
-        pastEvents.forEach((event) => {
-          const eventCard = document.createElement("a");
-          eventCard.className = "event-card";
-          eventCard.href = `event.html?name=${encodeURIComponent(
-            event.name
-          )}&organiser=${encodeURIComponent(
-            event.organiser
-          )}&banner=${encodeURIComponent(
-            event.banner
-          )}&description=${encodeURIComponent(
-            event.description
-          )}&date=${encodeURIComponent(event.date)}&time=${encodeURIComponent(
-            event.time
-          )}`;
-          eventCard.innerHTML = `
-          <img src="${event.banner}" alt="${event.name} Banner" class="event-banner">
-          <div class="event-info">
-            <h3 class="event-name">${event.name}</h3>
-            <p class="event-organiser">Organised by: ${event.organiser}</p>
-          </div>
-        `;
-          pastEventsContainer.appendChild(eventCard);
-        });
-
-        if (pastEvents.length === 0) {
-          pastEventsContainer.innerHTML = "<p>No past events available.</p>";
-        }
-      }
+      const db = firebase.database();
 
       // Update Profile Info
       auth.onAuthStateChanged((user) => {
         if (user) {
+          const userId = user.uid;
+
+          // reference to the user's bookmarked events in database
+          const bookmarksRef = firebase
+            .database()
+            .ref(`users/${userId}/bookmarks`);
+
+          // load Bookmarked Events
+          bookmarksRef
+            .once("value")
+            .then((snapshot) => {
+              const bookmarks = snapshot.val();
+              const eventsContainer = document.getElementById(
+                "bookmarked-events-list"
+              );
+              eventsContainer.innerHTML = "";
+
+              if (bookmarks) {
+                Object.values(bookmarks).forEach((bookmark) => {
+                  // Create event card container
+                  const eventCard = document.createElement("div");
+                  eventCard.className = "event-card";
+
+                  // add card structure
+                  eventCard.innerHTML = `
+              <img class="event-banner" src="${bookmark.banner}" alt="${bookmark.name}" />
+              <div class="event-info">
+                <h2 class="event-name">${bookmark.name}</h2>
+                <p class="event-date">${bookmark.date}</p>
+                <p class="event-organiser">Organised by: <strong>${bookmark.organiser}</strong></p>
+              </div>
+            `;
+
+                  eventsContainer.appendChild(eventCard);
+                });
+              } else {
+                eventsContainer.innerHTML =
+                  "<p>No bookmarked events found.</p>";
+              }
+            })
+            .catch((error) => {
+              console.error("Error loading bookmarks:", error);
+            });
+
           const profileNameEl = document.getElementById("profile-name");
           const profileEmailEl = document.getElementById("profile-email");
           const profilePicEl = document.getElementById("profile-pic");
 
+          // Dynamically update profile information
           profileNameEl.textContent = user.displayName || "[Name not set]";
           profileEmailEl.textContent = user.email;
 
+          // Set profile initials (e.g., "AP" for Alex Pereira)
           if (user.displayName) {
             const initials = user.displayName
               .split(" ")
@@ -181,6 +151,7 @@
             profilePicEl.textContent = "?";
           }
         } else {
+          // Redirect to login page if no user is logged in
           window.location.href = "index.html";
         }
       });
@@ -194,9 +165,6 @@
           console.error("Error logging out:", error);
         }
       });
-
-      // Render Past Events on Page Load
-      renderPastEvents();
     </script>
   </body>
 </html>

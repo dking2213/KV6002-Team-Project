@@ -1,156 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upcoming Events</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Event Logo</div>
-      <nav class="nav-menu">
-        <a class="nav-item" href="dashboard.html">Dashboard</a>
-        <a class="nav-item active" href="upcoming.html">Upcoming Events</a>
-        <a class="nav-item" href="past.html">Past Events</a>
-        <a class="nav-item" href="messages.html">Messages</a>
-        <a class="nav-item" href="profile.html">Profile</a>
-      </nav>
-      <div class="bottom-menu">
-        <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
-        <button class="nav-item" id="logout">Log Out</button>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="header">
-        <h1>Upcoming Events</h1>
-
-        <div class="search-bar">
-          <input type="text" id="search-bar" placeholder="Search Events..." oninput="searchEvents()" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upcoming Events</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Event Logo</div>
+        <nav class="nav-menu">
+          <a class="nav-item" href="dashboard.html">Dashboard</a>
+          <a class="nav-item active" href="upcoming.html">Upcoming Events</a>
+          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+          <a class="nav-item" href="messages.html">Messages</a>
+          <a class="nav-item" href="profile.html">Profile</a>
+        </nav>
+        <div class="bottom-menu">
+          <button
+            class="nav-item"
+            data-page="settings"
+            onclick="showPage('settings')"
+          >
+            Settings
+          </button>
+          <button class="nav-item" id="logout">Log Out</button>
         </div>
+      </aside>
 
-        <div class="profile-info">
-          <a href="profile.html">
-            <div class="profile-text">
-              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-              <p class="profile-email" id="profile-email">[Email Placeholder]</p>
-            </div>
-            <div class="profile-pic" id="profile-pic">[Initials]</div>
-          </a>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+          <h1>Upcoming Events</h1>
+
+          <div class="search-bar">
+            <input
+              type="text"
+              id="search-bar"
+              placeholder="Search Events..."
+              oninput="searchEvents()"
+            />
+          </div>
+
+          <div class="profile-info">
+            <a href="profile.html">
+              <div class="profile-text">
+                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                <p class="profile-email" id="profile-email">
+                  [Email Placeholder]
+                </p>
+              </div>
+              <div class="profile-pic" id="profile-pic">[Initials]</div>
+            </a>
+          </div>
+        </header>
+
+        <!-- Upcoming Events Section -->
+        <div class="events-section">
+          <div class="events-container">
+            <!-- Event 1 -->
+            <a
+              href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C&tickets=241"
+              class="event-card"
+            >
+              <img
+                src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg"
+                alt="Event Banner"
+                class="event-banner"
+              />
+              <div class="event-info">
+                <h3 class="event-name">Tech Conference 2024</h3>
+                <p class="event-organiser">
+                  Organised by: <strong>Innovate Hub</strong>
+                </p>
+              </div>
+            </a>
+
+            <!-- Event 2 -->
+            <a
+              href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z&tickets=271"
+              class="event-card"
+            >
+              <img
+                src="images/pexels-photo-3695238.jpeg"
+                alt="Event Banner"
+                class="event-banner"
+              />
+              <div class="event-info">
+                <h3 class="event-name">InnovateX</h3>
+                <p class="event-organiser">
+                  Organised by: <strong>Creative Minds</strong>
+                </p>
+              </div>
+            </a>
+
+            <!-- Event 3 -->
+            <a
+              href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3&tickets=174"
+              class="event-card"
+            >
+              <img
+                src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif"
+                alt="Event Banner"
+                class="event-banner"
+              />
+              <div class="event-info">
+                <h3 class="event-name">Digital Dynamics Expo</h3>
+                <p class="event-organiser">
+                  Organised by: <strong>Global Leaders</strong>
+                </p>
+              </div>
+            </a>
+          </div>
         </div>
-      </header>
+      </main>
+    </div>
 
-      <!-- Upcoming Events Section -->
-      <div class="events-section">
-        <div class="events-container">
-          <!-- Event 1 -->
-          <a href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C&tickets=241" class="event-card">
-            <img src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg" alt="Event Banner" class="event-banner">
-            <div class="event-info">
-              <h3 class="event-name">Tech Conference 2024</h3>
-              <p class="event-organiser">Organised by: <strong>Innovate Hub</strong></p>
-            </div>
-          </a>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 
-          <!-- Event 2 -->
-          <a href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z&tickets=271" class="event-card">
-            <img src="images/pexels-photo-3695238.jpeg" alt="Event Banner" class="event-banner">
-            <div class="event-info">
-              <h3 class="event-name">InnovateX</h3>
-              <p class="event-organiser">Organised by: <strong>Creative Minds</strong></p>
-            </div>
-          </a>
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        authDomain: "kv6002-team-project.firebaseapp.com",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "kv6002-team-project",
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+        messagingSenderId: "1004655205327",
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+        measurementId: "G-T290LZMGGH",
+      };
 
-          <!-- Event 3 -->
-          <a href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3&tickets=174" class="event-card">
-            <img src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif" alt="Event Banner" class="event-banner">
-            <div class="event-info">
-              <h3 class="event-name">Digital Dynamics Expo</h3>
-              <p class="event-organiser">Organised by: <strong>Global Leaders</strong></p>
-            </div>
-          </a>
-        </div>
-      </div>
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
 
-    </main>
-  </div>
+      // Update Profile Info
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          const profileNameEl = document.getElementById("profile-name");
+          const profileEmailEl = document.getElementById("profile-email");
+          const profilePicEl = document.getElementById("profile-pic");
 
-  <!-- Include Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+          // Dynamically update profile information
+          profileNameEl.textContent = user.displayName || "[Name not set]";
+          profileEmailEl.textContent = user.email;
 
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-      authDomain: "kv6002-team-project.firebaseapp.com",
-      databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "kv6002-team-project",
-      storageBucket: "kv6002-team-project.firebasestorage.app",
-      messagingSenderId: "1004655205327",
-      appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-      measurementId: "G-T290LZMGGH"
-    };
-
-    // Initialise Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Update Profile Info
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const profileNameEl = document.getElementById('profile-name');
-        const profileEmailEl = document.getElementById('profile-email');
-        const profilePicEl = document.getElementById('profile-pic');
-
-        // Dynamically update profile information
-        profileNameEl.textContent = user.displayName || "[Name not set]";
-        profileEmailEl.textContent = user.email;
-
-        // Set profile initials (e.g., "AP" for Alex Pereira)
-        if (user.displayName) {
-          const initials = user.displayName.split(' ').map((word) => word.charAt(0)).join('').toUpperCase();
-          profilePicEl.textContent = initials;
+          // Set profile initials (e.g., "AP" for Alex Pereira)
+          if (user.displayName) {
+            const initials = user.displayName
+              .split(" ")
+              .map((word) => word.charAt(0))
+              .join("")
+              .toUpperCase();
+            profilePicEl.textContent = initials;
+          } else {
+            profilePicEl.textContent = "?";
+          }
         } else {
-          profilePicEl.textContent = "?";
+          // Redirect to login page if no user is logged in
+          window.location.href = "index.html";
         }
-      } else {
-        // Redirect to login page if no user is logged in
-        window.location.href = "index.html";
+      });
+
+      // Log Out
+      document.getElementById("logout").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
+      });
+
+      // Function to search and filter events
+      function searchEvents() {
+        const searchQuery = document
+          .getElementById("search-bar")
+          .value.toLowerCase();
+        const eventCards = document.querySelectorAll(".event-card");
+
+        eventCards.forEach((card) => {
+          const eventNameElement = card.querySelector(".event-name");
+          const eventName = eventNameElement
+            ? eventNameElement.textContent.toLowerCase()
+            : "";
+
+          if (eventName.includes(searchQuery)) {
+            card.style.display = "block"; // Show the event
+          } else {
+            card.style.display = "none"; // Hide the event
+          }
+        });
       }
-    });
-
-        // Log Out
-        document.getElementById('logout').addEventListener('click', async () => {
-      try {
-        await auth.signOut();
-        window.location.href = "index.html"; // Redirect to login page
-      } catch (error) {
-        console.error("Error logging out:", error);
-      }
-    });
-
-    // Function to search and filter events
-    function searchEvents() {
-      const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-      const eventCards = document.querySelectorAll('.event-card');
-
-    eventCards.forEach(card => {
-      const eventName = card.getAttribute('event-name').toLowerCase();
-    
-      if (eventName.includes(searchQuery)) {
-        card.style.display = 'block';  // Show the event
-      } else {
-        card.style.display = 'none';  // Hide the event
-      }
-    });
-    }
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>

@@ -14,7 +14,7 @@
         <nav class="nav-menu">
           <a class="nav-item" href="dashboard.html">Dashboard</a>
           <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="past.html">Past Events</a>
+          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
           <a class="nav-item" href="messages.html">Messages</a>
           <a class="nav-item" href="profile.html">Profile</a>
         </nav>
@@ -37,7 +37,9 @@
           class="details-banner"
         />
         <h1 class="details-header" id="organiser-name">Organiser Name</h1>
-        <p class="details-text" id="company-description">Description of the organiser.</p>
+        <p class="details-text" id="company-description">
+          Description of the organiser.
+        </p>
 
         <div class="organiser-list">
           <h3>Past Events</h3>
@@ -63,23 +65,22 @@
       });
 
       const companyNames = [
-          "TechCorp",
-          "Green Solutions",
-          "BrightIdeas",
-          "Future Systems",
-          "Innovatech",
-          "EcoTech",
-          "NextGen",
-          "BlueSky Innovations",
-          "CloudNet",
-          "QuantumWorks",
-          "Solaris",
-          "Alpha Dynamics",
-          "Velocity Systems",
-          "Synergy Inc",
-          "NeoTech",
-        ];
-
+        "TechCorp",
+        "Green Solutions",
+        "BrightIdeas",
+        "Future Systems",
+        "Innovatech",
+        "EcoTech",
+        "NextGen",
+        "BlueSky Innovations",
+        "CloudNet",
+        "QuantumWorks",
+        "Solaris",
+        "Alpha Dynamics",
+        "Velocity Systems",
+        "Synergy Inc",
+        "NeoTech",
+      ];
 
       function getQueryParams() {
         const params = {};
@@ -93,92 +94,100 @@
       }
 
       // Define organiser data
-const organisers = {
-  "innovateHub": {
-    name: "Innovate Hub",
-    logo: "organiser-logo.jpg",
-    banner: "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
-    description: "Innovate Hub is a leader in organising world-class events.",
-    pastEvents: ["Tech Summit 2024", "Green Energy Expo"],
-    upcomingEvents: ["AI Conference", "Cloud Computing Workshop"],
-  },
-  "creativeMinds": {
-    name: "Creative Minds",
-    logo: "eco-logo.jpg",
-    banner: "images/eco-vision-banner.jpg",
-    description: "EcoVision focuses on sustainable and green solutions.",
-    pastEvents: ["Eco Fest 2023", "Green Tech Expo"],
-    upcomingEvents: ["Sustainability Summit", "Renewable Energy Conference"],
-  },
-  "globalLeaders": {
-    name: "Global Leaders",
-    logo: "tech-logo.jpg",
-    banner: "images/tech-pioneers-banner.jpg",
-    description: "Tech Pioneers is at the forefront of innovation and technology.",
-    pastEvents: ["Innovators Meetup", "Tech World 2023"],
-    upcomingEvents: ["Future Trends Forum", "Startups Connect"],
-  },
-};
+      const organisers = {
+        innovateHub: {
+          name: "Innovate Hub",
+          logo: "organiser-logo.jpg",
+          banner:
+            "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
+          description:
+            "Innovate Hub is a leader in organising world-class events.",
+          pastEvents: ["Tech Summit 2024", "Green Energy Expo"],
+          upcomingEvents: ["AI Conference", "Cloud Computing Workshop"],
+        },
+        creativeMinds: {
+          name: "Creative Minds",
+          logo: "eco-logo.jpg",
+          banner: "images/eco-vision-banner.jpg",
+          description: "EcoVision focuses on sustainable and green solutions.",
+          pastEvents: ["Eco Fest 2023", "Green Tech Expo"],
+          upcomingEvents: [
+            "Sustainability Summit",
+            "Renewable Energy Conference",
+          ],
+        },
+        globalLeaders: {
+          name: "Global Leaders",
+          logo: "tech-logo.jpg",
+          banner: "images/tech-pioneers-banner.jpg",
+          description:
+            "Tech Pioneers is at the forefront of innovation and technology.",
+          pastEvents: ["Innovators Meetup", "Tech World 2023"],
+          upcomingEvents: ["Future Trends Forum", "Startups Connect"],
+        },
+      };
 
-function normaliseNameToKey(name) {
-  return name.replace(/\s+/g, "").replace(/\b\w/g, (char) => char.toLowerCase());
-}
+      function normaliseNameToKey(name) {
+        return name
+          .replace(/\s+/g, "")
+          .replace(/\b\w/g, (char) => char.toLowerCase());
+      }
 
+      function populateOrganiserDetails() {
+        const params = getQueryParams();
+        const organiserName = params.name || "Unknown Organiser";
 
-function populateOrganiserDetails() {
-  const params = getQueryParams();
-  const organiserName = params.name || "Unknown Organiser";
+        // Use the correct variable name
+        const key = normaliseNameToKey(organiserName);
+        console.log(`Generated key: ${key}`);
 
-  // Use the correct variable name
-  const key = normaliseNameToKey(organiserName);
-  console.log(`Generated key: ${key}`);
+        const organiserData = organisers[key];
+        if (!organiserData) {
+          console.error(`No data found for organiser: ${organiserName}`);
+          return;
+        }
 
-  const organiserData = organisers[key];
-  if (!organiserData) {
-    console.error(`No data found for organiser: ${organiserName}`);
-    return;
-  }
+        // Update organiser details
+        document.getElementById("organiser-banner").src =
+          organiserData.banner || "images/default-organiser-banner.jpg";
+        document.getElementById("organiser-name").textContent =
+          organiserData.name;
+        document.getElementById("company-description").textContent =
+          organiserData.description || "No description available.";
 
-  // Update organiser details
-  document.getElementById("organiser-banner").src =
-    organiserData.banner || "images/default-organiser-banner.jpg";
-  document.getElementById("organiser-name").textContent = organiserData.name;
-  document.getElementById("company-description").textContent =
-    organiserData.description || "No description available.";
-
-  // Populate past events
-  const pastEventsContainer = document.getElementById("past-events");
-  pastEventsContainer.innerHTML = ""; // Clear any existing content
-  organiserData.pastEvents.forEach((event) => {
-    const card = document.createElement("a");
-    card.className = "event-card";
-    card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
-    card.innerHTML = `
+        // Populate past events
+        const pastEventsContainer = document.getElementById("past-events");
+        pastEventsContainer.innerHTML = ""; // Clear any existing content
+        organiserData.pastEvents.forEach((event) => {
+          const card = document.createElement("a");
+          card.className = "event-card";
+          card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
+          card.innerHTML = `
       <img src="images/default-banner.jpg" alt="${event}" class="event-banner">
       <div class="event-info">
         <h3 class="event-name">${event}</h3>
       </div>
     `;
-    pastEventsContainer.appendChild(card);
-  });
+          pastEventsContainer.appendChild(card);
+        });
 
-  // Populate upcoming events
-  const upcomingEventsContainer = document.getElementById("upcoming-events");
-  upcomingEventsContainer.innerHTML = ""; // Clear any existing content
-  organiserData.upcomingEvents.forEach((event) => {
-    const card = document.createElement("a");
-    card.className = "event-card";
-    card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
-    card.innerHTML = `
+        // Populate upcoming events
+        const upcomingEventsContainer =
+          document.getElementById("upcoming-events");
+        upcomingEventsContainer.innerHTML = ""; // Clear any existing content
+        organiserData.upcomingEvents.forEach((event) => {
+          const card = document.createElement("a");
+          card.className = "event-card";
+          card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
+          card.innerHTML = `
       <img src="images/default-banner.jpg" alt="${event}" class="event-banner">
       <div class="event-info">
         <h3 class="event-name">${event}</h3>
       </div>
     `;
-    upcomingEventsContainer.appendChild(card);
-  });
-}
-
+          upcomingEventsContainer.appendChild(card);
+        });
+      }
 
       document.addEventListener("DOMContentLoaded", populateOrganiserDetails);
     </script>
