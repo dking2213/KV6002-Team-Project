@@ -1,124 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="logo">Event Logo</div>
-        <nav class="nav-menu">
-          <a class="nav-item active" href="dashboard.html">Dashboard</a>
-          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
-          <a class="nav-item" href="messages.html">Messages</a>
-          <a class="nav-item" href="profile.html">Profile</a>
-        </nav>
-        <div class="bottom-menu">
-          <button
-            class="nav-item"
-            data-page="settings"
-            onclick="showPage('settings')"
-          >
-            Settings
-          </button>
-          <button class="nav-item" id="logout">Log Out</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">Event Logo</div>
+      <nav class="nav-menu">
+        <a class="nav-item active" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+        <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+        <a class="nav-item" href="messages.html">Messages</a>
+        <a class="nav-item" href="profile.html">Profile</a>
+      </nav>
+      <div class="bottom-menu">
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
+        <button class="nav-item" id="logout">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Dashboard</h1>
+        <div class="profile-info">
+          <a href="profile.html">
+            <div class="profile-text">
+              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+              <p class="profile-email" id="profile-email">[Email Placeholder]</p>
+            </div>
+            <div class="profile-pic" id="profile-pic">[Initials]</div>
+          </a>
         </div>
-      </aside>
+      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="header">
-          <h1>Dashboard</h1>
-
-          <div class="profile-info">
-            <a href="profile.html">
-              <div class="profile-text">
-                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-                <p class="profile-email" id="profile-email">
-                  [Email Placeholder]
-                </p>
-              </div>
-              <div class="profile-pic" id="profile-pic">[Initials]</div>
-            </a>
+      <!-- Dashboard Page -->
+      <section id="dashboard" class="page">
+        <div class="cards-container">
+          <!-- Event Overview Section -->
+          <div class="card" id="event-overview">
+            <h2>Event Overview</h2>
+            <div class="events-container" id="dashboard-events">
+              <!-- Events Will Be Shown Here -->
+            </div>
           </div>
-        </header>
+          <div class="card">Statistics</div>
+          <div class="card">Recent Activity</div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-        <!-- Dashboard Page -->
-        <section id="dashboard" class="page">
-          <div class="cards-container">
-            <div class="card">Event Overview</div>
-            <div class="card">Statistics</div>
-            <div class="card">Recent Activity</div>
-          </div>
-        </section>
-      </main>
-    </div>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
-    <!-- Include Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+      authDomain: "kv6002-team-project.firebaseapp.com",
+      databaseURL: "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "kv6002-team-project",
+      storageBucket: "kv6002-team-project.firebasestorage.app",
+      messagingSenderId: "1004655205327",
+      appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+      measurementId: "G-T290LZMGGH",
+    };
 
-    <script>
-      // Firebase Configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-        authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL:
-          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kv6002-team-project",
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-        messagingSenderId: "1004655205327",
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH",
-      };
+    // Initialise Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+    const eventsContainer = document.getElementById("dashboard-events");
 
-      // Initialize Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
+    // Update Profile Info
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("profile-name").textContent = user.displayName || "[Name not set]";
+        document.getElementById("profile-email").textContent = user.email;
+        document.getElementById("profile-pic").textContent = user.displayName
+          ? user.displayName.charAt(0).toUpperCase()
+          : "?";
+      } else {
+        window.location.href = "index.html";
+      }
+    });
 
-      // Update Profile Info
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          const profileNameEl = document.getElementById("profile-name");
-          const profileEmailEl = document.getElementById("profile-email");
-          const profilePicEl = document.getElementById("profile-pic");
-
-          // Dynamically update profile information
-          profileNameEl.textContent = user.displayName || "[Name not set]";
-          profileEmailEl.textContent = user.email;
-
-          // Set profile initials (e.g., "AP" for Alex Pereira)
-          if (user.displayName) {
-            const initials = user.displayName
-              .split(" ")
-              .map((word) => word.charAt(0))
-              .join("")
-              .toUpperCase();
-            profilePicEl.textContent = initials;
-          } else {
-            profilePicEl.textContent = "?";
-          }
+    // Fetch Upcoming Events
+    function fetchEvents() {
+      database.ref("events").once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          renderEvents(snapshot.val());
         } else {
-          // Redirect to login page if no user is logged in
-          window.location.href = "index.html";
+          console.error("No events found in the database.");
         }
       });
+    }
 
-      // Log Out
-      document.getElementById("logout").addEventListener("click", async () => {
-        try {
-          await auth.signOut();
-          window.location.href = "index.html"; // Redirect to login page
-        } catch (error) {
-          console.error("Error logging out:", error);
-        }
-      });
-    </script>
-  </body>
+    // Render Events in Event Overview
+    function renderEvents(events) {
+      eventsContainer.innerHTML = ""; // Clear existing content
+      for (const eventId in events) {
+        const event = events[eventId];
+        const eventLink = `
+          <a href="events.html?eventId=${eventId}" class="event-card">
+            <img src="${event.banner}" alt="${event.name}" class="event-banner" />
+            <div class="event-details">
+              <h3>${event.name}</h3>
+              <p><strong>Date:</strong> ${event.date || "TBD"}</p>
+              <p><strong>Organiser:</strong> ${event.organiser || "Unknown"}</p>
+            </div>
+          </a>
+        `;
+        eventsContainer.insertAdjacentHTML("beforeend", eventLink);
+      }
+    }
+
+    // Log Out
+    document.getElementById("logout").addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
+    });
+
+    // Fetch Events on Page Load
+    window.addEventListener("load", fetchEvents);
+  </script>
+</body>
 </html>
