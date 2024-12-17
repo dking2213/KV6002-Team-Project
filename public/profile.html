@@ -14,7 +14,7 @@
         <nav class="nav-menu">
           <a class="nav-item" href="dashboard.html">Dashboard</a>
           <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="past.html">Past Events</a>
+          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
           <a class="nav-item" href="messages.html">Messages</a>
           <a class="nav-item active" href="profile.html">Profile</a>
         </nav>
@@ -50,9 +50,11 @@
 
         <section id="profile-details" class="profile-section">
           <div id="profile-banner-container">
-            <img id="profile-banner" src="" alt="banner" width="200" />
+            <img id="profile-banner" src="" alt="banner"/>
           </div>
-          <img id="profile-pic-detail" src="images/profilePicExample.jpg" />
+          <div id="profile-pic-container">
+            <img id="profile-pic-detail" src="" />
+          </div>
           <p>
             <strong><span id="profile-name-detail">[Name]</span></strong>
           </p>
@@ -63,19 +65,22 @@
           </div>
           <div id="profile-information">
             <p>
-              EMAIL:
+              Email:
               <strong><span id="profile-email-detail">[Email]</span></strong>
             </p>
             <p>
-              <strong>Upcoming Events:</strong>
-              <span id="profile-events">[Events]</span>
+              Upcoming Events:
             </p>
+            <strong><ul id="upcoming-events-list">
+              <!-- Events will be dynamically loaded here -->
+            </ul></strong>
           </div>
         </section>
 
         <!-- Editable Profile Form -->
         <section id="edit-profile" class="profile-section">
           <button onclick="showForm()">Edit Profile</button>
+          <button id="delete-account">Delete Account</button>
           <form id="profile-form" style="display: none;">
           <h2>EDIT PROFILE</h2>
             <label for="edit-name">Name:</label>
@@ -94,13 +99,9 @@
             ></textarea> </br></br>
             <label for="edit-banner-file">Upload banner:</label>
             <input type="file" id="edit-banner-file" accept="image/*" />
-            <label for="edit-events">Upcoming Events:</label>
-            <input
-              type="text"
-              id="edit-events"
-              name="events"
-              placeholder="e.g., Event 1, Event 2"
-            />
+            <label for="edit-profile-pic-file">Upload Profile Picture:</label>
+  <input type="file" id="edit-profile-pic-file" accept="image/*" />
+  </br></br>
             <button type="submit">Save Changes</button>
           </form>
         </section>
@@ -136,12 +137,61 @@
         document.getElementById('profile-form').style.display = 'block';
     }
 
+      document.getElementById("delete-account").addEventListener("click", async () => {
+        const confirmation = confirm(
+          "Are you sure you want to delete your account? This action cannot be undone."
+        );
+
+        if (!confirmation) return;
+        const user = auth.currentUser;
+
+        if (user) {
+        try {
+          const userID = user.uid;
+
+          // remove user data from firebase database
+          const userRef = db.ref(`users/${userID}`);
+          await userRef.remove();
+
+          // delete user from firebase authentication
+          await user.delete();
+
+          alert("Your account has been successfully deleted.");
+          window.location.href = "index.html";
+        } catch (error) {
+          console.error("Error deleting account: ", error);
+
+          if (error.code === "auth/requires-recent-login") {
+            const email = user.email;
+            const password = prompt("Please re-enter your password to confirm:");
+
+            if (password) {
+              const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+              try {
+                await user.reauthenticateWithCredential(credential);
+                alert("Reauthentication successful. Please try deleting your account again.");
+              } catch (reauthError) {
+                console.error("Reauthentication failed: ", reauthError);
+                alert("Reauthentication failed. Please check your credentials and try again.");
+              }
+            }
+          } else {
+            alert("An error occured while tying to delete your account. Please try again.");
+          }
+        }
+      } else {
+        alert("No user is currently signed in.");
+      }
+      });
+
       // Get elements
       const profileNameEl = document.getElementById("profile-name");
       const profileEmailEl = document.getElementById("profile-email");
       const profilePicEl = document.getElementById("profile-pic");
       const profileBannerEl = document.getElementById("profile-banner");
       const bannerFileInput = document.getElementById("edit-banner-file");
+      const profilePicFileInput = document.getElementById("edit-profile-pic-file");
       const profileEventsEl = document.getElementById("profile-events");
       const profileNameDetailEl = document.getElementById(
         "profile-name-detail"
@@ -152,7 +202,7 @@
       const profileForm = document.getElementById("profile-form");
 
       // Update Profile Info
-      auth.onAuthStateChanged((user) => {
+      auth.onAuthStateChanged(async (user) => {
         if (user) {
           // Dynamically update profile information
           profileNameEl.textContent = user.displayName || "[Name not set]";
@@ -172,10 +222,12 @@
 
           const userId = user.uid;
           const userRef = db.ref(`users/${userId}`);
+          const eventsRef = db.ref(`users/${userId}/upcomingEvents`);
+      const eventsList = document.getElementById("upcoming-events-list");
 
-          userRef.once("value").then((snapshot) => {
+          userRef.on("value", (snapshot) => {
             const userData = snapshot.val();
-            const { name, email, banner, upcomingEvents, bio } = userData || {};
+            const { name, email, banner, upcomingEvents, bio, profilePicture } = userData || {};
 
             // Display user info on the profile page
             profileNameEl.textContent = name || "[Name not set]";
@@ -185,20 +237,51 @@
             profilePicEl.textContent = name
               ? name.charAt(0).toUpperCase()
               : "?";
-            profileBannerEl.src = banner || "images/default-profile-banner.jpg"; // Use default image if no banner
-            profileEventsEl.textContent = upcomingEvents
-              ? upcomingEvents.join(", ")
-              : "[No events]";
+              if (profilePicture) {
+    document.getElementById("profile-pic-detail").src = profilePicture || "images/profilePicExample.png";
+  }
+            profileBannerEl.src = banner || "images/default-profile-banner.jpg"; // ues default image if no banner
               document.getElementById("profile-bio").textContent = bio || "[No bio]";
 
-            // Pre-fill the edit form with user data
-            document.getElementById("edit-name").value = name || "";
-            document.getElementById("edit-banner-file").value = banner || "";
-            document.getElementById("edit-events").value = upcomingEvents
-              ? upcomingEvents.join(", ")
-              : "";
-              document.getElementById("edit-bio").value = bio || "";
+              eventsRef.on("value", (snapshot) => {
+        eventsList.innerHTML = ""; // Clear the list first
+        const events = snapshot.val();
+
+        if (events) {
+          Object.values(events).forEach((event) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${event.name} - ${event.date}`;
+            eventsList.appendChild(listItem);
           });
+        } else {
+          eventsList.innerHTML = "<li>No upcoming events booked.</li>";
+        }
+              });
+
+            // Pre-fill the edit form with user data
+            if (document.getElementById("edit-name")) {
+        document.getElementById("edit-name").value = name || "";
+      }
+      if (document.getElementById("edit-bio")) {
+        document.getElementById("edit-bio").value = bio || "";
+      }
+
+      if (Array.isArray(upcomingEvents)) {
+        if (document.getElementById("edit-events")) {
+          document.getElementById("edit-events").value = upcomingEvents.join(", ");
+        }
+      } else if (typeof upcomingEvents === "object" && upcomingEvents !== null) {
+        const eventsArray = Object.values(upcomingEvents);
+        if (document.getElementById("edit-events")) {
+          document.getElementById("edit-events").value = eventsArray.join(", ");
+        }
+      } else {
+        // Handle null, undefined, or other unexpected types
+        if (document.getElementById("edit-events")) {
+          document.getElementById("edit-events").value = "";
+        }
+      }
+    });
         } else {
           // Redirect to login page if no user is logged in
           window.location.href = "index.html";
@@ -212,12 +295,7 @@
         const name = document.getElementById("edit-name").value.trim();
         const bio = document.getElementById("edit-bio").value.trim();
         const bannerFile = bannerFileInput.files[0];
-        const events = document
-          .getElementById("edit-events")
-          .value.trim()
-          .split(",")
-          .map((event) => event.trim());
-
+        const profilePicFile = profilePicFileInput.files[0];
         const user = auth.currentUser;
 
         if (user) {
@@ -225,54 +303,60 @@
           const userRef = db.ref(`users/${userId}`);
 
           let bannerBase64 = null;
-
-          if (bannerFile) {
-            try {
-              //read file as base64 string
-              const reader = new FileReader();
-              reader.onload = async () => {
-                bannerBase64 = reader.result; // Get the base64 string
-
-                // Save data to Firebase
-                await userRef.update({
-                  name,
-                  bio,
-                  upcomingEvents: events,
-                  banner: bannerBase64, // Store base64 image in the database
-                });
-
-                // Update the user's profile display name in Firebase Auth
-                await user.updateProfile({
-                  displayName: name,
-                });
-
-                // Provide feedback to the user
-                alert("Profile updated successfully!");
-              };
-
-              reader.readAsDataURL(bannerFile); // Read the file
-            } catch (error) {
-              console.error("Error reading file:", error);
-              alert("Failed to upload banner image. Please try again.");
-              return;
-            }
-          } else {
-            // Save without a new banner/bio if none entered or selected
-            await userRef.update({
-              name,
-              upcomingEvents: events,
-            });
-
-            // Update the user's profile display name in Firebase Auth
-            await user.updateProfile({
-              displayName: name,
-            });
-
-            // Provide feedback to the user
-            alert("Profile updated successfully!");
+          let profilePicBase64 = null;
+          
+          if (bannerFile ) {
+            bannerBase64 = await fileToBase64(bannerFile);
           }
-        }
+
+          if (profilePicFile) {
+            profilePicBase64 = await fileToBase64(profilePicFile);
+          }
+
+          const userSnapshot = await userRef.once('value');
+    const userData = userSnapshot.val();
+    const currentBio = userData ? userData.bio : "[No bio]"; // Get the current bio value or default
+
+    const updateData = {
+      name,
+    };
+
+    // Only update bio if it's different from the current one
+    if (bio !== currentBio) {
+      updateData.bio = bio || currentBio; // If bio is empty, keep the current bio
+    }
+
+    if (bannerBase64) {
+      updateData.banner = bannerBase64;
+    }
+    if (profilePicBase64) {
+      updateData.profilePicture = profilePicBase64;
+    }
+
+    try {
+      await userRef.update(updateData);
+
+      // Update Firebase Auth profile
+      await user.updateProfile({
+        displayName: name,
       });
+
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
+  }
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // Convert to base64
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
 
       // Log Out
       document.getElementById("logout").addEventListener("click", async () => {
@@ -283,6 +367,7 @@
           console.error("Error logging out:", error);
         }
       });
+      
     </script>
   </body>
 </html>

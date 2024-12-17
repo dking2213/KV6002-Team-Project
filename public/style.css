@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 body {
@@ -302,7 +302,6 @@ a:active {
   text-decoration: none;
 }
 
-
 /* Upcoming Events Section */
 .events-section {
   margin-top: 20px;
@@ -368,6 +367,8 @@ a:active {
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .event-banner {
@@ -487,6 +488,10 @@ a:active {
 
 #profile-details {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #profile-details #profile-banner-container {
@@ -500,14 +505,27 @@ a:active {
   width: 100%;
 }
 
-#profile-details #profile-pic-detail {
+#profile-details #profile-pic-container {
   width: 200px;
-  height: auto;
-  border-radius: 200px;
+  height: 200px;
+  border-radius: 50%;
   border: 10px solid white;
   margin-top: -100px;
-  margin-bottom: -20px;
 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+#profile-details #profile-pic-detail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  
+  text-align: center;
+  position: absolute;
 }
 
 #profile-name-detail {
@@ -542,9 +560,11 @@ a:active {
 
 #edit-profile h2 {
   text-align: center;
+  margin-top: 10px;
 }
 
-#edit-profile input, #edit-profile textarea {
+#edit-profile input,
+#edit-profile textarea {
   width: 100%;
   padding: 12px 20px;
   margin-bottom: 30px;
@@ -699,4 +719,57 @@ a:active {
 .row .table.booked {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+/* Bookmarked Events Section */
+.bookmarked-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Container for Bookmarked Event Cards */
+.bookmarked-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+/* Bookmarked Event Card*/
+.bookmarked-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 300px;
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookmarked-banner {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.bookmarked-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.bookmarked-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.bookmarked-organiser {
+  font-size: 14px;
+  color: #666;
 }

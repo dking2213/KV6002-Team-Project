@@ -1,300 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Details</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="logo">Event Logo</div>
-        <nav class="nav-menu">
-          <a class="nav-item" href="dashboard.html">Dashboard</a>
-          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="past.html">Past Events</a>
-          <a class="nav-item" href="messages.html">Messages</a>
-          <a class="nav-item" href="profile.html">Profile</a>
-        </nav>
-        <div class="bottom-menu">
-          <button class="nav-item" data-page="settings" onclick="showPage('settings')"> Settings </button>
-          <button class="nav-item" id="logout">Log Out</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">Event Logo</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+        <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+        <a class="nav-item" href="messages.html">Messages</a>
+        <a class="nav-item" href="profile.html">Profile</a>
+      </nav>
+      <div class="bottom-menu">
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')"> Settings </button>
+        <button class="nav-item" id="logout">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Event Details Section -->
+    <div class="event-details-container">
+      <img id="event-banner" class="event-banner" alt="Event Banner" />
+      <h1 id="event-name"></h1>
+      <p>
+        Organised by: </br>
+        <strong><a id="event-organiser" href="#">[Organiser Name]</a></strong>
+      </p>
+      </br>
+      <p id="event-description"></p>
+      <p id="event-date"></p>
+      <p id="event-time"></p>
+      <h3>Vendors:</h3>
+      <ul id="event-vendors"></ul>
+      <h3>Tickets Sold:</h3>
+      <p id="tickets-sold"></p>
+      <button id="bookmark-btn">Bookmark Event</button>
+
+      <!-- Map Section -->
+      <h3>Conference Layout</h3>
+      <div id="conference-layout" class="conference-layout">
+        <!-- Top Row -->
+        <div class="row">
+          <div class="table" id="table-1">Table 1</div>
+          <div class="table" id="table-2">Table 2</div>
+          <div class="table" id="table-3">Table 3</div>
         </div>
-      </aside>
 
-      <!-- Event Details Section -->
-      <div class="event-details-container">
-        <img id="event-banner" class="event-banner" alt="Event Banner" />
-        <h1 id="event-name"></h1>
-        <p>
-          Organised by: </br>
-          <strong><a id="event-organiser" href="#">[Organiser Name]</a></strong>
-        </p>
-        </br>
-        <p id="event-description"></p>
-        <p id="event-date"></p>
-        <p id="event-time"></p>
-        <h3>Vendors:</h3>
-        <ul id="event-vendors"></ul>
-        <h3>Tickets Sold:</h3>
-        <p id="tickets-sold"></p>
-        
-        <!-- Map Section -->
-        <h3>Conference Layout</h3>
-        <div id="conference-layout" class="conference-layout">
-          <!-- Top Row -->
-          <div class="row">
-            <div class="table" id="table-1">Table 1</div>
-            <div class="table" id="table-2">Table 2</div>
-            <div class="table" id="table-3">Table 3</div>
-          </div>
-
-          <!-- Bottom Row -->
-          <div class="row">
-            <div class="table" id="table-4">Table 4</div>
-            <div class="table" id="table-5">Table 5</div>
-            <div class="table" id="table-6">Table 6</div>
-          </div>
+        <!-- Bottom Row -->
+        <div class="row">
+          <div class="table" id="table-4">Table 4</div>
+          <div class="table" id="table-5">Table 5</div>
+          <div class="table" id="table-6">Table 6</div>
         </div>
       </div>
+    </div>
 
-      <!-- Booking form -->
-      <div id="bookingModal" class="modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Book a Table</h2>
-            <span class="close" id="closeModal">&times;</span>
-          </div>
-          <form class="modal-form" id="bookingForm">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" required />
-
-            <label for="contact">Contact Information</label>
-            <input type="text" id="contact" name="contact" required />
-
-            <input type="hidden" id="table-id" name="table-id" />
-
-            <button type="submit">Confirm Booking</button>
-          </form>
+    <!-- Booking form -->
+    <div id="bookingModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Book a Table</h2>
+          <span class="close" id="closeModal">&times;</span>
         </div>
+        <form class="modal-form" id="bookingForm">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="contact">Contact Information</label>
+          <input type="text" id="contact" name="contact" required />
+
+          <input type="hidden" id="table-id" name="table-id" />
+
+          <button type="submit">Confirm Booking</button>
+        </form>
       </div>
+    </div>
 
-      <script>
+    <!-- Include Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
-            // Log Out
-    document.getElementById('logout').addEventListener('click', async () => {
-      try {
-        await auth.signOut();
-        window.location.href = "index.html"; // Redirect to login page
-      } catch (error) {
-        console.error("Error logging out:", error);
-      }
-    });
-    
-        const companyNames = [
-          "TechCorp",
-          "Green Solutions",
-          "BrightIdeas",
-          "Future Systems",
-          "Innovatech",
-          "EcoTech",
-          "NextGen",
-          "BlueSky Innovations",
-          "CloudNet",
-          "QuantumWorks",
-          "Solaris",
-          "Alpha Dynamics",
-          "Velocity Systems",
-          "Synergy Inc",
-          "NeoTech",
-        ];
+    <script>
 
-        function getQueryParams() {
-          const params = {};
-          const queryString = window.location.search.substring(1);
-          const paramPairs = queryString.split("&");
-          paramPairs.forEach((pair) => {
-            const [key, value] = pair.split("=");
-            params[key] = decodeURIComponent(value.replace(/\+/g, " "));
-          });
-          return params;
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        authDomain: "kv6002-team-project.firebaseapp.com",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "kv6002-team-project",
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+        messagingSenderId: "1004655205327",
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+        measurementId: "G-T290LZMGGH",
+      };
+
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+      // Log Out
+      document.getElementById('logout').addEventListener('click', async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
         }
+      });
 
-        function formatDate(dateString) {
-          if (!dateString) return null; // Return null if dateString is empty
-          const date = new Date(dateString);
-          const day = date.getDate();
-          const month = date.toLocaleString('default', { month: 'long' });
-          const year = date.getFullYear();
+      const companyNames = [
+        "TechCorp",
+        "Green Solutions",
+        "BrightIdeas",
+        "Future Systems",
+        "Innovatech",
+        "EcoTech",
+        "NextGen",
+        "BlueSky Innovations",
+        "CloudNet",
+        "QuantumWorks",
+        "Solaris",
+        "Alpha Dynamics",
+        "Velocity Systems",
+        "Synergy Inc",
+        "NeoTech",
+      ];
 
-          // Add the appropriate suffix
-          const ordinalSuffix = (day) => {
-              if (day > 3 && day < 21) return 'th';
-              switch (day % 10) {
-                  case 1: return 'st';
-                  case 2: return 'nd';
-                  case 3: return 'rd';
-                  default: return 'th';
-              }
-          };
+      function getQueryParams() {
+        const params = {};
+        const queryString = window.location.search.substring(1);
+        const paramPairs = queryString.split("&");
+        paramPairs.forEach((pair) => {
+          const [key, value] = pair.split("=");
+          params[key] = decodeURIComponent(value.replace(/\+/g, " "));
+        });
+        return params;
+      }
+
+      function formatDate(dateString) {
+        if (!dateString) return null; // Return null if dateString is empty
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+
+        // Add the appropriate suffix
+        const ordinalSuffix = (day) => {
+          if (day > 3 && day < 21) return 'th';
+          switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+          }
+        };
 
         return `${day}${ordinalSuffix(day)} ${month} ${year}`;
-        }
+      }
 
-function formatTime(timeString) {
-    if (!timeString) return null; // Return null if timeString is empty
-    // Expecting a time string like "12:00,16:00" (start and end times separated by a comma)
-    const times = timeString.split(',');
-    if (times.length !== 2) return null; // make sure two times are provided
+      function formatTime(timeString) {
+        if (!timeString) return null; // Return null if timeString is empty
+        // Expecting a time string like "12:00,16:00" (start and end times separated by a comma)
+        const times = timeString.split(',');
+        if (times.length !== 2) return null; // make sure two times are provided
 
-    const format12Hour = (time) => {
-        const [hours, minutes] = time.split(':');
-        const hours12 = hours % 12 || 12; // Convert to 12-hour format
-        const period = hours >= 12 ? 'pm' : 'am';
-        return `${hours12}${minutes ? ':' + minutes : ''}${period}`;
-    };
+        const format12Hour = (time) => {
+          const [hours, minutes] = time.split(':');
+          const hours12 = hours % 12 || 12; // Convert to 12-hour format
+          const period = hours >= 12 ? 'pm' : 'am';
+          return `${hours12}${minutes ? ':' + minutes : ''}${period}`;
+        };
 
-    return `${format12Hour(times[0])} - ${format12Hour(times[1])}`;
-}
+        return `${format12Hour(times[0])} - ${format12Hour(times[1])}`;
+      }
 
-        function populateEventDetails() {
-          const params = getQueryParams();
+      function populateEventDetails() {
+        const params = getQueryParams();
 
-          // Populate event details
-          document.getElementById("event-banner").src =
-            params.banner || "placeholder-banner.jpg";
-          document.getElementById("event-name").textContent =
-            params.name || "Event Not Found";
-          
-          
-            const organiserLink = document.getElementById("event-organiser");
-          organiserLink.textContent = params.organiser || "Unknown";
-          
+        // Populate event details
+        document.getElementById("event-banner").src =
+          params.banner || "placeholder-banner.jpg";
+        document.getElementById("event-name").textContent =
+          params.name || "Event Not Found";
 
-          // Mapping of organisers to their unique banners
-const organiserBanners = {
-  "Innovate Hub": "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
-  "Creative Minds": "images/Colorful Modern Infinity Technology Free Logo.png",
-  "Global Leaders": "images/Colorful Brain Digital World Technology Logo.png",
-};
 
-      // Get the unique banner for the organiser
-      const organiserBanner =
-        organiserBanners[params.organiser] || "images/default-organiser-banner.jpg";
-          organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
-            params.organiser
-          )}&logo=${encodeURIComponent(
-            "organiser-logo.jpg"
-          )}&banner=${encodeURIComponent(
-            organiserBanner
-          )}&description=${encodeURIComponent(
-            params.organiser + " is a leader in organising world-class events."
-          )}&pastEvents=${encodeURIComponent(
-            "Event A,Event B"
-          )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
+        const organiserLink = document.getElementById("event-organiser");
+        organiserLink.textContent = params.organiser || "Unknown";
 
-          document.getElementById("event-description").textContent =
-            params.description || "No description available.";
 
-          document.getElementById("tickets-sold").textContent =
-            params.tickets || "Unknown";
+        // Mapping of organisers to their unique banners
+        const organiserBanners = {
+          "Innovate Hub": "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
+          "Creative Minds": "images/Colorful Modern Infinity Technology Free Logo.png",
+          "Global Leaders": "images/Colorful Brain Digital World Technology Logo.png",
+        };
 
-    // Format and display date
-    const formattedDate = formatDate(params.date);
-    document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
+        // Get the unique banner for the organiser
+        const organiserBanner =
+          organiserBanners[params.organiser] || "images/default-organiser-banner.jpg";
+        organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
+          params.organiser
+        )}&logo=${encodeURIComponent(
+          "organiser-logo.jpg"
+        )}&banner=${encodeURIComponent(
+          organiserBanner
+        )}&description=${encodeURIComponent(
+          params.organiser + " is a leader in organising world-class events."
+        )}&pastEvents=${encodeURIComponent(
+          "Event A,Event B"
+        )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
 
-    // Format and display time
-    const formattedTime = formatTime(params.time);
-    document.getElementById("event-time").textContent = `Time: ${formattedTime || "TBD"}`;
+        document.getElementById("event-description").textContent =
+          params.description || "No description available.";
 
-          // Handle vendors
-          const eventId = params.name || "default-event"; // Unique identifier for the event
-          const vendorsList = document.getElementById("event-vendors");
-          vendorsList.innerHTML = ""; // Clear existing vendors
+        document.getElementById("tickets-sold").textContent =
+          params.tickets || "Unknown";
 
-          let selectedVendors = JSON.parse(
-            localStorage.getItem(`vendors-${eventId}`)
+        // Format and display date
+        const formattedDate = formatDate(params.date);
+        document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
+
+        // Format and display time
+        const formattedTime = formatTime(params.time);
+        document.getElementById("event-time").textContent = `Time: ${formattedTime || "TBD"}`;
+
+        // Handle vendors
+        const eventId = params.name || "default-event"; // Unique identifier for the event
+        const vendorsList = document.getElementById("event-vendors");
+        vendorsList.innerHTML = ""; // Clear existing vendors
+
+        let selectedVendors = JSON.parse(
+          localStorage.getItem(`vendors-${eventId}`)
+        );
+
+        if (!selectedVendors) {
+          // Select random vendors if not already saved
+          const numberOfVendors = 3; // Set the number of vendors to display
+          const shuffledCompanies = [...companyNames].sort(
+            () => 0.5 - Math.random()
+          ); // Shuffle the array
+          selectedVendors = shuffledCompanies.slice(0, numberOfVendors);
+
+          // Save selected vendors to localStorage
+          localStorage.setItem(
+            `vendors-${eventId}`,
+            JSON.stringify(selectedVendors)
           );
-
-          if (!selectedVendors) {
-            // Select random vendors if not already saved
-            const numberOfVendors = 3; // Set the number of vendors to display
-            const shuffledCompanies = [...companyNames].sort(
-              () => 0.5 - Math.random()
-            ); // Shuffle the array
-            selectedVendors = shuffledCompanies.slice(0, numberOfVendors);
-
-            // Save selected vendors to localStorage
-            localStorage.setItem(
-              `vendors-${eventId}`,
-              JSON.stringify(selectedVendors)
-            );
-          }
-
-          // Display vendors
-          selectedVendors.forEach((vendor) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = vendor;
-            listItem.onclick = () => {
-              window.location.href = `vendor.html?name=${encodeURIComponent(
-                vendor
-              )}&logo=${encodeURIComponent(
-                "vendor-logo.jpg"
-              )}&description=${encodeURIComponent(
-                vendor + " is a trusted partner for innovative solutions."
-              )}&pastEvents=${encodeURIComponent(
-                "Event A,Event B"
-              )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
-            };
-            vendorsList.appendChild(listItem);
-          });
-        
-
-        // Assign vendors to tables
-      const tables = document.querySelectorAll(".table");
-      selectedVendors.forEach((vendor, index) => {
-        if (tables[index]) {
-          tables[index].textContent = vendor;
-          tables[index].classList.add("vendor");
-        }
-      });
-    
-      // Set up table booking functionality
-      tables.forEach((table) => {
-        table.addEventListener("click", () => handleTableClick(table));
-      });
-    }
-
-            // Modal Elements
-            const modal = document.getElementById("bookingModal");
-        const closeModal = document.getElementById("closeModal");
-        const bookingForm = document.getElementById("bookingForm");
-
-        // Open Modal with Table Info
-        function handleTableClick(table) {
-          if (table.classList.contains("booked")) {
-            alert("This table is already booked.");
-            return;
-          }
-
-          document.getElementById("table-id").value = table.id;
-          modal.style.display = "flex";
         }
 
-        // Close Modal
-        closeModal.addEventListener("click", () => {
-          modal.style.display = "none";
+        // Display vendors
+        selectedVendors.forEach((vendor) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = vendor;
+          listItem.onclick = () => {
+            window.location.href = `vendor.html?name=${encodeURIComponent(
+              vendor
+            )}&logo=${encodeURIComponent(
+              "vendor-logo.jpg"
+            )}&description=${encodeURIComponent(
+              vendor + " is a trusted partner for innovative solutions."
+            )}&pastEvents=${encodeURIComponent(
+              "Event A,Event B"
+            )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
+          };
+          vendorsList.appendChild(listItem);
         });
 
-        // Submit Booking Form
-        bookingForm.addEventListener("submit", (event) => {
-          event.preventDefault();
 
-          const tableId = document.getElementById("table-id").value;
-          const name = document.getElementById("name").value;
-          const contact = document.getElementById("contact").value;
+        // Assign vendors to tables
+        const tables = document.querySelectorAll(".table");
+        selectedVendors.forEach((vendor, index) => {
+          if (tables[index]) {
+            tables[index].textContent = vendor;
+            tables[index].classList.add("vendor");
+          }
+        });
+
+        // Set up table booking functionality
+        tables.forEach((table) => {
+          table.addEventListener("click", () => handleTableClick(table));
+        });
+      }
+
+      document.getElementById("bookmark-btn").addEventListener("click", async () => {
+    const user = firebase.auth().currentUser; // Check if the user is logged in
+    if (!user) {
+      alert("Please log in to bookmark events.");
+      return;
+    }
+
+    try {
+      // Get event details
+      const params = getQueryParams();
+      const eventId = params.name || "default-event"; // Event identifier
+      const bookmarkData = {
+        eventId: eventId,
+        name: params.name || "Event Name",
+        date: params.date || "TBD",
+        banner: params.banner || "placeholder-banner.jpg",
+        organiser: params.organiser || "Unknown",
+      };
+
+      // Save to Firebase under user's bookmarks
+      const userId = user.uid;
+      const bookmarksRef = firebase.database().ref(`users/${userId}/bookmarks`);
+      await bookmarksRef.child(eventId).set(bookmarkData);
+
+      alert(`${bookmarkData.name} has been added to your bookmarks.`);
+    } catch (error) {
+      console.error("Error bookmarking event:", error);
+      alert("An error occurred while bookmarking the event. Please try again.");
+    }
+  });
+
+      // Modal Elements
+      const modal = document.getElementById("bookingModal");
+      const closeModal = document.getElementById("closeModal");
+      const bookingForm = document.getElementById("bookingForm");
+
+      // Open Modal with Table Info
+      function handleTableClick(table) {
+        if (table.classList.contains("booked")) {
+          alert("This table is already booked.");
+          return;
+        }
+
+        document.getElementById("table-id").value = table.id;
+        modal.style.display = "flex";
+      }
+
+      // Close Modal
+      closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      // Submit Booking Form
+      bookingForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try {
+        const tableId = document.getElementById("table-id").value;
+        const name = document.getElementById("name").value;
+        const contact = document.getElementById("contact").value;
+
+        const params = getQueryParams(); // get event query parameters
+    const eventId = params.name || "default-event"; // use event name as a unique identifier
+    const eventDate = params.date || "TBD";
+
+        // adds to the firebase database
+        const bookingData = {
+      name: name,
+      contact: contact,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+          await firebase.database().ref(`bookings/${eventId}/${tableId}`).set(bookingData);
+
+          // update the user's upcoming events list
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const userId = user.uid;
+      const userRef = firebase.database().ref(`users/${userId}/upcomingEvents`);
+
+      const eventDetails = {
+        eventId: eventId,
+        name: params.name || "Event Name",
+        date: eventDate,
+      };
+
+      // Add the booked event to the user's upcoming events list
+      await userRef.push(eventDetails); // Save to user's upcoming events
+    } else {
+      alert("Please log in to save your bookings.");
+      return;
+    }
 
           const table = document.getElementById(tableId);
           table.classList.add("booked");
@@ -302,23 +393,56 @@ const organiserBanners = {
 
           modal.style.display = "none";
           alert(`Table ${tableId} has been successfully booked by ${name}.`);
-        });
+        } catch (error) {
+          console.error("Error booking table:", error);
+          alert("An error occurred while booking the table. Please try again.");
+        }
+      });
 
-        // Add click event to all tables
-        document.querySelectorAll(".table").forEach((table) => {
-          table.addEventListener("click", () => handleTableClick(table));
-        });
+      // Add click event to all tables
+      document.querySelectorAll(".table").forEach((table) => {
+        table.addEventListener("click", () => handleTableClick(table));
+      });
 
-        // Close modal if clicked outside of content
-        window.addEventListener("click", (event) => {
-          if (event.target === modal) {
-            modal.style.display = "none";
-          }
-        });
+      // Close modal if clicked outside of content
+      window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
 
-        
-      document.addEventListener("DOMContentLoaded", populateEventDetails);
-      </script>
-    </div>
-  </body>
+      async function loadBookings() {
+  try {
+    const eventId = getQueryParams().name || "default-event"; // use event name as the key
+    const snapshot = await firebase.database().ref(`bookings/${eventId}`).once("value");
+    const bookings = snapshot.val() || {}; // get bookings or an empty object if none exist
+
+    // Iterate through bookings and update the conference layout
+    Object.keys(bookings).forEach((tableId) => {
+      const table = document.getElementById(tableId);
+      if (table) {
+        const booking = bookings[tableId];
+        table.classList.add("booked");
+        table.textContent = `Booked by ${booking.name}`;
+      }
+    });
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+  }
+}
+
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          populateEventDetails(); // Populate event details
+          await loadBookings();  // Fetch and display existing bookings
+        } catch (error) {
+          console.error("Error initializing the page:", error);
+        }
+      });
+
+    </script>
+  </div>
+</body>
+
 </html>

@@ -14,7 +14,7 @@
           <nav class="nav-menu">
             <a class="nav-item" href="dashboard.html">Dashboard</a>
             <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-            <a class="nav-item" href="past.html">Past Events</a>
+            <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
             <a class="nav-item" href="messages.html">Messages</a>
             <a class="nav-item" href="profile.html">Profile</a>
           </nav>
@@ -24,26 +24,29 @@
           </div>
         </aside>
 
+  <!-- Vendor Details Container -->
   <div class="details-container">
-    <img src="vendor-banner.jpg" alt="Vendor Banner" class="details-banner">
+    <img
+      id="vendor-banner"
+      alt="Vendor Banner"
+      class="details-banner"
+      src="images/default-vendor-banner.jpg"
+    />
     <h1 class="details-header" id="vendor-name">Vendor Name</h1>
-    <p class="details-text">Description of the vendor.</p>
+    <p class="details-text" id="vendor-description">
+      Description of the vendor.
+    </p>
 
     <div class="vendor-list">
-        <h3>Past Events</h3>
-        <ul>
-            <li>Event 1</li>
-            <li>Event 2</li>
-        </ul>
+      <h3>Past Events</h3>
+      <div id="past-events" class="events-container"></div>
     </div>
 
     <div class="vendor-list">
-        <h3>Upcoming Events</h3>
-        <ul>
-            <li>Event A</li>
-            <li>Event B</li>
-        </ul>
+      <h3>Upcoming Events</h3>
+      <div id="upcoming-events" class="events-container"></div>
     </div>
+  </div>
 </div>
 
   <script>
@@ -57,6 +60,25 @@
       }
     });
 
+    const vendors = {
+        blueSkyInnovations: {
+          name: "BlueSky Innovations",
+          banner: "images/bluesky-innovations-banner.jpg",
+          description:
+            "Bluesky Innovations is a trusted partner in sustainable solutions.",
+          pastEvents: ["Green Expo 2023", "Recycling Awareness Fair"],
+          upcomingEvents: ["Eco Future Conference", "Sustainability Expo"],
+        },
+        synergyInc: { // NEED TO CHANGE THESE TO MATCH VENDORS AND ADD MORE
+          name: "Synergy Inc",
+          banner: "images/synergy-inc-banner.jpg",
+          description:
+            "Synergy Inc delivers high-tech solutions for modern problems.",
+          pastEvents: ["Tech Meet 2023", "IT Solutions Summit"],
+          upcomingEvents: ["AI Workshop", "Cloud Technology Showcase"],
+        },
+      };
+
     function getQueryParams() {
       const params = {};
       const queryString = window.location.search.substring(1);
@@ -68,39 +90,63 @@
       return params;
     }
 
+    function normaliseNameToKey(name) {
+        return name
+          .replace(/\s+/g, "")
+          .replace(/\b\w/g, (char) => char.toLowerCase());
+      }
+
     function populateVendorDetails() {
       const params = getQueryParams();
 
       const vendorName = params.name || "Unknown Vendor";
-      const vendorLogo = params.logo || "placeholder-logo.jpg";
-      const vendorDescription = params.description || "No description available.";
-      const pastEvents = params.pastEvents ? params.pastEvents.split(",") : [];
-      const upcomingEvents = params.upcomingEvents ? params.upcomingEvents.split(",") : [];
+      const key = normaliseNameToKey(vendorName);
+        console.log(`Generated key: ${key}`);
+        const vendorData = vendors[key];
+        if (!vendorData) {
+          console.error(`No data found for vendor: ${vendorName}`);
+          return;
+        }
 
-      // Populate vendor details
-      document.getElementById("vendor-name").textContent = vendorName;
-      document.getElementById("company-logo").src = vendorLogo;
-      document.getElementById("company-description").textContent = vendorDescription;
+        // Update vendor details
+        document.getElementById("vendor-banner").src =
+          vendorData.banner || "images/default-vendor-banner.jpg";
+        document.getElementById("vendor-name").textContent = vendorData.name;
+        document.getElementById("vendor-description").textContent =
+          vendorData.description || "No description available.";
 
       // Populate past events
       const pastEventsContainer = document.getElementById("past-events");
-      pastEvents.forEach(event => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h3>${event}</h3>`;
-        card.onclick = () => window.location.href = `event.html?name=${encodeURIComponent(event)}`;
-        pastEventsContainer.appendChild(card);
-      });
+        pastEventsContainer.innerHTML = "";
+        vendorData.pastEvents.forEach((event) => {
+          const card = document.createElement("a");
+          card.className = "event-card";
+          card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
+          card.innerHTML = `
+            <img src="images/default-banner.jpg" alt="${event}" class="event-banner">
+            <div class="event-info">
+              <h3 class="event-name">${event}</h3>
+            </div>
+          `;
+          pastEventsContainer.appendChild(card);
+        });
 
-      // Populate upcoming events
-      const upcomingEventsContainer = document.getElementById("upcoming-events");
-      upcomingEvents.forEach(event => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h3>${event}</h3>`;
-        card.onclick = () => window.location.href = `event.html?name=${encodeURIComponent(event)}`;
-        upcomingEventsContainer.appendChild(card);
-      });
+        // Populate upcoming events
+        const upcomingEventsContainer =
+          document.getElementById("upcoming-events");
+        upcomingEventsContainer.innerHTML = "";
+        vendorData.upcomingEvents.forEach((event) => {
+          const card = document.createElement("a");
+          card.className = "event-card";
+          card.href = `event.html?name=${encodeURIComponent(event.trim())}`;
+          card.innerHTML = `
+            <img src="images/default-banner.jpg" alt="${event}" class="event-banner">
+            <div class="event-info">
+              <h3 class="event-name">${event}</h3>
+            </div>
+          `;
+          upcomingEventsContainer.appendChild(card);
+        });
     }
 
     document.addEventListener("DOMContentLoaded", populateVendorDetails);
