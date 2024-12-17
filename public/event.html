@@ -28,6 +28,36 @@
 
     <!-- Event Details Section -->
     <div class="event-details-container">
+
+      <button id="create-event-btn">Create Event</button>
+      <div id="event-form-container" style="display: none;">
+        <h2>Create New Event</h2>
+        <form id="create-event-form">
+          <label for="event-name">Event Name:</label>
+          <input type="text" id="event-name-input" name="event-name" required />
+
+          <label for="event-date">Event Date:</label>
+          <input type="date" id="event-date-input" name="event-date" required />
+
+          <label for="event-time">Event Time (start,end):</label>
+          <input type="text" id="event-time-input" placeholder="12:00,16:00" required />
+
+          <label for="event-organiser">Organiser:</label>
+          <input type="text" id="event-organiser-input" name="event-organiser" required />
+
+          <label for="event-description">Description:</label>
+          <textarea id="event-description-input" name="event-description" required></textarea>
+
+          <label for="event-banner">Event Banner URL:</label>
+          <input type="file" id="event-banner-input" name="event-banner" accept="image/*" required />
+
+          <label for="tickets-sold">Tickets Sold:</label>
+          <input type="number" id="tickets-sold-input" name="tickets-sold" value="0" required />
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
       <img id="event-banner" class="event-banner" alt="Event Banner" />
       <h1 id="event-name"></h1>
       <p>
@@ -186,144 +216,176 @@
         return `${format12Hour(times[0])} - ${format12Hour(times[1])}`;
       }
 
-      function populateEventDetails() {
+      async function populateEventDetails() {
         const params = getQueryParams();
+        const eventId = params.eventId;
 
-        // Populate event details
-        document.getElementById("event-banner").src =
-          params.banner || "placeholder-banner.jpg";
-        document.getElementById("event-name").textContent =
-          params.name || "Event Not Found";
+        try {
+          if (eventId) {
+            // Fetch event details from Firebase
+            const eventRef = firebase.database().ref(`events/${eventId}`);
+            const eventSnapshot = await eventRef.once("value");
+            const eventData = eventSnapshot.val();
+
+            if (!eventData) {
+              console.error("Event not found in database.");
+              alert("Event not found.");
+              return;
+            }
+
+            // Populate event details
+            document.getElementById("event-banner").src = eventData.banner || "placeholder-banner.jpg";
+            document.getElementById("event-name").textContent = eventData.name || "Event Not Found";
+            document.getElementById("event-description").textContent = eventData.description || "No description available.";
+            document.getElementById("tickets-sold").textContent = eventData.tickets || "0";
+
+            const organiserLink = document.getElementById("event-organiser");
+            organiserLink.textContent = eventData.organiser || "Unknown";
 
 
-        const organiserLink = document.getElementById("event-organiser");
-        organiserLink.textContent = params.organiser || "Unknown";
+            // Mapping of organisers to their unique banners
+            const organiserBanners = {
+              "Innovate Hub": "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
+              "Creative Minds": "images/Colorful Modern Infinity Technology Free Logo.png",
+              "Global Leaders": "images/Colorful Brain Digital World Technology Logo.png",
+            };
 
-
-        // Mapping of organisers to their unique banners
-        const organiserBanners = {
-          "Innovate Hub": "images/symbol-design-creative-tech-logo-icon-template-vector-35357480.avif",
-          "Creative Minds": "images/Colorful Modern Infinity Technology Free Logo.png",
-          "Global Leaders": "images/Colorful Brain Digital World Technology Logo.png",
-        };
-
-        // Get the unique banner for the organiser
-        const organiserBanner =
-          organiserBanners[params.organiser] || "images/default-organiser-banner.jpg";
-        organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
-          params.organiser
-        )}&logo=${encodeURIComponent(
-          "organiser-logo.jpg"
-        )}&banner=${encodeURIComponent(
-          organiserBanner
-        )}&description=${encodeURIComponent(
-          params.organiser + " is a leader in organising world-class events."
-        )}&pastEvents=${encodeURIComponent(
-          "Event A,Event B"
-        )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
-
-        document.getElementById("event-description").textContent =
-          params.description || "No description available.";
-
-        document.getElementById("tickets-sold").textContent =
-          params.tickets || "Unknown";
-
-        // Format and display date
-        const formattedDate = formatDate(params.date);
-        document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
-
-        // Format and display time
-        const formattedTime = formatTime(params.time);
-        document.getElementById("event-time").textContent = `Time: ${formattedTime || "TBD"}`;
-
-        // Handle vendors
-        const eventId = params.name || "default-event"; // Unique identifier for the event
-        const vendorsList = document.getElementById("event-vendors");
-        vendorsList.innerHTML = ""; // Clear existing vendors
-
-        let selectedVendors = JSON.parse(
-          localStorage.getItem(`vendors-${eventId}`)
-        );
-
-        if (!selectedVendors) {
-          // Select random vendors if not already saved
-          const numberOfVendors = 3; // Set the number of vendors to display
-          const shuffledCompanies = [...companyNames].sort(
-            () => 0.5 - Math.random()
-          ); // Shuffle the array
-          selectedVendors = shuffledCompanies.slice(0, numberOfVendors);
-
-          // Save selected vendors to localStorage
-          localStorage.setItem(
-            `vendors-${eventId}`,
-            JSON.stringify(selectedVendors)
-          );
-        }
-
-        // Display vendors
-        selectedVendors.forEach((vendor) => {
-          const listItem = document.createElement("li");
-          listItem.textContent = vendor;
-          listItem.onclick = () => {
-            window.location.href = `vendor.html?name=${encodeURIComponent(
-              vendor
+            // Get the unique banner for the organiser
+            const organiserBanner =
+              organiserBanners[eventData.organiser] || "images/default-organiser-banner.jpg";
+            organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
+              eventData.organiser || "Unknown"
             )}&logo=${encodeURIComponent(
-              "vendor-logo.jpg"
+              "organiser-logo.jpg"
+            )}&banner=${encodeURIComponent(
+              organiserBanner
             )}&description=${encodeURIComponent(
-              vendor + " is a trusted partner for innovative solutions."
+              (eventData.organiser || "The organiser") + " is a leader in organising world-class events."
             )}&pastEvents=${encodeURIComponent(
               "Event A,Event B"
             )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
-          };
-          vendorsList.appendChild(listItem);
-        });
 
+            // Format and display date
+            const formattedDate = formatDate(eventData.date);
+            document.getElementById("event-date").textContent = `Date: ${formattedDate || "TBD"}`;
 
-        // Assign vendors to tables
-        const tables = document.querySelectorAll(".table");
-        selectedVendors.forEach((vendor, index) => {
-          if (tables[index]) {
-            tables[index].textContent = vendor;
-            tables[index].classList.add("vendor");
+            // Format and display time
+            const formattedTime = formatTime(eventData.time);
+            document.getElementById("event-time").textContent = `Time: ${formattedTime || "TBD"}`;
+          } else {
+            document.getElementById("event-banner").src = params.banner || "placeholder-banner.jpg";
+            document.getElementById("event-name").textContent = params.name || "Event Not Found";
+            document.getElementById("event-description").textContent = params.description || "No description available.";
+            document.getElementById("tickets-sold").textContent = params.tickets || "0";
+
+            const organiserLink = document.getElementById("event-organiser");
+            organiserLink.textContent = params.organiser || "Unknown";
+
+            // Handle organiser link
+            organiserLink.href = `eventOrganiser.html?name=${encodeURIComponent(
+              params.organiser || "Unknown"
+            )}&logo=${encodeURIComponent("organiser-logo.jpg")}&banner=${encodeURIComponent(
+              "images/default-organiser-banner.jpg"
+            )}&description=${encodeURIComponent(
+              (params.organiser || "The organiser") + " is a leader in organising world-class events."
+            )}`;
+
+            // Format and display date and time
+            document.getElementById("event-date").textContent = `Date: ${formatDate(params.date) || "TBD"}`;
+            document.getElementById("event-time").textContent = `Time: ${formatTime(params.time) || "TBD"}`;
           }
-        });
 
-        // Set up table booking functionality
-        tables.forEach((table) => {
-          table.addEventListener("click", () => handleTableClick(table));
-        });
+          // Handle vendors
+          const vendorsList = document.getElementById("event-vendors");
+          vendorsList.innerHTML = ""; // Clear existing vendors
+
+          const eventKey = eventId || params.name || "default-event";
+          let selectedVendors = JSON.parse(
+            localStorage.getItem(`vendors-${eventId}`)
+          );
+
+          if (!selectedVendors) {
+            // Select random vendors if not already saved
+            const numberOfVendors = 3; // Set the number of vendors to display
+            const shuffledCompanies = [...companyNames].sort(
+              () => 0.5 - Math.random()
+            ); // Shuffle the array
+            selectedVendors = shuffledCompanies.slice(0, numberOfVendors);
+
+            // Save selected vendors to localStorage
+            localStorage.setItem(
+              `vendors-${eventId}`,
+              JSON.stringify(selectedVendors)
+            );
+          }
+
+          // Display vendors
+          selectedVendors.forEach((vendor) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = vendor;
+            listItem.onclick = () => {
+              window.location.href = `vendor.html?name=${encodeURIComponent(
+                vendor
+              )}&logo=${encodeURIComponent(
+                "vendor-logo.jpg"
+              )}&description=${encodeURIComponent(
+                vendor + " is a trusted partner for innovative solutions."
+              )}&pastEvents=${encodeURIComponent(
+                "Event A,Event B"
+              )}&upcomingEvents=${encodeURIComponent("Event C,Event D")}`;
+            };
+            vendorsList.appendChild(listItem);
+          });
+
+
+          // Assign vendors to tables
+          const tables = document.querySelectorAll(".table");
+          selectedVendors.forEach((vendor, index) => {
+            if (tables[index]) {
+              tables[index].textContent = vendor;
+              tables[index].classList.add("vendor");
+            }
+          });
+
+          // Set up table booking functionality
+          tables.forEach((table) => {
+            table.addEventListener("click", () => handleTableClick(table));
+          });
+        } catch (error) {
+          console.error("Error fetching event details:", error);
+          alert("Failed to load event details. Please try again.");
+        }
       }
-
       document.getElementById("bookmark-btn").addEventListener("click", async () => {
-    const user = firebase.auth().currentUser; // Check if the user is logged in
-    if (!user) {
-      alert("Please log in to bookmark events.");
-      return;
-    }
+        const user = firebase.auth().currentUser; // Check if the user is logged in
+        if (!user) {
+          alert("Please log in to bookmark events.");
+          return;
+        }
 
-    try {
-      // Get event details
-      const params = getQueryParams();
-      const eventId = params.name || "default-event"; // Event identifier
-      const bookmarkData = {
-        eventId: eventId,
-        name: params.name || "Event Name",
-        date: params.date || "TBD",
-        banner: params.banner || "placeholder-banner.jpg",
-        organiser: params.organiser || "Unknown",
-      };
+        try {
+          // Get event details
+          const params = getQueryParams();
+          const eventId = params.name || "default-event"; // Event identifier
+          const bookmarkData = {
+            eventId: eventId,
+            name: params.name || "Event Name",
+            date: params.date || "TBD",
+            banner: params.banner || "placeholder-banner.jpg",
+            organiser: params.organiser || "Unknown",
+          };
 
-      // Save to Firebase under user's bookmarks
-      const userId = user.uid;
-      const bookmarksRef = firebase.database().ref(`users/${userId}/bookmarks`);
-      await bookmarksRef.child(eventId).set(bookmarkData);
+          // Save to Firebase under user's bookmarks
+          const userId = user.uid;
+          const bookmarksRef = firebase.database().ref(`users/${userId}/bookmarks`);
+          await bookmarksRef.child(eventId).set(bookmarkData);
 
-      alert(`${bookmarkData.name} has been added to your bookmarks.`);
-    } catch (error) {
-      console.error("Error bookmarking event:", error);
-      alert("An error occurred while bookmarking the event. Please try again.");
-    }
-  });
+          alert(`${bookmarkData.name} has been added to your bookmarks.`);
+        } catch (error) {
+          console.error("Error bookmarking event:", error);
+          alert("An error occurred while bookmarking the event. Please try again.");
+        }
+      });
 
       // Modal Elements
       const modal = document.getElementById("bookingModal");
@@ -351,41 +413,41 @@
         event.preventDefault();
 
         try {
-        const tableId = document.getElementById("table-id").value;
-        const name = document.getElementById("name").value;
-        const contact = document.getElementById("contact").value;
+          const tableId = document.getElementById("table-id").value;
+          const name = document.getElementById("name").value;
+          const contact = document.getElementById("contact").value;
 
-        const params = getQueryParams(); // get event query parameters
-    const eventId = params.name || "default-event"; // use event name as a unique identifier
-    const eventDate = params.date || "TBD";
+          const params = getQueryParams(); // get event query parameters
+          const eventId = params.name || "default-event"; // use event name as a unique identifier
+          const eventDate = params.date || "TBD";
 
-        // adds to the firebase database
-        const bookingData = {
-      name: name,
-      contact: contact,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-    };
+          // adds to the firebase database
+          const bookingData = {
+            name: name,
+            contact: contact,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+          };
 
           await firebase.database().ref(`bookings/${eventId}/${tableId}`).set(bookingData);
 
           // update the user's upcoming events list
-    const user = firebase.auth().currentUser;
-    if (user) {
-      const userId = user.uid;
-      const userRef = firebase.database().ref(`users/${userId}/upcomingEvents`);
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const userId = user.uid;
+            const userRef = firebase.database().ref(`users/${userId}/upcomingEvents`);
 
-      const eventDetails = {
-        eventId: eventId,
-        name: params.name || "Event Name",
-        date: eventDate,
-      };
+            const eventDetails = {
+              eventId: eventId,
+              name: params.name || "Event Name",
+              date: eventDate,
+            };
 
-      // Add the booked event to the user's upcoming events list
-      await userRef.push(eventDetails); // Save to user's upcoming events
-    } else {
-      alert("Please log in to save your bookings.");
-      return;
-    }
+            // Add the booked event to the user's upcoming events list
+            await userRef.push(eventDetails); // Save to user's upcoming events
+          } else {
+            alert("Please log in to save your bookings.");
+            return;
+          }
 
           const table = document.getElementById(tableId);
           table.classList.add("booked");
@@ -412,29 +474,101 @@
       });
 
       async function loadBookings() {
-  try {
-    const eventId = getQueryParams().name || "default-event"; // use event name as the key
-    const snapshot = await firebase.database().ref(`bookings/${eventId}`).once("value");
-    const bookings = snapshot.val() || {}; // get bookings or an empty object if none exist
+        try {
+          const eventId = getQueryParams().name || "default-event"; // use event name as the key
+          const snapshot = await firebase.database().ref(`bookings/${eventId}`).once("value");
+          const bookings = snapshot.val() || {}; // get bookings or an empty object if none exist
 
-    // Iterate through bookings and update the conference layout
-    Object.keys(bookings).forEach((tableId) => {
-      const table = document.getElementById(tableId);
-      if (table) {
-        const booking = bookings[tableId];
-        table.classList.add("booked");
-        table.textContent = `Booked by ${booking.name}`;
+          // Iterate through bookings and update the conference layout
+          Object.keys(bookings).forEach((tableId) => {
+            const table = document.getElementById(tableId);
+            if (table) {
+              const booking = bookings[tableId];
+              table.classList.add("booked");
+              table.textContent = `Booked by ${booking.name}`;
+            }
+          });
+        } catch (error) {
+          console.error("Error loading bookings:", error);
+        }
       }
-    });
-  } catch (error) {
-    console.error("Error loading bookings:", error);
-  }
-}
+
+      const eventFormContainer = document.getElementById("event-form-container");
+      const createEventButton = document.getElementById("create-event-btn");
+      const createEventForm = document.getElementById("create-event-form");
+
+      // Show the event creation form when the button is clicked
+      createEventButton.addEventListener("click", () => {
+        eventFormContainer.style.display = "block";
+      });
+
+      // Handle form submission
+      createEventForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Gather form input values
+        const name = document.getElementById("event-name-input").value;
+        const date = document.getElementById("event-date-input").value;
+        const time = document.getElementById("event-time-input").value;
+        const organiser = document.getElementById("event-organiser-input").value;
+        const description = document.getElementById("event-description-input").value;
+        const ticketsSold = document.getElementById("tickets-sold-input").value;
+
+        const bannerFile = document.getElementById("event-banner-input").files[0];
+
+        if (!bannerFile) {
+          alert("Please upload an image for the event banner.");
+          return;
+        }
+
+        // Convert the uploaded image to Base64
+        const reader = new FileReader();
+        reader.readAsDataURL(bannerFile);
+
+        reader.onload = async () => {
+          const bannerBase64 = reader.result;
+
+          // Display waiting for approval alert
+          alert("Your event is waiting for approval...");
+
+          // Simulate approval process after 10 seconds
+          setTimeout(async () => {
+            try {
+              const eventData = {
+                name,
+                date,
+                time,
+                organiser,
+                description,
+                banner: bannerBase64,
+                tickets: ticketsSold,
+              };
+
+              // Save the event to Firebase under "pendingEvents"
+              const eventsRef = firebase.database().ref("events");
+              await eventsRef.push(eventData);
+
+              alert("Your event has been approved and is now live!");
+
+              // Redirect to upcoming.html to view the new event
+              window.location.href = "upcoming.html";
+            } catch (error) {
+              console.error("Error creating event:", error);
+              alert("An error occurred while creating the event.");
+            }
+          }, 10000); // 10 seconds delay
+        };
+        reader.onerror = (error) => {
+          console.error("Error reading file:", error);
+          alert("Failed to process the uploaded image. Please try again.");
+        };
+
+      });
 
 
       document.addEventListener("DOMContentLoaded", async () => {
         try {
-          populateEventDetails(); // Populate event details
+          await populateEventDetails(); // Populate event details
           await loadBookings();  // Fetch and display existing bookings
         } catch (error) {
           console.error("Error initializing the page:", error);
