@@ -27,12 +27,12 @@
       <!-- Main Content -->
       <main class="main-content">
         <header class="header">
-          <h1>Messages</h1>
+          <h1>Dashboard</h1>
           <div class="profile-info">
             <a href="profile.html">
               <div class="profile-text">
-                <p class="profile-name" id="profile-name">[Name]</p>
-                <p class="profile-email" id="profile-email">[Email]</p>
+                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                <p class="profile-email" id="profile-email">[Email Placeholder]</p>
               </div>
               <div class="profile-pic" id="profile-pic">[Initials]</div>
             </a>
@@ -55,11 +55,79 @@
       </main>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Include Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
     <script>
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+        authDomain: "kv6002-team-project.firebaseapp.com",
+        databaseURL:
+          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "kv6002-team-project",
+        storageBucket: "kv6002-team-project.firebasestorage.app",
+        messagingSenderId: "1004655205327",
+        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+        measurementId: "G-T290LZMGGH",
+      };
+
+      // Initialise Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+
+    // Update Profile Info
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+          const userId = user.uid;
+
+          // reference to the user's bookmarked events in database
+          const bookmarksRef = firebase
+            .database()
+            .ref(`users/${userId}/bookmarks`);
+            
+      const profileNameEl = document.getElementById("profile-name");
+          const profileEmailEl = document.getElementById("profile-email");
+          const profilePicEl = document.getElementById("profile-pic");
+
+          // Dynamically update profile information
+          profileNameEl.textContent = user.displayName || "[Name not set]";
+          profileEmailEl.textContent = user.email;
+
+          // Set profile initials (e.g., "AP" for Alex Pereira)
+          if (user.displayName) {
+            const initials = user.displayName
+              .split(" ")
+              .map((word) => word.charAt(0))
+              .join("")
+              .toUpperCase();
+            profilePicEl.textContent = initials;
+          } else {
+            profilePicEl.textContent = "?";
+          }
+        } else {
+          // Redirect to login page if no user is logged in
+          window.location.href = "index.html";
+        }
+      });
+
+
+
+     // Log Out
+     document.getElementById("logout").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "index.html"; // Redirect to login page
+        } catch (error) {
+          console.error("Error logging out:", error);
+        }
+      });
+
       const threadsContainer = document.getElementById("threadsContainer");
       const conversationContainer = document.getElementById("conversation");
       const messagesContainer = document.getElementById("messages");
