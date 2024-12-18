@@ -12,7 +12,7 @@
   <div class="container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">Event Logo</div>
+      <div class="logo">TB04</div>
       <nav class="nav-menu">
         <a class="nav-item" href="dashboard.html">Dashboard</a>
         <a class="nav-item" href="upcoming.html">Upcoming Events</a>
@@ -21,6 +21,7 @@
         <a class="nav-item" href="profile.html">Profile</a>
       </nav>
       <div class="bottom-menu">
+        <a class="nav-item" href="aboutUs.html">About Us</a>
         <button class="nav-item" data-page="settings" onclick="showPage('settings')"> Settings </button>
         <button class="nav-item" id="logout">Log Out</button>
       </div>
@@ -366,18 +367,38 @@
         try {
           // Get event details
           const params = getQueryParams();
-          const eventId = params.name || "default-event"; // Event identifier
+          const eventId = params.eventId || params.name; // get eventId or name if not available
+          
+          let eventName = "Event Name";
+    let eventDate = "TBD";
+    let eventBanner = "placeholder-banner.jpg";
+    let eventOrganiser = "Unknown";
+
+    // fetch event data from firebase if eventId exists
+    if (eventId) {
+      const eventRef = firebase.database().ref(`events/${eventId}`);
+      const snapshot = await eventRef.once("value");
+      const eventData = snapshot.val();
+
+      if (eventData) {
+        eventName = eventData.name || eventName;
+        eventDate = eventData.date || eventDate;
+        eventBanner = eventData.banner || eventBanner;
+        eventOrganiser = eventData.organiser || eventOrganiser;
+      }
+    }
+          
           const bookmarkData = {
             eventId: eventId,
-            name: params.name || "Event Name",
-            date: params.date || "TBD",
-            banner: params.banner || "placeholder-banner.jpg",
-            organiser: params.organiser || "Unknown",
+            name: eventName,
+            date: eventDate,
+            banner: eventBanner,
+            organiser: eventOrganiser,
           };
 
           // Save to Firebase under user's bookmarks
           const userId = user.uid;
-          const bookmarksRef = firebase.database().ref(`users/${userId}/bookmarks`);
+          const bookmarksRef = db.ref(`users/${userId}/bookmarks`);
           await bookmarksRef.child(eventId).set(bookmarkData);
 
           alert(`${bookmarkData.name} has been added to your bookmarks.`);
@@ -418,9 +439,27 @@
           const contact = document.getElementById("contact").value;
 
           const params = getQueryParams(); // get event query parameters
-          const eventId = params.name || "default-event"; // use event name as a unique identifier
-          const eventDate = params.date || "TBD";
+          const eventId = params.eventId || params.name; // gte eventId or name if not available
 
+          if (!user) {
+      alert("Please log in to save your bookings.");
+      return;
+    }
+
+    // fetch event details from firebase if eventId exists
+    let eventName = "Event Name";
+    let eventDate = "TBD";
+
+    if (eventId) {
+      const eventRef = db.ref(`events/${eventId}`);
+      const snapshot = await eventRef.once("value");
+      const eventData = snapshot.val();
+
+      if (eventData) {
+        eventName = eventData.name || "Event Name";
+        eventDate = eventData.date || "TBD";
+      }
+    }
           // adds to the firebase database
           const bookingData = {
             name: name,
@@ -428,33 +467,27 @@
             timestamp: firebase.database.ServerValue.TIMESTAMP,
           };
 
-          await firebase.database().ref(`bookings/${eventId}/${tableId}`).set(bookingData);
+          await db.ref(`bookings/${eventId}/${tableId}`).set(bookingData);
 
           // update the user's upcoming events list
-          const user = firebase.auth().currentUser;
-          if (user) {
             const userId = user.uid;
-            const userRef = firebase.database().ref(`users/${userId}/upcomingEvents`);
+            const userRef = db.ref(`users/${userId}/upcomingEvents`);
 
             const eventDetails = {
               eventId: eventId,
-              name: params.name || "Event Name",
+              name: eventName,
               date: eventDate,
             };
 
             // Add the booked event to the user's upcoming events list
             await userRef.push(eventDetails); // Save to user's upcoming events
-          } else {
-            alert("Please log in to save your bookings.");
-            return;
-          }
 
           const table = document.getElementById(tableId);
           table.classList.add("booked");
           table.textContent = `Booked by ${name}`;
 
           modal.style.display = "none";
-          alert(`Table ${tableId} has been successfully booked by ${name}.`);
+          alert(`Table ${tableId} has been successfully booked for ${eventName} on ${eventDate} by ${name}.`);
         } catch (error) {
           console.error("Error booking table:", error);
           alert("An error occurred while booking the table. Please try again.");
