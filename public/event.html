@@ -439,26 +439,27 @@
           const contact = document.getElementById("contact").value;
 
           const params = getQueryParams(); // get event query parameters
-          const eventId = params.eventId || params.name; // gte eventId or name if not available
+          const eventId = params.eventId; // gte eventId or name if not available
 
-          if (!user) {
-      alert("Please log in to save your bookings.");
-      return;
-    }
+          let eventName = params.name || "Event Name"; // fallback to URL name for original events
+    let eventDate = params.date || "TBD"; // fallback to URL date for original events
 
-    // fetch event details from firebase if eventId exists
-    let eventName = "Event Name";
-    let eventDate = "TBD";
-
+    // fetch details from firebase if `eventId` exists
     if (eventId) {
-      const eventRef = db.ref(`events/${eventId}`);
+      const eventRef = firebase.database().ref(`events/${eventId}`);
       const snapshot = await eventRef.once("value");
       const eventData = snapshot.val();
 
       if (eventData) {
-        eventName = eventData.name || "Event Name";
-        eventDate = eventData.date || "TBD";
+        eventName = eventData.name || "Event Name"; // Use name from Firebase if available
+        eventDate = eventData.date || "TBD"; // Use date from Firebase if available
       }
+    }
+
+          const user = firebase.auth().currentUser;
+          if (!user) {
+      alert("Please log in to save your bookings.");
+      return;
     }
           // adds to the firebase database
           const bookingData = {
@@ -467,14 +468,14 @@
             timestamp: firebase.database.ServerValue.TIMESTAMP,
           };
 
-          await db.ref(`bookings/${eventId}/${tableId}`).set(bookingData);
+          await db.ref(`bookings/${eventId || eventName}/${tableId}`).set(bookingData);
 
           // update the user's upcoming events list
             const userId = user.uid;
             const userRef = db.ref(`users/${userId}/upcomingEvents`);
 
             const eventDetails = {
-              eventId: eventId,
+              eventId: eventId || eventName,
               name: eventName,
               date: eventDate,
             };
