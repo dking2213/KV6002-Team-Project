@@ -986,3 +986,21 @@ button:hover {
 #about-us ul {
   list-style: none;
 }
+
+.card {
+  padding: 20px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-list {
+  list-style: none;
+  padding: 0;
+}
+
+.stats-list li {
+  margin: 10px 0;
+  font-size: 16px;
+}

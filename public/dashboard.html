@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
@@ -50,8 +51,17 @@
               <!-- Events Will Be Shown Here -->
             </div>
           </div>
-          <div class="card">Statistics</div>
-          <div class="card">Recent Activity</div>
+          <div class="card" id="statistics-card">
+            <h2>Statistics</h2>
+            <ul class="stats-list">
+              <canvas id="statistics-chart" width="400" height="200"></canvas>
+            </ul>
+          </div>
+          <div class="card" id="registered-users-card">
+            <h2>Registered Users</h2>
+            <p id="registered-users-count">Loading...</p>
+          </div>
+          
         </div>
       </section>
     </main>
@@ -133,6 +143,102 @@
         console.error("Error logging out:", error);
       }
     });
+
+    function renderStatisticsChart(data) {
+      const ctx = document.getElementById("statistics-chart").getContext("2d");
+
+      // Create the chart
+      new Chart(ctx, {
+        type: "bar", // Bar chart
+        data: {
+          labels: ["Total Events", "Upcoming Events", "Bookmarked Events"], // Labels
+          datasets: [
+            {
+              label: "Event Statistics",
+              data: data, // Data array [totalEvents, upcomingEvents, bookmarkedEvents]
+              backgroundColor: ["#4CAF50", "#2196F3", "#FFC107"], // Bar colors
+              borderColor: ["#388E3C", "#1976D2", "#FFA000"], // Border colors
+              borderWidth: 1, // Border width
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false, // Hide legend for simplicity
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true, // Start y-axis at 0
+            },
+          },
+        },
+      });
+    }
+
+    function fetchStatisticsWithGraph() {
+      const eventsRef = database.ref("events");
+      const bookmarksRef = database.ref(`users/${auth.currentUser.uid}/bookmarks`);
+
+      let totalEvents = 0;
+      let upcomingEvents = 0;
+      let bookmarkedEvents = 0;
+
+      eventsRef.once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          const events = snapshot.val();
+          totalEvents = Object.keys(events).length;
+
+          const currentDate = new Date();
+          for (const eventId in events) {
+            const eventDate = new Date(events[eventId].date);
+            if (eventDate >= currentDate) {
+              upcomingEvents++;
+            }
+          }
+
+          // Fetch bookmarked events after processing events
+          bookmarksRef.once("value", (bookmarkSnapshot) => {
+            if (bookmarkSnapshot.exists()) {
+              bookmarkedEvents = Object.keys(bookmarkSnapshot.val()).length;
+            }
+
+            // Render chart with the fetched statistics
+            renderStatisticsChart([totalEvents, upcomingEvents, bookmarkedEvents]);
+          });
+        } else {
+          renderStatisticsChart([0, 0, 0]); // No events found
+        }
+      });
+    }
+
+    // Call fetchStatisticsWithGraph after user authentication
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        fetchStatisticsWithGraph();
+      }
+    });
+
+    // Fetch the number of registered users
+    function fetchRegisteredUsers() {
+      const usersRef = database.ref("users"); // Reference to users data
+
+      usersRef.once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          const users = snapshot.val(); // Get all users
+          const totalUsers = Object.keys(users).length; // Count the number of users
+          document.getElementById("registered-users-count").textContent = `Total Registered Users: ${totalUsers}`;
+        } else {
+          document.getElementById("registered-users-count").textContent = "No users found.";
+        }
+      });
+    }
+
+    // Fetch Registered Users when the page loads
+    window.addEventListener("load", fetchRegisteredUsers);
+
 
     // Fetch Events on Page Load
     window.addEventListener("load", fetchEvents);
