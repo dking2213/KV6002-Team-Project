@@ -1005,23 +1005,51 @@ button:hover {
   font-size: 16px;
 }
 
-#user-checklist {
-  margin-top: 20px;
-}
-
-#checklist-form {
-  display: flex;
-  gap: 10px;
-}
-
-#checklist {
-  list-style-type: none;
-  padding: 0;
-}
-
 .checklist-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 5px 0;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.checklist-item:hover {
+  background-color: #f0f0f0;
+}
+
+.checklist-item input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.checklist-item span {
+  flex-grow: 1;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.checklist-item button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.checklist-item button:hover {
+  background-color: #c0392b;
+}
+
+/* Empty state message */
+.checklist-empty {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  padding: 10px;
 }
