@@ -317,6 +317,41 @@ a:active {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.search-bar {
+  width: 40%;
+  padding: 12px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+#search-bar {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.filter-bar {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+#filter-dropdown {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
 /* Container for Events cards */
 .events-container {
   display: flex;
