@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Firebase Auth Test Site</title>
+    <title>Login</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -30,6 +30,7 @@
             <span class="toggle-password">&#x1F441;</span>
             <a href="#" class="recover-password">Recover Password</a>
             <button type="button" class="login-button" id="login">Login</button>
+            <p id="message"></p>
           </form>
         </div>
       </main>
@@ -42,11 +43,8 @@
         <p class="signup-text">
           Don't have an account? <a href="register.html">Sign Up</a>
         </p>
-        <p id="message"></p>
       </footer>
     </div>
-
-    <p id="message"></p>
 
     <!-- Include Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>

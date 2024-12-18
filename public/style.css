@@ -157,6 +157,12 @@ body {
     "footer aside";
 }
 
+.login-form #message,
+.signup-form #message {
+  text-align: center;
+  color: red;
+}
+
 .signup-form {
   display: grid;
   background-color: #ffffff;
@@ -802,6 +808,7 @@ button:hover {
   min-width: 250px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 }
 
 .bookmarked-banner {
@@ -920,4 +927,18 @@ button:hover {
 @keyframes fade {
   from {opacity: .4}
   to {opacity: 1}
+}
+
+/*  ABout us page */
+#about-us {
+  text-align: center;
+}
+
+#about-us h2 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#about-us ul {
+  list-style: none;
 }

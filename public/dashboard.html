@@ -10,7 +10,7 @@
   <div class="container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">Event Logo</div>
+      <div class="logo">TB04</div>
       <nav class="nav-menu">
         <a class="nav-item active" href="dashboard.html">Dashboard</a>
         <a class="nav-item" href="upcoming.html">Upcoming Events</a>
@@ -19,6 +19,7 @@
         <a class="nav-item" href="profile.html">Profile</a>
       </nav>
       <div class="bottom-menu">
+        <a class="nav-item" href="aboutUs.html">About Us</a>
         <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
         <button class="nav-item" id="logout">Log Out</button>
       </div>
@@ -41,7 +42,7 @@
 
       <!-- Dashboard Page -->
       <section id="dashboard" class="page">
-        <div class="cards-container">
+        <div class="events-section">
           <!-- Event Overview Section -->
           <div class="card" id="event-overview">
             <h2>Event Overview</h2>
@@ -112,10 +113,10 @@
         const eventLink = `
           <a href="events.html?eventId=${eventId}" class="event-card">
             <img src="${event.banner}" alt="${event.name}" class="event-banner" />
-            <div class="event-details">
-              <h3>${event.name}</h3>
-              <p><strong>Date:</strong> ${event.date || "TBD"}</p>
-              <p><strong>Organiser:</strong> ${event.organiser || "Unknown"}</p>
+            <div class="event-info">
+              <h3 class="event-name">${event.name}</h3>
+              <p>Date:<strong>${event.date || "TBD"}</strong></p>
+              <p class="event-organiser">Organiser:<strong> ${event.organiser || "Unknown"}</strong></p>
             </div>
           </a>
         `;
