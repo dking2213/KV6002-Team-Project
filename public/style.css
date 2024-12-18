@@ -657,6 +657,15 @@ a:active {
   color: #fff;
 }
 
+/* Style for images in the received messages */
+.message-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+
 button:hover {
   background-color: #2980b9;
 }

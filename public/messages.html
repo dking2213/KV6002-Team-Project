@@ -134,141 +134,127 @@
       const conversationHeader = document.getElementById("conversationHeader");
 
       const messageThreads = {
+
         1: {
-    title: "TechCorp",
-    messages: [
-      { sender: "received", text: "Hi, are you attending the AI Conference next week?" },
-      { sender: "sent", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
-      { sender: "received", text: "Great! I'll stop by your booth to discuss partnerships." },
-    ],
-  },
+  title: "Tech Innovators",
+  messages: [
+    { sender: "sent", text: "Hello, where is your booth located at the Cloud Computing Workshop?" },
+    { 
+      sender: "received", 
+      text: "Hello, here is a pic of our booth at the AI Conference.", 
+      imageUrl: "images/gettyimages-2159420495-640x640.jpg" // Local image path
+    },
+    { sender: "sent", text: "Thanks for sharing!, I'll be there" },
+  ],
+},
+        
   2: {
     title: "Green Solutions",
     messages: [
-      { sender: "received", text: "Hello, I loved your presentation at the Green Energy Expo. Will you be at any upcoming events?" },
-      { sender: "sent", text: "Thank you! We'll be presenting at the Cloud Computing Workshop next month." },
-      { sender: "received", text: "I'll make sure to attend. Looking forward to it!" },
+      { sender: "sent", text: "Hello, I loved your presentation at the Green Energy Expo. Will you be at any upcoming events?" },
+      { sender: "received", text: "Thank you! We'll be presenting at the Cloud Computing Workshop next month." },
+      { sender: "sent", text: "I'll make sure to attend. Looking forward to it!" },
     ],
   },
   3: {
     title: "BrightIdeas",
     messages: [
-      { sender: "received", text: "Will BrightIdeas have a booth at the AI Conference?" },
-      { sender: "sent", text: "Yes, well be showcasing our new line of AI-powered home solutions." },
-      { sender: "received", text: "Exciting! I'll stop by to learn more about your products." },
+      { sender: "sent", text: "Will BrightIdeas have a booth at the AI Conference?" },
+      { sender: "received", text: "Yes, well be showcasing our new line of AI-powered home solutions." },
+      { sender: "sent", text: "Exciting! I'll stop by to learn more about your products." },
     ],
   },
   4: {
     title: "Future Systems",
     messages: [
-      { sender: "received", text: "I wanted to thank you for the insights you shared during the Tech Summit 2024. Are the slides available?" },
-      { sender: "sent", text: "You're welcome! Yes, weve uploaded them to our website under the 'Resources' section." },
-      { sender: "received", text: "Perfect. Ill check them out later today." },
+      { sender: "sent", text: "I wanted to thank you for the insights you shared during the Tech Summit 2024. Are the slides available?" },
+      { sender: "received", text: "You're welcome! Yes, weve uploaded them to our website under the 'Resources' section." },
+      { sender: "sent", text: "Perfect. Ill check them out later today." },
     ],
   },
   5: {
     title: "Innovatech",
     messages: [
-      { sender: "received", text: "Hey, is Innovatech planning any special sessions during the AI Conference?" },
-      { sender: "sent", text: "Yes, we have a breakout session on 'The Future of AI in Healthcare.' Make sure to register early!" },
-      { sender: "received", text: "Will do. Thanks for the heads-up!" },
+      { sender: "sent", text: "Hey, is Innovatech planning any special sessions during the AI Conference?" },
+      { sender: "received", text: "Yes, we have a breakout session on 'The Future of AI in Healthcare.' Make sure to register early!" },
+      { sender: "sent", text: "Will do. Thanks for the heads-up!" },
     ],
   },
   6: {
     title: "EcoTech",
     messages: [
-      { sender: "received", text: "Hi, will EcoTech be presenting any new products at the Green Energy Expo?" },
-      { sender: "sent", text: "We already did last month. At the AI Conference, well be discussing AI in sustainability." },
-      { sender: "received", text: "Sounds fascinating. I'll try to attend that session!" },
+      { sender: "sent", text: "Hi, will EcoTech be presenting any new products at the Green Energy Expo?" },
+      { sender: "received", text: "We already did last month. At the AI Conference, well be discussing AI in sustainability." },
+      { sender: "sent", text: "Sounds fascinating. I'll try to attend that session!" },
     ],
   },
   7: {
-    title: "NextGen",
+    title: "TechCorp",
     messages: [
-      { sender: "received", text: "Hello, will NextGen's VR platform be showcased at the AI Conference?" },
-      { sender: "sent", text: "Yes, we're hosting a live demo during the keynote session. Make sure to join us!" },
-      { sender: "received", text: "Im definitely adding it to my agenda." },
+      { sender: "sent", text: "Hi, are you attending the AI Conference next week?" },
+      { sender: "received", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
+      { sender: "sent", text: "Great! I'll stop by your booth to discuss partnerships." },
+      { sender: "received", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
     ],
   },
-  8: {
-    title: "BlueSky Innovations",
-    messages: [
-      { sender: "received", text: "Are you offering any workshops at the Cloud Computing Workshop?" },
-      { sender: "sent", text: "Yes, we have a hands-on workshop on 'Advanced Cloud Security Practices.'" },
-      { sender: "received", text: "Sounds amazing. Is registration still open?" },
-      { sender: "sent", text: "Yes, but spots are limited, so register soon!" },
-    ],
-  },
-  9: {
-    title: "CloudNet",
-    messages: [
-      { sender: "received", text: "Hi, are there any discounts available for CloudNet services during the Cloud Computing Workshop?" },
-      { sender: "sent", text: "Yes, were offering exclusive discounts to attendees. Visit our booth for details!" },
-      { sender: "received", text: "Will do! Thanks for the info." },
-    ],
-  },
-  10: {
-    title: "QuantumWorks",
-    messages: [
-      { sender: "received", text: "Hello, will QuantumWorks be showcasing its quantum computing platform at the AI Conference?" },
-      { sender: "sent", text: "Yes, and were also hosting a panel on 'Quantum AI in the Real World.'" },
-      { sender: "received", text: "Ill definitely attend the panel. Thanks for sharing!" },
-    ],
-  },
-  11: {
-    title: "Solaris",
-    messages: [
-      { sender: "received", text: "Hi, I wanted to ask if Solaris is hosting any talks during the Green Energy Expo?" },
-      { sender: "sent", text: "Yes, we hosted a talk on 'Renewable Energy Storage Solutions.' Were you able to attend?" },
-      { sender: "received", text: "I missed it. Are recordings available?" },
-      { sender: "sent", text: "Yes, theyll be uploaded to the event's website this week." },
-    ],
-  },
-  12: {
-    title: "Alpha Dynamics",
-    messages: [
-      { sender: "received", text: "Hi, will Alpha Dynamics be sponsoring any sessions at the Cloud Computing Workshop?" },
-      { sender: "sent", text: "Yes, were sponsoring the keynote on 'Scaling Infrastructure in the Cloud.' Don't miss it!" },
-      { sender: "received", text: "Sounds great. Ill be there!" },
-    ],
-  },
+ 
       };
 
       function loadThreads() {
-        threadsContainer.innerHTML = "";
-        for (const threadId in messageThreads) {
-          const thread = messageThreads[threadId];
-          const threadDiv = document.createElement("div");
-          threadDiv.classList.add("thread");
-          threadDiv.onclick = () => showConversation(threadId);
-
-          threadDiv.innerHTML = `<p class="thread-name">${thread.title}</p>`;
-          threadsContainer.appendChild(threadDiv);
-        }
-      }
-
-      function showConversation(threadId) {
+    threadsContainer.innerHTML = "";
+    for (const threadId in messageThreads) {
         const thread = messageThreads[threadId];
-        conversationHeader.textContent = thread.title;
-        messagesContainer.innerHTML = "";
+        
+        const threadDiv = document.createElement("div");
+        threadDiv.classList.add("thread");
+        threadDiv.onclick = () => showConversation(threadId);
 
-        thread.messages.forEach((msg) => {
-          const messageDiv = document.createElement("div");
-          messageDiv.classList.add("message", msg.sender);
-          messageDiv.textContent = msg.text;
-          messagesContainer.appendChild(messageDiv);
-        });
+        threadDiv.innerHTML = `<p class="thread-name">${thread.title}</p>`;
+        threadsContainer.appendChild(threadDiv);
+    }
+}
 
-        document.getElementById("threads").style.display = "none";
-        conversationContainer.style.display = "block";
-      }
+// Function to show full conversation with image support
+function showConversation(threadId) {
+    const thread = messageThreads[threadId];
+    conversationHeader.textContent = thread.title;
+    messagesContainer.innerHTML = ""; // Clear previous messages
 
-      function goBack() {
-        conversationContainer.style.display = "none";
-        document.getElementById("threads").style.display = "block";
-      }
+    thread.messages.forEach((msg) => {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", msg.sender);
 
-      loadThreads();
+        // Check if the message contains an image URL
+        if (msg.imageUrl) {
+            const img = document.createElement("img");
+            img.src = msg.imageUrl; // Local image path
+            img.alt = "Message Image"; // Alternative text for the image
+            img.classList.add("message-image"); // Optionally style the image with CSS
+            messageDiv.appendChild(img); // Append image to message div
+        }
+
+        // Add the text message
+        const messageText = document.createElement("p");
+        messageText.textContent = msg.text;
+        messageDiv.appendChild(messageText);
+
+        // Append the message to the messages container
+        messagesContainer.appendChild(messageDiv);
+    });
+
+    // Show conversation and hide threads
+    document.getElementById("threads").style.display = "none";
+    conversationContainer.style.display = "block";
+}
+
+// Function to return to threads
+function goBack() {
+    conversationContainer.style.display = "none";
+    document.getElementById("threads").style.display = "block";
+}
+
+// Load threads on page load
+loadThreads();
     </script>
   </body>
 </html>
