@@ -17,6 +17,7 @@
         <a class="nav-item" href="upcoming.html">Upcoming Events</a>
         <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
         <a class="nav-item" href="messages.html">Messages</a>
+        <a class="nav-item" href="purchasedtickets.html">Events Attending</a>
         <a class="nav-item" href="profile.html">Profile</a>
       </nav>
       <div class="bottom-menu">
@@ -121,7 +122,7 @@
       for (const eventId in events) {
         const event = events[eventId];
         const eventLink = `
-          <a href="events.html?eventId=${eventId}" class="event-card">
+          <a href="event.html?eventId=${eventId}" class="event-card">
             <img src="${event.banner}" alt="${event.name}" class="event-banner" />
             <div class="event-info">
               <h3 class="event-name">${event.name}</h3>
