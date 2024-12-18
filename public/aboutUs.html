@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">TB04</div>
+            <nav class="nav-menu">
+                <a class="nav-item" href="dashboard.html">Dashboard</a>
+                <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+                <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+                <a class="nav-item" href="messages.html">Messages</a>
+                <a class="nav-item" href="profile.html">Profile</a>
+            </nav>
+            <div class="bottom-menu">
+                <a class="nav-item active" href="aboutUs.html">About Us</a>
+                <button class="nav-item" data-page="settings" onclick="showPage('settings')">Settings</button>
+                <button class="nav-item" id="logout">Log Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>About Us</h1>
+                <div class="profile-info">
+                    <a href="profile.html">
+                        <div class="profile-text">
+                            <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+                            <p class="profile-email" id="profile-email">[Email Placeholder]</p>
+                        </div>
+                        <div class="profile-pic" id="profile-pic">[Initials]</div>
+                    </a>
+                </div>
+            </header>
+
+            <!-- About Us Page -->
+            <div class="events-section">
+                <div id="about-us">
+                    <h2>Welcome!</h2> </br>
+                    <h3>Our Mission</h3>
+                    <p>By offering a user-friendly, feature-rich platform for managing, finding, and attending
+                        events, we hope to empower event organisers, vendors and attendees. From setting up seminars
+                        and conferences to reserving tables and monitoring tickets, our goal is to make event
+                        management effective, approachable, and overall less stressful.</p> </br>
+                    <h3>Our background</h3>
+                    <p>The idea for this project came from a group of people who were enthusiastic about technology,
+                        and developing useful tools. We created this platform to help event
+                        organisers and their relative audiences communicate since we understood how difficult event
+                        management can be and how new solutions were needed.</p> </br>
+                    <h3>Contact Us</h3>
+                    <p>Got questions or feedback? Get in touch with us:
+                    <ul>
+                        <li>Email: xxxx@xxx.com</li>
+                        <li>Phone: 07123456789</li>
+                        <li>Social media:
+                        <li>Twitter: @tb04</li>
+                        <li>Instagram: @tb04</li>
+                        <li>Facebook: tb04/facebook.com</li>
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+            authDomain: "kv6002-team-project.firebaseapp.com",
+            databaseURL:
+                "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "kv6002-team-project",
+            storageBucket: "kv6002-team-project.firebasestorage.app",
+            messagingSenderId: "1004655205327",
+            appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+            measurementId: "G-T290LZMGGH",
+        };
+
+        // Initialise Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Update Profile Info
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const profileNameEl = document.getElementById("profile-name");
+                const profileEmailEl = document.getElementById("profile-email");
+                const profilePicEl = document.getElementById("profile-pic");
+
+                // Dynamically update profile information
+                profileNameEl.textContent = user.displayName || "[Name not set]";
+                profileEmailEl.textContent = user.email;
+
+                // Set profile initials (e.g., "AP" for Alex Pereira)
+                if (user.displayName) {
+                    const initials = user.displayName
+                        .split(" ")
+                        .map((word) => word.charAt(0))
+                        .join("")
+                        .toUpperCase();
+                    profilePicEl.textContent = initials;
+                } else {
+                    profilePicEl.textContent = "?";
+                }
+            } else {
+                // Redirect to login page if no user is logged in
+                window.location.href = "index.html";
+            }
+        });
+
+        // Log Out
+        document.getElementById("logout").addEventListener("click", async () => {
+            try {
+                await auth.signOut();
+                window.location.href = "index.html"; // Redirect to login page
+            } catch (error) {
+                console.error("Error logging out:", error);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

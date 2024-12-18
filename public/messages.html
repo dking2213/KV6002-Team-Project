@@ -10,7 +10,7 @@
     <div class="container">
       <!-- Sidebar -->
       <aside class="sidebar">
-        <div class="logo">Event Logo</div>
+        <div class="logo">TB04</div>
         <nav class="nav-menu">
           <a class="nav-item" href="dashboard.html">Dashboard</a>
           <a class="nav-item" href="upcoming.html">Upcoming Events</a>
@@ -19,6 +19,7 @@
           <a class="nav-item" href="profile.html">Profile</a>
         </nav>
         <div class="bottom-menu">
+          <a class="nav-item" href="aboutUs.html">About Us</a>
           <button
             class="nav-item"
             data-page="settings"
@@ -34,59 +35,38 @@
       <main class="main-content">
         <header class="header">
           <h1>Messages</h1>
-
           <div class="profile-info">
             <a href="profile.html">
               <div class="profile-text">
                 <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-                <p class="profile-email" id="profile-email">
-                  [Email Placeholder]
-                </p>
+                <p class="profile-email" id="profile-email">[Email Placeholder]</p>
               </div>
               <div class="profile-pic" id="profile-pic">[Initials]</div>
             </a>
           </div>
         </header>
 
-        <section id="messages" class="messages-section">
-          <div class="messages-container">
-            <div
-              class="card"
-              onclick="showMessageDetails('message 1', 'This is a detailed description of message 1.')"
-            >
-              message 1
-            </div>
-            <div
-              class="card"
-              onclick="showMessageDetails('message 2', 'This is a detailed description of message 2.')"
-            >
-              message 2
-            </div>
-            <div
-              class="card"
-              onclick="showMessageDetails('message 3', 'This is a detailed description of message 3.')"
-            >
-              message 3
-            </div>
-          </div>
+        <!-- Threads View -->
+        <section id="threads" class="messages-section">
+          <div class="threads-container" id="threadsContainer"></div>
         </section>
 
-        <section
-          id="message-details"
-          class="messages-section"
-          style="display: none"
-        >
-          <!-- <h2>Event Details</h2> -->
-          <p id="message-title">message 1</p>
-          <p id="message-description">message 1 Description</p>
-          <button onclick="goBackToMessages()">Back to messages</button>
+        <!-- Conversation View -->
+        <section id="conversation" class="messages-section" style="display: none;">
+          <div class="conversation-container" id="conversationContainer">
+            <button class="back-btn" onclick="goBack()">← Back to Threads</button>
+            <h2 id="conversationHeader"></h2>
+            <div class="messages" id="messages"></div>
+          </div>
         </section>
       </main>
     </div>
 
     <!-- Include Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
     <script>
       // Firebase Configuration
@@ -105,17 +85,28 @@
       // Initialise Firebase
       const app = firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
+      const db = firebase.database();
 
-      // Update Profile Info
-      auth.onAuthStateChanged((user) => {
+
+    // Update Profile Info
+    auth.onAuthStateChanged((user) => {
         if (user) {
-          const profileNameEl = document.getElementById("profile-name");
+          const userId = user.uid;
+
+          // reference to the user's bookmarked events in database
+          const bookmarksRef = firebase
+            .database()
+            .ref(`users/${userId}/bookmarks`);
+
+      const profileNameEl = document.getElementById("profile-name");
           const profileEmailEl = document.getElementById("profile-email");
           const profilePicEl = document.getElementById("profile-pic");
 
+          // Dynamically update profile information
           profileNameEl.textContent = user.displayName || "[Name not set]";
           profileEmailEl.textContent = user.email;
 
+          // Set profile initials (e.g., "AP" for Alex Pereira)
           if (user.displayName) {
             const initials = user.displayName
               .split(" ")
@@ -127,12 +118,15 @@
             profilePicEl.textContent = "?";
           }
         } else {
+          // Redirect to login page if no user is logged in
           window.location.href = "index.html";
         }
       });
 
-      // Log Out
-      document.getElementById("logout").addEventListener("click", async () => {
+
+
+     // Log Out
+     document.getElementById("logout").addEventListener("click", async () => {
         try {
           await auth.signOut();
           window.location.href = "index.html"; // Redirect to login page
@@ -141,25 +135,133 @@
         }
       });
 
-      // Show event details
-      function showMessageDetails(title, description) {
-        // Update event details
-        document.getElementById("message-title").textContent = title;
-        document.getElementById("message-description").textContent =
-          description;
+      const threadsContainer = document.getElementById("threadsContainer");
+      const conversationContainer = document.getElementById("conversation");
+      const messagesContainer = document.getElementById("messages");
+      const conversationHeader = document.getElementById("conversationHeader");
 
-        // Hide the upcoming events page
-        document.getElementById("messages").style.display = "none";
+      const messageThreads = {
 
-        // Show the event details page
-        document.getElementById("message-details").style.display = "block";
-      }
+        1: {
+  title: "Tech Innovators",
+  messages: [
+    { sender: "sent", text: "Hello, where is your booth located at the Cloud Computing Workshop?" },
+    { 
+      sender: "received", 
+      text: "Hello, here is a pic of our booth at the AI Conference.", 
+      imageUrl: "images/gettyimages-2159420495-640x640.jpg" // Local image path
+    },
+    { sender: "sent", text: "Thanks for sharing!, I'll be there" },
+  ],
+},
+        
+  2: {
+    title: "Green Solutions",
+    messages: [
+      { sender: "sent", text: "Hello, I loved your presentation at the Green Energy Expo. Will you be at any upcoming events?" },
+      { sender: "received", text: "Thank you! We'll be presenting at the Cloud Computing Workshop next month." },
+      { sender: "sent", text: "I'll make sure to attend. Looking forward to it!" },
+    ],
+  },
+  3: {
+    title: "BrightIdeas",
+    messages: [
+      { sender: "sent", text: "Will BrightIdeas have a booth at the AI Conference?" },
+      { sender: "received", text: "Yes, well be showcasing our new line of AI-powered home solutions." },
+      { sender: "sent", text: "Exciting! I'll stop by to learn more about your products." },
+    ],
+  },
+  4: {
+    title: "Future Systems",
+    messages: [
+      { sender: "sent", text: "I wanted to thank you for the insights you shared during the Tech Summit 2024. Are the slides available?" },
+      { sender: "received", text: "You're welcome! Yes, weve uploaded them to our website under the 'Resources' section." },
+      { sender: "sent", text: "Perfect. Ill check them out later today." },
+    ],
+  },
+  5: {
+    title: "Innovatech",
+    messages: [
+      { sender: "sent", text: "Hey, is Innovatech planning any special sessions during the AI Conference?" },
+      { sender: "received", text: "Yes, we have a breakout session on 'The Future of AI in Healthcare.' Make sure to register early!" },
+      { sender: "sent", text: "Will do. Thanks for the heads-up!" },
+    ],
+  },
+  6: {
+    title: "EcoTech",
+    messages: [
+      { sender: "sent", text: "Hi, will EcoTech be presenting any new products at the Green Energy Expo?" },
+      { sender: "received", text: "We already did last month. At the AI Conference, well be discussing AI in sustainability." },
+      { sender: "sent", text: "Sounds fascinating. I'll try to attend that session!" },
+    ],
+  },
+  7: {
+    title: "TechCorp",
+    messages: [
+      { sender: "sent", text: "Hi, are you attending the AI Conference next week?" },
+      { sender: "received", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
+      { sender: "sent", text: "Great! I'll stop by your booth to discuss partnerships." },
+      { sender: "received", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
+    ],
+  },
+ 
+      };
 
-      // Go back to the upcoming events page
-      function goBackToMessages() {
-        document.getElementById("message-details").style.display = "none";
-        document.getElementById("messages").style.display = "block";
-      }
+      function loadThreads() {
+    threadsContainer.innerHTML = "";
+    for (const threadId in messageThreads) {
+        const thread = messageThreads[threadId];
+        
+        const threadDiv = document.createElement("div");
+        threadDiv.classList.add("thread");
+        threadDiv.onclick = () => showConversation(threadId);
+
+        threadDiv.innerHTML = `<p class="thread-name">${thread.title}</p>`;
+        threadsContainer.appendChild(threadDiv);
+    }
+}
+
+// Function to show full conversation with image support
+function showConversation(threadId) {
+    const thread = messageThreads[threadId];
+    conversationHeader.textContent = thread.title;
+    messagesContainer.innerHTML = ""; // Clear previous messages
+
+    thread.messages.forEach((msg) => {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", msg.sender);
+
+        // Check if the message contains an image URL
+        if (msg.imageUrl) {
+            const img = document.createElement("img");
+            img.src = msg.imageUrl; // Local image path
+            img.alt = "Message Image"; // Alternative text for the image
+            img.classList.add("message-image"); // Optionally style the image with CSS
+            messageDiv.appendChild(img); // Append image to message div
+        }
+
+        // Add the text message
+        const messageText = document.createElement("p");
+        messageText.textContent = msg.text;
+        messageDiv.appendChild(messageText);
+
+        // Append the message to the messages container
+        messagesContainer.appendChild(messageDiv);
+    });
+
+    // Show conversation and hide threads
+    document.getElementById("threads").style.display = "none";
+    conversationContainer.style.display = "block";
+}
+
+// Function to return to threads
+function goBack() {
+    conversationContainer.style.display = "none";
+    document.getElementById("threads").style.display = "block";
+}
+
+// Load threads on page load
+loadThreads();
     </script>
   </body>
 </html>

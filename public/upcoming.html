@@ -1,273 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Upcoming Events</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="logo">Event Logo</div>
-        <nav class="nav-menu">
-          <a class="nav-item" href="dashboard.html">Dashboard</a>
-          <a class="nav-item active" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
-          <a class="nav-item" href="messages.html">Messages</a>
-          <a class="nav-item" href="profile.html">Profile</a>
-        </nav>
-        <div class="bottom-menu">
-          <button
-            class="nav-item"
-            data-page="settings"
-            onclick="showPage('settings')"
-          >
-            Settings
-          </button>
-          <button class="nav-item" id="logout">Log Out</button>
-        </div>
-      </aside>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="header">
-          <h1>Upcoming Events</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upcoming Events</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-          <div class="search-bar">
-            <input
-              type="text"
-              id="search-bar"
-              placeholder="Search Events..."
-              oninput="searchEvents()"
-            />
-          </div>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">TB04</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item active" href="upcoming.html">Upcoming Events</a>
+        <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+        <a class="nav-item" href="messages.html">Messages</a>
+        <a class="nav-item" href="profile.html">Profile</a>
+      </nav>
+      <div class="bottom-menu">
+        <a class="nav-item" href="aboutUs.html">About Us</a>
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+          Settings
+        </button>
+        <button class="nav-item" id="logout">Log Out</button>
+      </div>
+    </aside>
 
-          <div class="profile-info">
-            <a href="profile.html">
-              <div class="profile-text">
-                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-                <p class="profile-email" id="profile-email">
-                  [Email Placeholder]
-                </p>
-              </div>
-              <div class="profile-pic" id="profile-pic">[Initials]</div>
-            </a>
-          </div>
-        </header>
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Upcoming Events</h1>
 
-        <div class="slideshow-container">
-          <div class="advertisements fade">
-            <div class="number-text">1 / 3</div>
-            <img src="images/img1.jpg" />
-            <div class="caption">Caption One</div>
-          </div>
-
-          <div class="advertisements fade">
-            <div class="number-text">2 / 3</div>
-            <img src="images/img2.jpg" />
-            <div class="caption">Caption Two</div>
-          </div>
-
-          <div class="advertisements fade">
-            <div class="number-text">3 / 3</div>
-            <img src="images/img3.jpg" />
-            <div class="caption">Caption Three</div>
-          </div>
-
-          <!-- Next and previous buttons -->
-          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-          <a class="next" onclick="plusSlides(1)">&#10095;</a>
-        </div>
-        <br />
-
-        <div style="text-align: center">
-          <span class="dot" onclick="currentSlide(1)"></span>
-          <span class="dot" onclick="currentSlide(2)"></span>
-          <span class="dot" onclick="currentSlide(3)"></span>
+        <div class="search-bar">
+          <input type="text" id="search-bar" placeholder="Search Events..." oninput="searchEvents()" />
         </div>
 
-        <!-- Upcoming Events Section -->
-        <div class="events-section">
-          <div class="events-container" id="events-container">
-            <!-- Event 1 -->
-            <a
-              href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C&tickets=241"
-              class="event-card"
-            >
-              <img
-                src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg"
-                alt="Event Banner"
-                class="event-banner"
-              />
-              <div class="event-info">
-                <h3 class="event-name">Tech Conference 2024</h3>
-                <p class="event-organiser">
-                  Organised by: <strong>Innovate Hub</strong>
-                </p>
-              </div>
-            </a>
-
-            <!-- Event 2 -->
-            <a
-              href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z&tickets=271"
-              class="event-card"
-            >
-              <img
-                src="images/pexels-photo-3695238.jpeg"
-                alt="Event Banner"
-                class="event-banner"
-              />
-              <div class="event-info">
-                <h3 class="event-name">InnovateX</h3>
-                <p class="event-organiser">
-                  Organised by: <strong>Creative Minds</strong>
-                </p>
-              </div>
-            </a>
-
-            <!-- Event 3 -->
-            <a
-              href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3&tickets=174"
-              class="event-card"
-            >
-              <img
-                src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif"
-                alt="Event Banner"
-                class="event-banner"
-              />
-              <div class="event-info">
-                <h3 class="event-name">Digital Dynamics Expo</h3>
-                <p class="event-organiser">
-                  Organised by: <strong>Global Leaders</strong>
-                </p>
-              </div>
-            </a>
-          </div>
+        <div class="filter-bar">
+          <select id="filter-dropdown" onchange="filterEvents()">
+            <option value="all">All Events</option>
+            <option value="Innovate Hub">Innovate Hub</option>
+            <option value="Creative Minds">Creative Minds</option>
+            <option value="Global Leaders">Global Leaders</option>
+          </select>
         </div>
-      </main>
-    </div>
 
-    <!-- Include Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
-    <script>
-      // Firebase Configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-        authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL:
-          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kv6002-team-project",
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-        messagingSenderId: "1004655205327",
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH",
-      };
+        <div class="profile-info">
+          <a href="profile.html">
+            <div class="profile-text">
+              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+              <p class="profile-email" id="profile-email">
+                [Email Placeholder]
+              </p>
+            </div>
+            <div class="profile-pic" id="profile-pic">[Initials]</div>
+          </a>
+        </div>
+      </header>
 
-      // Initialise Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.database();
+      <div class="slideshow-container">
+        <div class="advertisements fade">
+          <div class="number-text">1 / 3</div>
+          <img src="images/img1.jpg" />
+          <div class="caption">New Event 1</div>
+        </div>
 
-      // Update Profile Info
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          const profileNameEl = document.getElementById("profile-name");
-          const profileEmailEl = document.getElementById("profile-email");
-          const profilePicEl = document.getElementById("profile-pic");
+        <div class="advertisements fade">
+          <div class="number-text">2 / 3</div>
+          <img src="images/img2.jpg" />
+          <div class="caption">New Event 2</div>
+        </div>
 
-          // Dynamically update profile information
-          profileNameEl.textContent = user.displayName || "[Name not set]";
-          profileEmailEl.textContent = user.email;
+        <div class="advertisements fade">
+          <div class="number-text">3 / 3</div>
+          <img src="images/img3.jpg" />
+          <div class="caption">New Event 3</div>
+        </div>
 
-          // Set profile initials (e.g., "AP" for Alex Pereira)
-          if (user.displayName) {
-            const initials = user.displayName
-              .split(" ")
-              .map((word) => word.charAt(0))
-              .join("")
-              .toUpperCase();
-            profilePicEl.textContent = initials;
-          } else {
-            profilePicEl.textContent = "?";
-          }
+        <!-- Next and previous buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+      </div>
+      <br />
+
+      <div style="text-align: center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+      </div>
+
+      <!-- Upcoming Events Section -->
+      <div class="events-section">
+        <div class="events-container" id="events-container">
+          <!-- Event 1 -->
+          <a href="event.html?name=Tech+Conference+2024&organiser=Innovate+Hub&banner=images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg&description=Join+industry+leaders+for+an+exciting+conference+on+the+future+of+technology.&date=2024-03-15&time=10:00,16:00&vendors=Company+A,Company+B,Company+C&tickets=241"
+            class="event-card">
+            <img src="images/360_F_277309825_h8RvZkoyBGPDocMtippdfe3497xTrOXO.jpg" alt="Event Banner"
+              class="event-banner" />
+            <div class="event-info">
+              <h3 class="event-name">Tech Conference 2024</h3>
+              <p class="event-organiser">
+                Organised by: <strong>Innovate Hub</strong>
+              </p>
+            </div>
+          </a>
+
+          <!-- Event 2 -->
+          <a href="event.html?name=InnovateX&organiser=Creative+Minds&banner=images/pexels-photo-3695238.jpeg&description=Explore+the+best+of+art+and+design+at+this+amazing+expo.&date=2024-04-10&time=12:00,18:00&vendors=Vendor+X,Vendor+Y,Vendor+Z&tickets=271"
+            class="event-card">
+            <img src="images/pexels-photo-3695238.jpeg" alt="Event Banner" class="event-banner" />
+            <div class="event-info">
+              <h3 class="event-name">InnovateX</h3>
+              <p class="event-organiser">
+                Organised by: <strong>Creative Minds</strong>
+              </p>
+            </div>
+          </a>
+
+          <!-- Event 3 -->
+          <a href="event.html?name=Digital+Dynamics+Expo&organiser=Global+Leaders&banner=images/stylish-hexagonal-line-pattern-background_1017-19742.avif&description=Meet+top+business+executives+to+discuss+the+future+of+the+industry.&date=2024-05-20&time=9:00,15:00&vendors=Vendor+1,Vendor+2,Vendor+3&tickets=174"
+            class="event-card">
+            <img src="images/stylish-hexagonal-line-pattern-background_1017-19742.avif" alt="Event Banner"
+              class="event-banner" />
+            <div class="event-info">
+              <h3 class="event-name">Digital Dynamics Expo</h3>
+              <p class="event-organiser">
+                Organised by: <strong>Global Leaders</strong>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Include Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+      authDomain: "kv6002-team-project.firebaseapp.com",
+      databaseURL:
+        "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "kv6002-team-project",
+      storageBucket: "kv6002-team-project.firebasestorage.app",
+      messagingSenderId: "1004655205327",
+      appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+      measurementId: "G-T290LZMGGH",
+    };
+
+    // Initialise Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // Update Profile Info
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const profileNameEl = document.getElementById("profile-name");
+        const profileEmailEl = document.getElementById("profile-email");
+        const profilePicEl = document.getElementById("profile-pic");
+
+        // Dynamically update profile information
+        profileNameEl.textContent = user.displayName || "[Name not set]";
+        profileEmailEl.textContent = user.email;
+
+        // Set profile initials (e.g., "AP" for Alex Pereira)
+        if (user.displayName) {
+          const initials = user.displayName
+            .split(" ")
+            .map((word) => word.charAt(0))
+            .join("")
+            .toUpperCase();
+          profilePicEl.textContent = initials;
         } else {
-          // Redirect to login page if no user is logged in
-          window.location.href = "index.html";
+          profilePicEl.textContent = "?";
+        }
+      } else {
+        // Redirect to login page if no user is logged in
+        window.location.href = "index.html";
+      }
+    });
+
+    // Log Out
+    document.getElementById("logout").addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "index.html"; // Redirect to login page
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
+    });
+
+    // Function to search and filter events
+    function searchEvents() {
+      const searchQuery = document
+        .getElementById("search-bar")
+        .value.toLowerCase();
+      const eventCards = document.querySelectorAll(".event-card");
+
+      eventCards.forEach((card) => {
+        const eventNameElement = card.querySelector(".event-name");
+        const eventName = eventNameElement
+          ? eventNameElement.textContent.toLowerCase()
+          : "";
+
+        if (eventName.includes(searchQuery)) {
+          card.style.display = "block"; // Show the event
+        } else {
+          card.style.display = "none"; // Hide the event
         }
       });
+    }
 
-      // Log Out
-      document.getElementById("logout").addEventListener("click", async () => {
-        try {
-          await auth.signOut();
-          window.location.href = "index.html"; // Redirect to login page
-        } catch (error) {
-          console.error("Error logging out:", error);
+    function filterEvents() {
+      const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+      const filterValue = document.getElementById("filter-dropdown").value;
+
+      const eventCards = document.querySelectorAll(".event-card");
+
+      eventCards.forEach((card) => {
+        const eventNameElement = card.querySelector(".event-name");
+        const eventOrganiserElement = card.querySelector(".event-organiser strong");
+
+        const eventName = eventNameElement
+          ? eventNameElement.textContent.toLowerCase()
+          : "";
+        const eventOrganiser = eventOrganiserElement
+          ? eventOrganiserElement.textContent
+          : "";
+
+        // hceck if the event matches the search query and filter value
+        const matchesSearch = eventName.includes(searchQuery);
+        const matchesFilter =
+          filterValue === "all" || eventOrganiser === filterValue;
+
+        if (matchesSearch && matchesFilter) {
+          card.style.display = "block"; // Show the event
+        } else {
+          card.style.display = "none"; // Hide the event
         }
       });
+    }
 
-      // Function to search and filter events
-      function searchEvents() {
-        const searchQuery = document
-          .getElementById("search-bar")
-          .value.toLowerCase();
-        const eventCards = document.querySelectorAll(".event-card");
+    //attach the filterEvents function to the search bar input
+    document.getElementById("search-bar").addEventListener("input", filterEvents);
 
-        eventCards.forEach((card) => {
-          const eventNameElement = card.querySelector(".event-name");
-          const eventName = eventNameElement
-            ? eventNameElement.textContent.toLowerCase()
-            : "";
 
-          if (eventName.includes(searchQuery)) {
-            card.style.display = "block"; // Show the event
-          } else {
-            card.style.display = "none"; // Hide the event
-          }
-        });
+    // "advertisement"slideshow function
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      let i;
+      let slides = document.getElementsByClassName("advertisements");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {
+        slideIndex = 1;
+      }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 7000); // Change image every 7 seconds
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const eventsContainer = document.getElementById("events-container");
+
+      if (!eventsContainer) {
+        console.error("Error: 'events-container' element not found!");
+        return;
       }
 
-      let slideIndex = 0;
-      showSlides();
+      try {
+        const eventsRef = firebase.database().ref("events");
+        const snapshot = await eventsRef.once("value");
+        const events = snapshot.val();
 
-      function showSlides() {
-        let i;
-        let slides = document.getElementsByClassName("advertisements");
-        for (i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-        }
-        slideIndex++;
-        if (slideIndex > slides.length) {
-          slideIndex = 1;
-        }
-        slides[slideIndex - 1].style.display = "block";
-        setTimeout(showSlides, 7000); // Change image every 7 seconds
-      }
+        Object.keys(events).forEach((key) => {
+          const event = events[key];
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        const eventsContainer = document.getElementById("events-container");
-
-        if (!eventsContainer) {
-          console.error("Error: 'events-container' element not found!");
-          return;
-        }
-
-        try {
-          const eventsRef = firebase.database().ref("events");
-          const snapshot = await eventsRef.once("value");
-          const events = snapshot.val();
-
-          // Populate the container with events
-          Object.keys(events).forEach((key) => {
-            const event = events[key];
-
-            const eventCard = `
+          const eventCard = `
           <a href="event.html?eventId=${encodeURIComponent(key)}" class="event-card">
           <img src="${event.banner}" alt="${event.name}" class="event-banner" />
           <div class="event-info">
@@ -277,12 +299,13 @@
           </a>
       `;
 
-            eventsContainer.insertAdjacentHTML("beforeend", eventCard);
-          });
-        } catch (error) {
-          console.error("Error loading events:", error);
-        }
-      });
-    </script>
-  </body>
+          eventsContainer.insertAdjacentHTML("beforeend", eventCard);
+        });
+      } catch (error) {
+        console.error("Error loading events:", error);
+      }
+    });
+  </script>
+</body>
+
 </html>

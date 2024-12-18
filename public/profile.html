@@ -1,151 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="logo">Event Logo</div>
-        <nav class="nav-menu">
-          <a class="nav-item" href="dashboard.html">Dashboard</a>
-          <a class="nav-item" href="upcoming.html">Upcoming Events</a>
-          <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
-          <a class="nav-item" href="messages.html">Messages</a>
-          <a class="nav-item active" href="profile.html">Profile</a>
-        </nav>
-        <div class="bottom-menu">
-          <button
-            class="nav-item"
-            data-page="settings"
-            onclick="showPage('settings')"
-          >
-            Settings
-          </button>
-          <button class="nav-item" id="logout">Log Out</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">TB04</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="upcoming.html">Upcoming Events</a>
+        <a class="nav-item" href="bookmarked.html">Bookmarked Events</a>
+        <a class="nav-item" href="messages.html">Messages</a>
+        <a class="nav-item active" href="profile.html">Profile</a>
+      </nav>
+      <div class="bottom-menu">
+        <a class="nav-item" href="aboutUs.html">About Us</a>
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+          Settings
+        </button>
+        <button class="nav-item" id="logout">Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="header">
+        <h1>Profile</h1>
+
+        <div class="profile-info">
+          <a href="profile.html">
+            <div class="profile-text">
+              <p class="profile-name" id="profile-name">[Name Placeholder]</p>
+              <p class="profile-email" id="profile-email">
+                [Email Placeholder]
+              </p>
+            </div>
+            <div class="profile-pic" id="profile-pic">[Initials]</div>
+          </a>
         </div>
-      </aside>
+      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="header">
-          <h1>Profile</h1>
-
-          <div class="profile-info">
-            <a href="profile.html">
-              <div class="profile-text">
-                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-                <p class="profile-email" id="profile-email">
-                  [Email Placeholder]
-                </p>
-              </div>
-              <div class="profile-pic" id="profile-pic">[Initials]</div>
-            </a>
-          </div>
-        </header>
-
-        <section id="profile-details" class="profile-section">
-          <div id="profile-banner-container">
-            <img id="profile-banner" src="" alt="banner"/>
-          </div>
-          <div id="profile-pic-container">
-            <img id="profile-pic-detail" src="" />
-          </div>
+      <section id="profile-details" class="profile-section">
+        <div id="profile-banner-container">
+          <img id="profile-banner" src="" alt="banner" />
+        </div>
+        <div id="profile-pic-container">
+          <img id="profile-pic-detail" src="" />
+        </div>
+        <p>
+          <strong><span id="profile-name-detail">[Name]</span></strong>
+        </p>
+        <div id="profile-bio-container">
           <p>
-            <strong><span id="profile-name-detail">[Name]</span></strong>
+            <span id="profile-bio">[Bio]</span>
           </p>
-          <div id="profile-bio-container">
-            <p>
-              <span id="profile-bio">[Bio]</span>
-            </p>
-          </div>
-          <div id="profile-information">
-            <p>
-              Email:
-              <strong><span id="profile-email-detail">[Email]</span></strong>
-            </p>
-            <p>
-              Upcoming Events:
-            </p>
-            <strong><ul id="upcoming-events-list">
+        </div>
+        <div id="profile-information">
+          <p>
+            Email:
+            <strong><span id="profile-email-detail">[Email]</span></strong>
+          </p>
+          <p>
+            Upcoming Events:
+          </p>
+          <strong>
+            <ul id="upcoming-events-list">
               <!-- Events will be dynamically loaded here -->
-            </ul></strong>
-          </div>
-        </section>
+            </ul>
+          </strong>
+        </div>
+      </section>
 
-        <!-- Editable Profile Form -->
-        <section id="edit-profile" class="profile-section">
-          <button onclick="showForm()">Edit Profile</button>
-          <button id="delete-account">Delete Account</button>
-          <form id="profile-form" style="display: none;">
+      <!-- Editable Profile Form -->
+      <section id="edit-profile" class="profile-section">
+        <button onclick="showForm()">Edit Profile</button>
+        <button id="delete-account">Delete Account</button>
+        <form id="profile-form" style="display: none;">
           <h2>EDIT PROFILE</h2>
-            <label for="edit-name">Name:</label>
-            <input
-              type="text"
-              id="edit-name"
-              name="name"
-              placeholder="Your full name"
-              required
-            />
-            <label for="edit-bio">Bio:</label> </br>
-            <textarea
-              id="edit-bio"
-              name="bio"
-              placeholder="Write a short bio..."
-            ></textarea> </br></br>
-            <label for="edit-banner-file">Upload banner:</label>
-            <input type="file" id="edit-banner-file" accept="image/*" />
-            <label for="edit-profile-pic-file">Upload Profile Picture:</label>
-  <input type="file" id="edit-profile-pic-file" accept="image/*" />
-  </br></br>
-            <button type="submit">Save Changes</button>
-          </form>
-        </section>
-      </main>
-    </div>
+          <label for="edit-name">Name:</label>
+          <input type="text" id="edit-name" name="name" placeholder="Your full name" required />
+          <label for="edit-bio">Bio:</label> </br>
+          <textarea id="edit-bio" name="bio" placeholder="Write a short bio..."></textarea> </br></br>
+          <label for="edit-banner-file">Upload banner:</label>
+          <input type="file" id="edit-banner-file" accept="image/*" />
+          <label for="edit-profile-pic-file">Upload Profile Picture:</label>
+          <input type="file" id="edit-profile-pic-file" accept="image/*" />
+          </br></br>
+          <button type="submit">Save Changes</button>
+        </form>
+      </section>
+    </main>
+  </div>
 
-    <!-- Include Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+  <!-- Include Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
 
-    <script>
-      // Firebase Configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-        authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL:
-          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kv6002-team-project",
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-        messagingSenderId: "1004655205327",
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH",
-      };
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
+      authDomain: "kv6002-team-project.firebaseapp.com",
+      databaseURL:
+        "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "kv6002-team-project",
+      storageBucket: "kv6002-team-project.firebasestorage.app",
+      messagingSenderId: "1004655205327",
+      appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
+      measurementId: "G-T290LZMGGH",
+    };
 
-      // Initialise Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.database();
+    // Initialise Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
 
-      function showForm() {
-        document.getElementById('profile-form').style.display = 'block';
+    function showForm() {
+      document.getElementById('profile-form').style.display = 'block';
     }
 
-      document.getElementById("delete-account").addEventListener("click", async () => {
-        const confirmation = confirm(
-          "Are you sure you want to delete your account? This action cannot be undone."
-        );
+    document.getElementById("delete-account").addEventListener("click", async () => {
+      const confirmation = confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      );
 
-        if (!confirmation) return;
-        const user = auth.currentUser;
+      if (!confirmation) return;
+      const user = auth.currentUser;
 
-        if (user) {
+      if (user) {
         try {
           const userID = user.uid;
 
@@ -183,191 +174,190 @@
       } else {
         alert("No user is currently signed in.");
       }
-      });
+    });
 
-      // Get elements
-      const profileNameEl = document.getElementById("profile-name");
-      const profileEmailEl = document.getElementById("profile-email");
-      const profilePicEl = document.getElementById("profile-pic");
-      const profileBannerEl = document.getElementById("profile-banner");
-      const bannerFileInput = document.getElementById("edit-banner-file");
-      const profilePicFileInput = document.getElementById("edit-profile-pic-file");
-      const profileEventsEl = document.getElementById("profile-events");
-      const profileNameDetailEl = document.getElementById(
-        "profile-name-detail"
-      );
-      const profileEmailDetailEl = document.getElementById(
-        "profile-email-detail"
-      );
-      const profileForm = document.getElementById("profile-form");
+    // Get elements
+    const profileNameEl = document.getElementById("profile-name");
+    const profileEmailEl = document.getElementById("profile-email");
+    const profilePicEl = document.getElementById("profile-pic");
+    const profileBannerEl = document.getElementById("profile-banner");
+    const bannerFileInput = document.getElementById("edit-banner-file");
+    const profilePicFileInput = document.getElementById("edit-profile-pic-file");
+    const profileEventsEl = document.getElementById("profile-events");
+    const profileNameDetailEl = document.getElementById(
+      "profile-name-detail"
+    );
+    const profileEmailDetailEl = document.getElementById(
+      "profile-email-detail"
+    );
+    const profileForm = document.getElementById("profile-form");
 
-      // Update Profile Info
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          // Dynamically update profile information
-          profileNameEl.textContent = user.displayName || "[Name not set]";
-          profileEmailEl.textContent = user.email;
+    // Update Profile Info
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // Dynamically update profile information
+        profileNameEl.textContent = user.displayName || "[Name not set]";
+        profileEmailEl.textContent = user.email;
 
-          // Set profile initials (e.g., "AP" for Alex Pereira)
-          if (user.displayName) {
-            const initials = user.displayName
-              .split(" ")
-              .map((word) => word.charAt(0))
-              .join("")
-              .toUpperCase();
-            profilePicEl.textContent = initials;
+        // Set profile initials (e.g., "AP" for Alex Pereira)
+        if (user.displayName) {
+          const initials = user.displayName
+            .split(" ")
+            .map((word) => word.charAt(0))
+            .join("")
+            .toUpperCase();
+          profilePicEl.textContent = initials;
+        } else {
+          profilePicEl.textContent = "?";
+        }
+
+        const userId = user.uid;
+        const userRef = db.ref(`users/${userId}`);
+        const eventsRef = db.ref(`users/${userId}/upcomingEvents`);
+        const eventsList = document.getElementById("upcoming-events-list");
+
+        userRef.on("value", (snapshot) => {
+          const userData = snapshot.val();
+          const { name, email, banner, upcomingEvents, bio, profilePicture } = userData || {};
+
+          // Display user info on the profile page
+          profileNameEl.textContent = name || "[Name not set]";
+          profileEmailEl.textContent = email || "[Email not set]";
+          profileNameDetailEl.textContent = name || "[Name not set]";
+          profileEmailDetailEl.textContent = email || "[Email not set]";
+          profilePicEl.textContent = name
+            ? name.charAt(0).toUpperCase()
+            : "?";
+          if (profilePicture) {
+            document.getElementById("profile-pic-detail").src = profilePicture || "images/default-profile-picture.png";
           } else {
-            profilePicEl.textContent = "?";
+                document.getElementById("profile-pic-detail").src = "images/default-profile-pic.jpg";
+            }
+          profileBannerEl.src = banner || "images/default-profile-banner.jpg"; // ues default image if no banner
+          document.getElementById("profile-bio").textContent = bio || "[No bio]";
+
+          eventsRef.on("value", (snapshot) => {
+            eventsList.innerHTML = ""; // Clear the list first
+            const events = snapshot.val();
+
+            if (events) {
+              Object.values(events).forEach((event) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${event.name} - ${event.date}`;
+                eventsList.appendChild(listItem);
+              });
+            } else {
+              eventsList.innerHTML = "<li>No upcoming events booked.</li>";
+            }
+          });
+
+          // Pre-fill the edit form with user data
+          if (document.getElementById("edit-name")) {
+            document.getElementById("edit-name").value = name || "";
+          }
+          if (document.getElementById("edit-bio")) {
+            document.getElementById("edit-bio").value = bio || "";
           }
 
-          const userId = user.uid;
-          const userRef = db.ref(`users/${userId}`);
-          const eventsRef = db.ref(`users/${userId}/upcomingEvents`);
-      const eventsList = document.getElementById("upcoming-events-list");
-
-          userRef.on("value", (snapshot) => {
-            const userData = snapshot.val();
-            const { name, email, banner, upcomingEvents, bio, profilePicture } = userData || {};
-
-            // Display user info on the profile page
-            profileNameEl.textContent = name || "[Name not set]";
-            profileEmailEl.textContent = email || "[Email not set]";
-            profileNameDetailEl.textContent = name || "[Name not set]";
-            profileEmailDetailEl.textContent = email || "[Email not set]";
-            profilePicEl.textContent = name
-              ? name.charAt(0).toUpperCase()
-              : "?";
-              if (profilePicture) {
-    document.getElementById("profile-pic-detail").src = profilePicture || "images/profilePicExample.png";
-  }
-            profileBannerEl.src = banner || "images/default-profile-banner.jpg"; // ues default image if no banner
-              document.getElementById("profile-bio").textContent = bio || "[No bio]";
-
-              eventsRef.on("value", (snapshot) => {
-        eventsList.innerHTML = ""; // Clear the list first
-        const events = snapshot.val();
-
-        if (events) {
-          Object.values(events).forEach((event) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = `${event.name} - ${event.date}`;
-            eventsList.appendChild(listItem);
-          });
-        } else {
-          eventsList.innerHTML = "<li>No upcoming events booked.</li>";
-        }
-              });
-
-            // Pre-fill the edit form with user data
-            if (document.getElementById("edit-name")) {
-        document.getElementById("edit-name").value = name || "";
-      }
-      if (document.getElementById("edit-bio")) {
-        document.getElementById("edit-bio").value = bio || "";
-      }
-
-      if (Array.isArray(upcomingEvents)) {
-        if (document.getElementById("edit-events")) {
-          document.getElementById("edit-events").value = upcomingEvents.join(", ");
-        }
-      } else if (typeof upcomingEvents === "object" && upcomingEvents !== null) {
-        const eventsArray = Object.values(upcomingEvents);
-        if (document.getElementById("edit-events")) {
-          document.getElementById("edit-events").value = eventsArray.join(", ");
-        }
+          if (Array.isArray(upcomingEvents)) {
+            if (document.getElementById("edit-events")) {
+              document.getElementById("edit-events").value = upcomingEvents.join(", ");
+            }
+          } else if (typeof upcomingEvents === "object" && upcomingEvents !== null) {
+            const eventsArray = Object.values(upcomingEvents);
+            if (document.getElementById("edit-events")) {
+              document.getElementById("edit-events").value = eventsArray.join(", ");
+            }
+          } else {
+            // Handle null, undefined, or other unexpected types
+            if (document.getElementById("edit-events")) {
+              document.getElementById("edit-events").value = "";
+            }
+          }
+        });
       } else {
-        // Handle null, undefined, or other unexpected types
-        if (document.getElementById("edit-events")) {
-          document.getElementById("edit-events").value = "";
+        // Redirect to login page if no user is logged in
+        window.location.href = "index.html";
+      }
+    });
+
+    // Handle form submission to update profile
+    profileForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("edit-name").value.trim();
+      const bio = document.getElementById("edit-bio").value.trim();
+      const bannerFile = bannerFileInput.files[0];
+      const profilePicFile = profilePicFileInput.files[0];
+      const user = auth.currentUser;
+
+      if (user) {
+        const userId = user.uid;
+        const userRef = db.ref(`users/${userId}`);
+
+        let bannerBase64 = null;
+        let profilePicBase64 = null;
+
+        if (bannerFile) {
+          bannerBase64 = await fileToBase64(bannerFile);
+        }
+
+        if (profilePicFile) {
+          profilePicBase64 = await fileToBase64(profilePicFile);
+        }
+
+        const userSnapshot = await userRef.once('value');
+        const userData = userSnapshot.val();
+        const currentBio = userData ? userData.bio : "[No bio]"; // Get the current bio value or default
+
+        const updateData = {
+          name: name || userData?.name || "[Name not set]", 
+          bio: bio || currentBio || "[No bio]",
+        };
+
+        if (bannerBase64) {
+          updateData.banner = bannerBase64;
+        }
+        if (profilePicBase64) {
+          updateData.profilePicture = profilePicBase64;
+        }
+
+        try {
+          await userRef.update(updateData);
+
+          // Update Firebase Auth profile
+          await user.updateProfile({
+            displayName: name,
+          });
+
+          alert("Profile updated successfully!");
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          alert("Failed to update profile. Please try again.");
         }
       }
     });
-        } else {
-          // Redirect to login page if no user is logged in
-          window.location.href = "index.html";
-        }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result); // Convert to base64
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
       });
-
-      // Handle form submission to update profile
-      profileForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById("edit-name").value.trim();
-        const bio = document.getElementById("edit-bio").value.trim();
-        const bannerFile = bannerFileInput.files[0];
-        const profilePicFile = profilePicFileInput.files[0];
-        const user = auth.currentUser;
-
-        if (user) {
-          const userId = user.uid;
-          const userRef = db.ref(`users/${userId}`);
-
-          let bannerBase64 = null;
-          let profilePicBase64 = null;
-          
-          if (bannerFile ) {
-            bannerBase64 = await fileToBase64(bannerFile);
-          }
-
-          if (profilePicFile) {
-            profilePicBase64 = await fileToBase64(profilePicFile);
-          }
-
-          const userSnapshot = await userRef.once('value');
-    const userData = userSnapshot.val();
-    const currentBio = userData ? userData.bio : "[No bio]"; // Get the current bio value or default
-
-    const updateData = {
-      name,
-    };
-
-    // Only update bio if it's different from the current one
-    if (bio !== currentBio) {
-      updateData.bio = bio || currentBio; // If bio is empty, keep the current bio
     }
 
-    if (bannerBase64) {
-      updateData.banner = bannerBase64;
-    }
-    if (profilePicBase64) {
-      updateData.profilePicture = profilePicBase64;
-    }
+    // Log Out
+    document.getElementById("logout").addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "index.html"; // Redirect to login page
+      } catch (error) {
+        console.error("Error logging out:", error);
+      }
+    });
 
-    try {
-      await userRef.update(updateData);
+  </script>
+</body>
 
-      // Update Firebase Auth profile
-      await user.updateProfile({
-        displayName: name,
-      });
-
-      alert("Profile updated successfully!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again.");
-    }
-  }
-});
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result); // Convert to base64
-    reader.onerror = (error) => reject(error);
-    reader.readAsDataURL(file);
-  });
-}
-
-      // Log Out
-      document.getElementById("logout").addEventListener("click", async () => {
-        try {
-          await auth.signOut();
-          window.location.href = "index.html"; // Redirect to login page
-        } catch (error) {
-          console.error("Error logging out:", error);
-        }
-      });
-      
-    </script>
-  </body>
 </html>
