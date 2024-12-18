@@ -19,13 +19,7 @@
           <a class="nav-item" href="profile.html">Profile</a>
         </nav>
         <div class="bottom-menu">
-          <button
-            class="nav-item"
-            data-page="settings"
-            onclick="showPage('settings')"
-          >
-            Settings
-          </button>
+          <button class="nav-item" onclick="showPage('settings')">Settings</button>
           <button class="nav-item" id="logout">Log Out</button>
         </div>
       </aside>
@@ -34,132 +28,179 @@
       <main class="main-content">
         <header class="header">
           <h1>Messages</h1>
-
           <div class="profile-info">
             <a href="profile.html">
               <div class="profile-text">
-                <p class="profile-name" id="profile-name">[Name Placeholder]</p>
-                <p class="profile-email" id="profile-email">
-                  [Email Placeholder]
-                </p>
+                <p class="profile-name" id="profile-name">[Name]</p>
+                <p class="profile-email" id="profile-email">[Email]</p>
               </div>
               <div class="profile-pic" id="profile-pic">[Initials]</div>
             </a>
           </div>
         </header>
 
-        <section id="messages" class="messages-section">
-          <div class="messages-container">
-            <div
-              class="card"
-              onclick="showMessageDetails('message 1', 'This is a detailed description of message 1.')"
-            >
-              message 1
-            </div>
-            <div
-              class="card"
-              onclick="showMessageDetails('message 2', 'This is a detailed description of message 2.')"
-            >
-              message 2
-            </div>
-            <div
-              class="card"
-              onclick="showMessageDetails('message 3', 'This is a detailed description of message 3.')"
-            >
-              message 3
-            </div>
-          </div>
+        <!-- Threads View -->
+        <section id="threads" class="messages-section">
+          <div class="threads-container" id="threadsContainer"></div>
         </section>
 
-        <section
-          id="message-details"
-          class="messages-section"
-          style="display: none"
-        >
-          <!-- <h2>Event Details</h2> -->
-          <p id="message-title">message 1</p>
-          <p id="message-description">message 1 Description</p>
-          <button onclick="goBackToMessages()">Back to messages</button>
+        <!-- Conversation View -->
+        <section id="conversation" class="messages-section" style="display: none;">
+          <div class="conversation-container" id="conversationContainer">
+            <button class="back-btn" onclick="goBack()">← Back to Threads</button>
+            <h2 id="conversationHeader"></h2>
+            <div class="messages" id="messages"></div>
+          </div>
         </section>
       </main>
     </div>
 
-    <!-- Include Firebase SDKs -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 
     <script>
-      // Firebase Configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyARSTGWxJhOHWX9aRpqEU2S3StP50HnT_g",
-        authDomain: "kv6002-team-project.firebaseapp.com",
-        databaseURL:
-          "https://kv6002-team-project-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kv6002-team-project",
-        storageBucket: "kv6002-team-project.firebasestorage.app",
-        messagingSenderId: "1004655205327",
-        appId: "1:1004655205327:web:7bd8df6c2098ad399190ba",
-        measurementId: "G-T290LZMGGH",
+      const threadsContainer = document.getElementById("threadsContainer");
+      const conversationContainer = document.getElementById("conversation");
+      const messagesContainer = document.getElementById("messages");
+      const conversationHeader = document.getElementById("conversationHeader");
+
+      const messageThreads = {
+        1: {
+    title: "TechCorp",
+    messages: [
+      { sender: "received", text: "Hi, are you attending the AI Conference next week?" },
+      { sender: "sent", text: "Yes, we'll have a booth showcasing our latest AI tools. Hope to see you there!" },
+      { sender: "received", text: "Great! I'll stop by your booth to discuss partnerships." },
+    ],
+  },
+  2: {
+    title: "Green Solutions",
+    messages: [
+      { sender: "received", text: "Hello, I loved your presentation at the Green Energy Expo. Will you be at any upcoming events?" },
+      { sender: "sent", text: "Thank you! We'll be presenting at the Cloud Computing Workshop next month." },
+      { sender: "received", text: "I'll make sure to attend. Looking forward to it!" },
+    ],
+  },
+  3: {
+    title: "BrightIdeas",
+    messages: [
+      { sender: "received", text: "Will BrightIdeas have a booth at the AI Conference?" },
+      { sender: "sent", text: "Yes, well be showcasing our new line of AI-powered home solutions." },
+      { sender: "received", text: "Exciting! I'll stop by to learn more about your products." },
+    ],
+  },
+  4: {
+    title: "Future Systems",
+    messages: [
+      { sender: "received", text: "I wanted to thank you for the insights you shared during the Tech Summit 2024. Are the slides available?" },
+      { sender: "sent", text: "You're welcome! Yes, weve uploaded them to our website under the 'Resources' section." },
+      { sender: "received", text: "Perfect. Ill check them out later today." },
+    ],
+  },
+  5: {
+    title: "Innovatech",
+    messages: [
+      { sender: "received", text: "Hey, is Innovatech planning any special sessions during the AI Conference?" },
+      { sender: "sent", text: "Yes, we have a breakout session on 'The Future of AI in Healthcare.' Make sure to register early!" },
+      { sender: "received", text: "Will do. Thanks for the heads-up!" },
+    ],
+  },
+  6: {
+    title: "EcoTech",
+    messages: [
+      { sender: "received", text: "Hi, will EcoTech be presenting any new products at the Green Energy Expo?" },
+      { sender: "sent", text: "We already did last month. At the AI Conference, well be discussing AI in sustainability." },
+      { sender: "received", text: "Sounds fascinating. I'll try to attend that session!" },
+    ],
+  },
+  7: {
+    title: "NextGen",
+    messages: [
+      { sender: "received", text: "Hello, will NextGen's VR platform be showcased at the AI Conference?" },
+      { sender: "sent", text: "Yes, we're hosting a live demo during the keynote session. Make sure to join us!" },
+      { sender: "received", text: "Im definitely adding it to my agenda." },
+    ],
+  },
+  8: {
+    title: "BlueSky Innovations",
+    messages: [
+      { sender: "received", text: "Are you offering any workshops at the Cloud Computing Workshop?" },
+      { sender: "sent", text: "Yes, we have a hands-on workshop on 'Advanced Cloud Security Practices.'" },
+      { sender: "received", text: "Sounds amazing. Is registration still open?" },
+      { sender: "sent", text: "Yes, but spots are limited, so register soon!" },
+    ],
+  },
+  9: {
+    title: "CloudNet",
+    messages: [
+      { sender: "received", text: "Hi, are there any discounts available for CloudNet services during the Cloud Computing Workshop?" },
+      { sender: "sent", text: "Yes, were offering exclusive discounts to attendees. Visit our booth for details!" },
+      { sender: "received", text: "Will do! Thanks for the info." },
+    ],
+  },
+  10: {
+    title: "QuantumWorks",
+    messages: [
+      { sender: "received", text: "Hello, will QuantumWorks be showcasing its quantum computing platform at the AI Conference?" },
+      { sender: "sent", text: "Yes, and were also hosting a panel on 'Quantum AI in the Real World.'" },
+      { sender: "received", text: "Ill definitely attend the panel. Thanks for sharing!" },
+    ],
+  },
+  11: {
+    title: "Solaris",
+    messages: [
+      { sender: "received", text: "Hi, I wanted to ask if Solaris is hosting any talks during the Green Energy Expo?" },
+      { sender: "sent", text: "Yes, we hosted a talk on 'Renewable Energy Storage Solutions.' Were you able to attend?" },
+      { sender: "received", text: "I missed it. Are recordings available?" },
+      { sender: "sent", text: "Yes, theyll be uploaded to the event's website this week." },
+    ],
+  },
+  12: {
+    title: "Alpha Dynamics",
+    messages: [
+      { sender: "received", text: "Hi, will Alpha Dynamics be sponsoring any sessions at the Cloud Computing Workshop?" },
+      { sender: "sent", text: "Yes, were sponsoring the keynote on 'Scaling Infrastructure in the Cloud.' Don't miss it!" },
+      { sender: "received", text: "Sounds great. Ill be there!" },
+    ],
+  },
       };
 
-      // Initialise Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
+      function loadThreads() {
+        threadsContainer.innerHTML = "";
+        for (const threadId in messageThreads) {
+          const thread = messageThreads[threadId];
+          const threadDiv = document.createElement("div");
+          threadDiv.classList.add("thread");
+          threadDiv.onclick = () => showConversation(threadId);
 
-      // Update Profile Info
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          const profileNameEl = document.getElementById("profile-name");
-          const profileEmailEl = document.getElementById("profile-email");
-          const profilePicEl = document.getElementById("profile-pic");
-
-          profileNameEl.textContent = user.displayName || "[Name not set]";
-          profileEmailEl.textContent = user.email;
-
-          if (user.displayName) {
-            const initials = user.displayName
-              .split(" ")
-              .map((word) => word.charAt(0))
-              .join("")
-              .toUpperCase();
-            profilePicEl.textContent = initials;
-          } else {
-            profilePicEl.textContent = "?";
-          }
-        } else {
-          window.location.href = "index.html";
+          threadDiv.innerHTML = `<p class="thread-name">${thread.title}</p>`;
+          threadsContainer.appendChild(threadDiv);
         }
-      });
-
-      // Log Out
-      document.getElementById("logout").addEventListener("click", async () => {
-        try {
-          await auth.signOut();
-          window.location.href = "index.html"; // Redirect to login page
-        } catch (error) {
-          console.error("Error logging out:", error);
-        }
-      });
-
-      // Show event details
-      function showMessageDetails(title, description) {
-        // Update event details
-        document.getElementById("message-title").textContent = title;
-        document.getElementById("message-description").textContent =
-          description;
-
-        // Hide the upcoming events page
-        document.getElementById("messages").style.display = "none";
-
-        // Show the event details page
-        document.getElementById("message-details").style.display = "block";
       }
 
-      // Go back to the upcoming events page
-      function goBackToMessages() {
-        document.getElementById("message-details").style.display = "none";
-        document.getElementById("messages").style.display = "block";
+      function showConversation(threadId) {
+        const thread = messageThreads[threadId];
+        conversationHeader.textContent = thread.title;
+        messagesContainer.innerHTML = "";
+
+        thread.messages.forEach((msg) => {
+          const messageDiv = document.createElement("div");
+          messageDiv.classList.add("message", msg.sender);
+          messageDiv.textContent = msg.text;
+          messagesContainer.appendChild(messageDiv);
+        });
+
+        document.getElementById("threads").style.display = "none";
+        conversationContainer.style.display = "block";
       }
+
+      function goBack() {
+        conversationContainer.style.display = "none";
+        document.getElementById("threads").style.display = "block";
+      }
+
+      loadThreads();
     </script>
   </body>
 </html>
