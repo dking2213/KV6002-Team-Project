@@ -2,11 +2,6 @@
 
 ---
 
-## Project Overview  
-This project addresses the challenge of improving **event management** by creating a **B2B platform** tailored specifically for **event organisers** and **vendors/exhibitors**. Our platform simplifies space allocation, enhances communication, and delivers actionable insights, providing an efficient and organised solution for managing conferences and expos.  
-
----
-
 ## Challenge  
 **"How can we support event management?"**  
 
