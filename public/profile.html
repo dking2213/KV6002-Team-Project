@@ -77,6 +77,16 @@
             </ul>
           </strong>
         </div>
+        <section id="user-checklist" class="profile-section">
+          <h2>Your Checklist</h2>
+          <form id="checklist-form">
+            <input type="text" id="new-task" placeholder="Add a new task..." required />
+            <button type="submit">Add Task</button>
+          </form>
+          <ul id="checklist">
+            <!-- Tasks will be dynamically added here -->
+          </ul>
+        </section>
       </section>
 
       <!-- Editable Profile Form -->
@@ -357,6 +367,85 @@
         console.error("Error logging out:", error);
       }
     });
+
+    // Get elements
+    const checklistForm = document.getElementById("checklist-form");
+    const checklistInput = document.getElementById("new-task");
+    const checklist = document.getElementById("checklist");
+
+    // Firebase references
+    const user = auth.currentUser;
+
+    // Function to add a task to the checklist
+    function addTaskToChecklist(task, completed = false) {
+      const taskItem = document.createElement("li");
+      taskItem.className = "checklist-item";
+
+      // Checkbox
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = completed;
+      checkbox.addEventListener("change", () => {
+        const taskRef = db.ref(`users/${user.uid}/checklist/${task}`);
+        taskRef.update({ completed: checkbox.checked });
+      });
+
+      // Task text
+      const taskText = document.createElement("span");
+      taskText.textContent = task;
+
+      // Delete button
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => {
+        const taskRef = db.ref(`users/${user.uid}/checklist/${task}`);
+        taskRef.remove();
+        checklist.removeChild(taskItem);
+      });
+
+      taskItem.appendChild(checkbox);
+      taskItem.appendChild(taskText);
+      taskItem.appendChild(deleteButton);
+      checklist.appendChild(taskItem);
+    }
+
+    // Handle form submission
+    checklistForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const task = checklistInput.value.trim();
+      if (!task) return;
+
+      try {
+        const taskRef = db.ref(`users/${user.uid}/checklist/${task}`);
+        await taskRef.set({ completed: false });
+        addTaskToChecklist(task);
+        checklistInput.value = ""; // Clear input field
+      } catch (error) {
+        console.error("Error adding task:", error);
+        alert("Failed to add task. Please try again.");
+      }
+    });
+
+    // Load existing tasks from Firebase
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const checklistRef = db.ref(`users/${user.uid}/checklist`);
+        checklistRef.on("value", (snapshot) => {
+          const tasks = snapshot.val();
+          checklist.innerHTML = ""; // Clear the list
+
+          if (tasks) {
+            Object.entries(tasks).forEach(([task, { completed }]) => {
+              addTaskToChecklist(task, completed);
+            });
+          }
+        });
+      } else {
+        checklist.innerHTML = "<li>Please log in to view your checklist.</li>";
+      }
+    });
+
 
   </script>
 </body>
